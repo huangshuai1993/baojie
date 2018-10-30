@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- 默认目录 -->
+<decorators defaultdir="/WEB-INF/decorators">
+
+	<!-- 装饰freeMarker模板 -->
+	<decorator name="freemarker" page="decorator.ftl">
+		<pattern>/*</pattern>
+	</decorator>
+	<!-- 排除的路径 -->
+	<excludes>
+		<pattern>/service/login/toLogin</pattern>
+		<pattern>/service/login/logout</pattern>
+		<pattern>/service/example/*</pattern>
+	</excludes>
+</decorators>

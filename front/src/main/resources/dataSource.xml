@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx" 
+       xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+              http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+              http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+              http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+              http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.0.xsd
+              http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd ">
+	
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
+		destroy-method="close">
+		<property name="driverClass" value="${com.baojie.audit.jdbc.driver}" />
+		<property name="jdbcUrl" value="${com.baojie.audit.jdbc.url}" />
+		<property name="user" value="${com.baojie.audit.jdbc.user}" />
+		<property name="password" value="${com.baojie.audit.jdbc.password}" />
+		<property name="initialPoolSize" value="${com.baojie.audit.jdbc.initPoolSize}" />
+		<property name="minPoolSize" value="${com.baojie.audit.jdbc.initPoolSize}" />
+		<property name="maxPoolSize" value="${com.baojie.audit.jdbc.maxPoolSize}" />
+		<property name="idleConnectionTestPeriod" value="600" />
+		<property name="maxIdleTime" value="600" />
+		<property name="maxStatements" value="0" />
+		<property name="maxStatementsPerConnection" value="0" />
+		<property name="acquireIncrement" value="5" />
+		<property name="acquireRetryAttempts" value="200" />
+		<property name="acquireRetryDelay" value="180000" />
+	</bean>
+	
+	<bean id="sessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+		<property name="dataSource">
+			<ref bean="dataSource" />
+		</property>
+		<property name="annotatedClasses">
+			<list>
+				<value>com.baojie.manage.back.sys.dao.entity.Employee_personaEntity</value>
+				<value>com.baojie.manage.back.sys.dao.entity.EmployeeEntity</value>
+				<value>com.baojie.manage.back.sys.dao.entity.Persona_powerEntity</value>
+				<value>com.baojie.manage.back.sys.dao.entity.PersonaEntity</value>
+				<value>com.baojie.manage.back.sys.dao.entity.PowerEntity</value>
+				<!-- <value>com.baojie.manage.base.dao.entity.StoreEntity</value>
+				<value>com.baojie.manage.base.dao.entity.WorkerEntity</value>
+				<value>com.baojie.manage.base.dao.entity.PhotoEntity</value>
+				<value>com.baojie.manage.base.dao.entity.TaskEntity</value>
+				<value>com.baojie.manage.base.dao.entity.FinanceEntity</value>
+				<value>com.baojie.manage.base.dao.entity.PaymentEntity</value>
+				<value>com.baojie.manage.base.dao.entity.RefundEntity</value> -->
+			</list>
+		</property>
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.show_sql">true</prop>
+				<prop key="hibernate.use_sql_comments">false</prop>
+				<prop key="hibernate.generate_statistics">true</prop>
+				<prop key="hibernate.dialect">
+					org.hibernate.dialect.MySQLDialect
+				</prop>
+				<prop key="hibernate.cache.provider_class">
+					org.hibernate.cache.EhCacheProvider
+				</prop>
+				<prop key="jdbc.batch_size">50</prop>
+				<prop key="javax.persistence.validation.mode">none</prop>
+			</props>
+		</property>
+	</bean>
+	
+	<!-- 定义事务管理器 -->
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="cancel*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="create*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="save*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="edit*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="modify*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="getQrCode" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="pay*" propagation="REQUIRED" rollback-for="Exception"/>
+			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
+		</tx:attributes>
+	</tx:advice>
+
+	<aop:config>
+		<aop:advisor 
+			pointcut="execution(* com.baojie.manage.*.*.service..*ServiceImpl.*(..))"
+			advice-ref="txAdvice" />
+	</aop:config>
+	
+	<!-- 配置 HibernateTemplate -->
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+        <property name="sessionFactory" ref="sessionFactory"></property>
+    </bean>
+        
+</beans>

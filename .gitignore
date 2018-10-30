@@ -1,0 +1,57 @@
+target/
+!.mvn/wrapper/maven-wrapper.jar
+
+### STS ### 
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+deployment
+tempbar
+tempclasses
+target
+bin
+deposit
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+*.log
+
+### NetBeans ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+.mvn
+mengxiaodai_eclipse_workspace/
+*.apk
+
+*.metadata/
+
+Servers/Tomcat v7.0 Server at localhost-config/context.xml
+Servers/Tomcat v7.0 Server at localhost-config/catalina.properties
+Servers/Tomcat v7.0 Server at localhost (2)-config/context.xml
+Servers/Tomcat v7.0 Server at localhost (2)-config/catalina.properties
+Servers/Tomcat v7.0 Server at localhost (2)-config/catalina.policy
+Servers/Tomcat v7.0 Server at localhost (2)-config/web.xml
+Servers/Tomcat v7.0 Server at localhost (2)-config/tomcat-users.xml
+Servers/Tomcat v7.0 Server at localhost (2)-config/server.xml
+Servers/Tomcat v7.0 Server at localhost-config/web.xml
+Servers/Tomcat v7.0 Server at localhost-config/tomcat-users.xml
+Servers/Tomcat v7.0 Server at localhost-config/catalina.policy
+Servers/Tomcat v7.0 Server at localhost-config/server.xml
+Servers/Tomcat v8.0 Server at localhost-config/web.xml
+Servers/Tomcat v8.0 Server at localhost-config/tomcat-users.xml
+Servers/Tomcat v8.0 Server at localhost-config/server.xml
+Servers/Tomcat v8.0 Server at localhost-config/context.xml
+Servers/Tomcat v8.0 Server at localhost-config/catalina.properties
+Servers/Tomcat v8.0 Server at localhost-config/catalina.policy

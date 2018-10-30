@@ -1,0 +1,122 @@
+@charset "utf-8";
+
+
+
+/*********************************** 投资列表  ***************************/
+
+.invest-biaolist {
+	padding: 0px auto;
+	width: 100%;
+	margin-bottom: 30px;
+	height:240px;
+}
+ul,ol,li{
+	list-style:none;
+}
+.invest-biaolist .changeColor {
+	width: 915px;
+	float: left;
+}
+
+.invest-biaolist .changeColor ul li {
+	width: 285px;
+	float: left;
+	margin: 20px 20px 0 0;
+	background: #fff\9;
+}
+
+.inverst-bor {
+	box-sizing: border-box;
+	border: 1px solid #e1e1e1;
+}
+
+.invest-biao-con {
+	box-sizing: border-box;
+	width: 100%;
+	cursor: pointer;
+	border: 1px solid #e4e4e4;
+	background: #fff;
+	position: relative;
+	height:318px;
+}
+
+.pl40 {
+	padding-left: 40px;
+}
+.choiceTitle{
+	width: 120px;
+	float: left;
+	height: 28px;
+	line-height: 28px;
+	font-size: 14px;
+	color: #666;
+	margin-top: 10px;
+}
+.ui-tz-bdlx {
+	padding: 0;
+	float: left;
+	width: 900px;
+	margin-top: 10px;
+	font-size: 14px;
+	height: 28px;
+}
+
+.ui-tz-bdlx li {
+	float: left;
+	margin-right: 18px;
+	height: 28px;
+	line-height: 28px;
+	margin-bottom: 10px;
+}
+
+.ui-tz-bdlx li a {
+    display: inline-block;
+    padding: 0 12px;
+    height: 28px;
+    line-height: 28px;
+    float: left;
+    border: 1px solid #aaa;
+	border-radius: 4px;
+}
+
+.ui-tz-bdlx .cut a{
+  	background: #09afdf;
+	color: #fff;
+	border-radius: 4px;
+}
+
+.ui-tz-bdlx li a:hover {
+	background: #09afdf;
+	color: #fff;
+	border-radius: 4px;
+}
+
+.invest-biao-con:hover {
+	background: #fafafa;
+}
+.inputTitle{
+	width: 140px;
+	float: left;
+	height: 32px;
+	line-height: 32px;
+	font-size: 14px;
+	color: #666;
+	text-align:right;
+}
+.timeCenter{
+	font-size: 14px;
+	color: #666;
+	line-height: 32px;
+}
+.icon-calendar{
+	right:11px;
+	top:10px;
+	padding: 0;
+}
+
+
+
+
+
+
+
