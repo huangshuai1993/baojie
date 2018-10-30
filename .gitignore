@@ -36,7 +36,6 @@ mengxiaodai_eclipse_workspace/
 *.apk
 
 *.metadata/
-
 Servers/Tomcat v7.0 Server at localhost-config/context.xml
 Servers/Tomcat v7.0 Server at localhost-config/catalina.properties
 Servers/Tomcat v7.0 Server at localhost (2)-config/context.xml
