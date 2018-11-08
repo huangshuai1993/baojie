@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 
 import com.baojie.manage.back.sys.dao.EmployeeDao;
 import com.baojie.manage.back.sys.dao.entity.EmployeeEntity;
-import com.baojie.manage.back.sys.dto.EmployeeDto;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.dao.AbstractHibernateEntityDao;
 import com.baojie.manage.base.exception.BizException;
@@ -19,7 +18,6 @@ import com.google.common.collect.Maps;
 public class EmployeeDaoImpl extends AbstractHibernateEntityDao<EmployeeEntity> implements EmployeeDao {
 
 	public EmployeeEntity getEmployeeByUserName(String userName) throws BizException {
-		EmployeeDto dto = null;
 		String hql = "from EmployeeEntity e where  e.username=:userName";
 		Map<String, Object> params = Maps.newHashMap();
 		params.put("userName", userName);
