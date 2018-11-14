@@ -6,7 +6,7 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import com.baojie.manage.base.service.IDto;
 
-public class StaffDao implements IDto {
+public class StaffDto implements IDto {
 
 	private static final long serialVersionUID = -41378644319920484L;
 
