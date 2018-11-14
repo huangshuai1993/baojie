@@ -47,7 +47,7 @@
 		<coobird.version>0.4.8</coobird.version>
 		<fastdfs_client.version>1.20</fastdfs_client.version>
 		<google_gson.version>2.2.4</google_gson.version>
-		<fastjson.version>1.2.22</fastjson.version>
+		<fastjson.version>1.2.51</fastjson.version>
 	</properties>
 		<dependencies>
 		<dependency>
