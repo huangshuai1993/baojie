@@ -1,12 +1,25 @@
 package com.baojie.manage.back.baojie.controller;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baojie.manage.back.baojie.form.ContractForm;
 import com.baojie.manage.back.baojie.service.BContractService;
+import com.baojie.manage.back.sys.dto.EmployeeDto;
+import com.baojie.manage.base.common.consts.Const;
+import com.baojie.manage.base.common.util.GetUniqueNoUtil;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.common.util.PageUtil;
 import com.baojie.manage.base.controller.BaseController;
@@ -36,5 +49,37 @@ public class BContractController extends BaseController {
 		pageUtil.setTotalCount((int) allContract.getTotalCount());
 		model.addAttribute("page", pageUtil);
 		return "employee/getAllEmployees";
+	}
+	/**
+	 * 添加修改合同
+	 * @param request
+	 * @param contract
+	 * @return
+	 * @throws BizException
+	 */
+	@RequestMapping("/addOrUpdateContract")
+	@ResponseBody
+	public Map<String, Object> addContract(HttpServletRequest request,@RequestBody ContractForm contract) throws BizException {
+		Map<String, Object> map = new HashMap<String, Object>();
+		if(contract == null){
+			map.put(Const.retCode, Boolean.FALSE);
+			map.put(Const.retMsg, "合同信息不能为空!");
+			return map;
+		}
+		Integer result = contractService.addContract(contract);
+		if (result.equals(0)) {
+			map.put(Const.retCode, Boolean.FALSE);
+			map.put(Const.retMsg, "添加失败!");
+			return map;
+		}
+		map.put(Const.retCode, Boolean.TRUE);
+		map.put(Const.retMsg, "添加成功!");
+		return map;
+	}
+
+	@RequestMapping("/addOrUpdateContract")
+	@ResponseBody
+	public Map<String, Object> deleteContract(Long id)throws BizException {
+		return contractService.deleteContract(id);
 	}
 }
