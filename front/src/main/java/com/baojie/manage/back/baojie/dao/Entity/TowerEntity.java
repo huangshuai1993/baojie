@@ -17,6 +17,9 @@ import com.baojie.manage.base.dao.BaseEntity;
 
 @Entity
 @Table(name = "opt_tower")
+@org.hibernate.annotations.Entity(
+		dynamicInsert = true,dynamicUpdate = true
+)
 public class TowerEntity extends BaseEntity {
 
 	private static final long serialVersionUID = -3747404580948928227L;

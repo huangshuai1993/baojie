@@ -17,6 +17,9 @@ import com.baojie.manage.base.dao.BaseEntity;
 
 @Entity
 @Table(name = "opt_staff")
+@org.hibernate.annotations.Entity(
+		dynamicInsert = true,dynamicUpdate = true
+)
 public class StaffEntity extends BaseEntity {
 
 	private static final long serialVersionUID = -5352108387175885494L;

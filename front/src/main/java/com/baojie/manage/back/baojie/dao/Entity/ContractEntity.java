@@ -17,6 +17,9 @@ import com.baojie.manage.base.dao.BaseEntity;
 
 @Entity
 @Table(name = "opt_contract")
+@org.hibernate.annotations.Entity(
+		dynamicInsert = true,dynamicUpdate = true
+)
 public class ContractEntity extends BaseEntity {
 
 	private static final long serialVersionUID = 23765255042547423L;
