@@ -1,54 +1,47 @@
-package com.baojie.manage.back.baojie.dao.Entity;
+package com.baojie.manage.back.baojie.form;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
-import com.baojie.manage.base.dao.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
-@Entity
-@Table(name = "opt_position")
-@org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
-public class PositionEntity extends BaseEntity {
-
-	private static final long serialVersionUID = -2965189141967715426L;
-
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+/**
+ * 
+ * 职位名称
+ * 
+ * @author huangshuai
+ *
+ * @date 2018年11月22日
+ */
+public class PositionForm implements Serializable {
+	private static final long serialVersionUID = -8235995412804228404L;
 	private Long positionId;// id
-	@Column
+
 	private String positionName; // 职位名称,
-	@Column
+
 	private Long towerId; // 所属楼盘,
-	@Column
+
 	private String towerName; // 楼盘名称,
-	@Column
+
 	private BigDecimal basePay; // 基本工资,
-	@Column
+
 	private BigDecimal allowance; // 岗位津贴,
-	@Column
+
 	private String memo;
-	@Column
-	@Temporal(TemporalType.TIMESTAMP)
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date created;// 创建时间
-	@Column
-	@Temporal(TemporalType.TIMESTAMP)
+
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updated;// 修改时间
 
 	/**
 	 * 状态 默认1可用
 	 */
-	@Column
+
 	private int dataFlag = 1;
 
 	public Long getTowerId() {
