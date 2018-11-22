@@ -22,6 +22,7 @@ import com.baojie.manage.base.exception.BizException;
 @Repository("com.baojie.manage.back.baojie.dao.impl.BContractDaoImpl")
 public class BContractDaoImpl extends AbstractHibernateEntityDao<ContractEntity> implements BContractDao {
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public PageResults<ContractEntity> getContractList(final Integer pageNumber, final Integer pageSize,
 			final String contractName, final String towerName, final Integer status) throws BizException {
@@ -50,6 +51,7 @@ public class BContractDaoImpl extends AbstractHibernateEntityDao<ContractEntity>
 		return result;
 	}
 
+	@SuppressWarnings("deprecation")
 	public Long queryContractListCount(final Integer pageNumber, final Integer pageSize, final String contractName,
 			final String towerName, final Integer status) throws BizException {
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {

@@ -11,7 +11,7 @@ public interface BTowerDao extends IEntityDao<TowerEntity> {
 
 	public TowerEntity getTowerByName(String name) throws BizException;
 
-	public PageResults<TowerEntity> getTowerList(Integer pageNo, Integer pageSize) throws BizException;
+	public PageResults<TowerEntity> getTowerList(Integer pageNo, Integer pageSize,String towerName, String functionaryName) throws BizException;
 
 	public TowerEntity addorUpdateTower(TowerEntity towerEntity) throws BizException;
 

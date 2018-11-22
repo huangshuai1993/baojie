@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baojie.manage.back.baojie.form.ContractForm;
+import com.baojie.manage.back.baojie.form.TowerForm;
 import com.baojie.manage.back.baojie.service.BContractService;
 import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.base.common.consts.Const;
@@ -30,11 +31,20 @@ public class BTowerController extends BaseController {
 
 	@Autowired
 	private BContractService contractService;
-
+	
+	/**
+	 * 获取所以楼盘信息
+	 * @param model
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param towerName
+	 * @param status
+	 * @return
+	 * @throws BizException
+	 */
 	@RequestMapping("/getAllTower")
-	public String getAllTower(Model model, Integer pageNumber, Integer pageSize, String contractName,
-			String towerName, Integer status) throws BizException {
-		logger.info("getAllContract [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize);
+	public String getAllTower(Model model, Integer pageNumber, Integer pageSize, String towerName, String functionaryName) throws BizException {
+		logger.info("getAllContract [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize+ ", towerName=" + towerName+", functionaryName=" + functionaryName);
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
@@ -43,34 +53,25 @@ public class BTowerController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<ContractForm> allContract = contractService.getAllContract(pageNumber, pageSize, contractName,
-				towerName, status);
-
-		model.addAttribute("allContractList", allContract.getList());
-		pageUtil.setTotalCount((int) allContract.getTotalCount());
+		PageResults<TowerForm> allTower = towerService.getAllTower(pageNumber, pageSize, towerName, functionaryName);
+		model.addAttribute("allTowerList", allTower.getList());
+		pageUtil.setTotalCount((int) allTower.getTotalCount());
 		model.addAttribute("page", pageUtil);
 		return "employee/getAllEmployees";
 	}
 
-	/**
-	 * 添加修改合同
-	 * 
-	 * @param request
-	 * @param contract
-	 * @return
-	 * @throws BizException
-	 */
-	@RequestMapping("/addOrUpdateContract")
+
+	@RequestMapping("/addOrUpdateTower")
 	@ResponseBody
-	public Map<String, Object> addContract(HttpServletRequest request, @RequestBody ContractForm contract)
+	public Map<String, Object> addTower(HttpServletRequest request, @RequestBody TowerForm towerForm)
 			throws BizException {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (contract == null) {
+		if (towerForm == null) {
 			map.put(Const.retCode, Boolean.FALSE);
 			map.put(Const.retMsg, "合同信息不能为空!");
 			return map;
 		}
-		Integer result = contractService.addContract(contract);
+		Integer result = towerService.addTower(towerForm);
 		if (result.equals(0)) {
 			map.put(Const.retCode, Boolean.FALSE);
 			map.put(Const.retMsg, "添加失败!");
@@ -90,7 +91,7 @@ public class BTowerController extends BaseController {
 	@RequestMapping("/deleteContract")
 	@ResponseBody
 	public Map<String, Object> deleteContract(Long id) throws BizException {
-		return contractService.deleteContract(id);
+		return towerService.deleteTower(id);
 	}
 	
 }
