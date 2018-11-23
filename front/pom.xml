@@ -48,8 +48,50 @@
 		<fastdfs_client.version>1.20</fastdfs_client.version>
 		<google_gson.version>2.2.4</google_gson.version>
 		<fastjson.version>1.2.51</fastjson.version>
+		<poi.version>3.17</poi.version>
+		<xmlbeans.version>2.6.0</xmlbeans.version>
+		<swagger.version>2.7.0</swagger.version>
 	</properties>
 		<dependencies>
+		<!-- swagger : 自动生成后端接口文档 -->
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger2</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>io.springfox</groupId>
+				<artifactId>springfox-swagger-ui</artifactId>
+				<version>${swagger.version}</version>
+			</dependency>
+		<!-- POI实现excel导入导出 -->
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml</artifactId>
+				<version>${poi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi</artifactId>
+				<version>${poi.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-ooxml-schemas</artifactId>
+				<version>${poi.version}</version>
+			</dependency>
+			<!-- <dependency> <groupId>org.apache.poi</groupId> <artifactId>poi-scratchpad</artifactId> 
+				<version>${poi.version}</version> </dependency> -->
+			<dependency>
+				<groupId>org.apache.xmlbeans</groupId>
+				<artifactId>xmlbeans</artifactId>
+				<version>${xmlbeans.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>org.apache.poi</groupId>
+				<artifactId>poi-scratchpad</artifactId>
+				<version>${poi.version}</version>
+			</dependency>
 		<dependency>
 				<groupId>com.alibaba</groupId>
 				<artifactId>fastjson</artifactId>

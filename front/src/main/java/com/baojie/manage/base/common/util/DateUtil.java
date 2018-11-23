@@ -970,5 +970,15 @@ public class DateUtil {
         cal.set(Calendar.MILLISECOND, 59);
         return cal.getTime();
     }
+    
+	/**
+	 * 格式化日期
+	 * @param date
+	 * @param pattern
+	 * @return
+	 */
+	public static String date2String(Date date, String pattern){
+		return new SimpleDateFormat(pattern).format(date);
+	}
 }
 
