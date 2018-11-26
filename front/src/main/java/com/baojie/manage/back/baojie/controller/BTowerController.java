@@ -10,10 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baojie.manage.back.baojie.form.ContractForm;
 import com.baojie.manage.back.baojie.form.TowerForm;
 import com.baojie.manage.back.baojie.service.BContractService;
 import com.baojie.manage.back.baojie.service.BTowerService;
@@ -28,9 +26,6 @@ import com.baojie.manage.base.exception.BizException;
 public class BTowerController extends BaseController {
 	@Autowired
 	private BTowerService towerService;
-
-	@Autowired
-	private BContractService contractService;
 	
 	/**
 	 * 获取所以楼盘信息
