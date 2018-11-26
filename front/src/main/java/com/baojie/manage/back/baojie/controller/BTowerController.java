@@ -82,15 +82,15 @@ public class BTowerController extends BaseController {
 		return map;
 	}
 	/**
-	 * 删除合同
+	 * 删除楼盘
 	 * 
 	 * @param id
 	 * @return
 	 * @throws BizException
 	 */
-	@RequestMapping("/deleteContract")
+	@RequestMapping("/deleteTower")
 	@ResponseBody
-	public Map<String, Object> deleteContract(Long id) throws BizException {
+	public Map<String, Object> deleteTower(Long id) throws BizException {
 		return towerService.deleteTower(id);
 	}
 	

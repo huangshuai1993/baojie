@@ -1,6 +1,5 @@
 package com.baojie.manage.back.baojie.dao.impl;
 
-import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -12,11 +11,10 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 import com.baojie.manage.back.baojie.dao.BTowerDao;
-import com.baojie.manage.back.baojie.dao.Entity.ContractEntity;
 import com.baojie.manage.back.baojie.dao.Entity.TowerEntity;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.dao.AbstractHibernateEntityDao;
@@ -69,15 +67,14 @@ public class BTowerDaoImpl extends AbstractHibernateEntityDao<TowerEntity> imple
 		return null;
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public PageResults<TowerEntity> getTowerList(Integer pageNo, Integer pageSize, String towerName,
 			String functionaryName) throws BizException {
 		List<TowerEntity> list = this.getHibernateTemplate().execute(new HibernateCallback<List<TowerEntity>>() {
 			@SuppressWarnings("unchecked")
 			@Override
-			public List<TowerEntity> doInHibernate(Session session) throws HibernateException, SQLException {
-				
+			public List<TowerEntity> doInHibernate(Session session) throws HibernateException {
+
 				Criteria criteria = session.createCriteria(TowerEntity.class);
 				if (StringUtils.isNotEmpty(functionaryName)) {
 					criteria.add(Restrictions.like("functionaryName", functionaryName));
@@ -85,24 +82,23 @@ public class BTowerDaoImpl extends AbstractHibernateEntityDao<TowerEntity> imple
 				if (StringUtils.isNotEmpty(towerName)) {
 					criteria.add(Restrictions.like("towerName", towerName));
 				}
-				
+
 				criteria.addOrder(Order.desc("updated"));
 				criteria.setFirstResult((pageNo - 1) * pageSize);
 				criteria.setMaxResults(pageSize);
 				return criteria.list();
 			}
 		});
-		Long count = this.queryTowerListCount(pageNo, pageSize, towerName,functionaryName);
+		Long count = this.queryTowerListCount(pageNo, pageSize, towerName, functionaryName);
 		PageResults<TowerEntity> result = new PageResults<TowerEntity>(list, pageNo, pageSize, count);
 		return result;
 	}
-	
-	@SuppressWarnings("deprecation")
-	public Long queryTowerListCount(Integer pageNo, Integer pageSize, String towerName,
-			String functionaryName) throws BizException {
+
+	public Long queryTowerListCount(Integer pageNo, Integer pageSize, String towerName, String functionaryName)
+			throws BizException {
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 			@Override
-			public Long doInHibernate(Session session) throws HibernateException, SQLException {
+			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(TowerEntity.class);
 				if (StringUtils.isNotEmpty(functionaryName)) {
 					criteria.add(Restrictions.like("functionaryName", functionaryName));
@@ -110,7 +106,7 @@ public class BTowerDaoImpl extends AbstractHibernateEntityDao<TowerEntity> imple
 				if (StringUtils.isNotEmpty(towerName)) {
 					criteria.add(Restrictions.like("towerName", towerName));
 				}
-				
+
 				criteria.setProjection(Projections.rowCount());
 				return (Long) criteria.uniqueResult();
 			}

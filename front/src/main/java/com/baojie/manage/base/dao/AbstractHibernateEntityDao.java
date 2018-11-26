@@ -22,8 +22,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.HibernateTemplate;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateTemplate;
 
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.DaoException;
@@ -131,7 +131,9 @@ public abstract class AbstractHibernateEntityDao<T extends IEntity> {
 			throw new DaoException("HibernateEntityDao deleteBatchByPKs method params ids is empty");
 		}
 		this.getHibernateTemplate().execute(new HibernateCallback<Boolean>() {
-			public Boolean doInHibernate(Session session) throws HibernateException, SQLException {
+
+			@Override
+			public Boolean doInHibernate(Session session) throws HibernateException {
 				String hql = "delete from " + tableName + " e where e." + pkName + " in (:ids)";
 				try {
 					Query query = session.createQuery(hql);
@@ -165,7 +167,7 @@ public abstract class AbstractHibernateEntityDao<T extends IEntity> {
 		}
 
 		List<T> list = this.getHibernateTemplate().execute(new HibernateCallback<List<T>>() {
-			public List<T> doInHibernate(Session session) throws HibernateException, SQLException {
+			public List<T> doInHibernate(Session session) throws HibernateException{
 				String hql = "from " + tableName + " e where e." + pkName + " in (:ids)";
 				Query query = session.createQuery(hql);
 				query.setParameterList("ids", ids);
@@ -217,7 +219,7 @@ public abstract class AbstractHibernateEntityDao<T extends IEntity> {
 	public List<T> selectList(final String hql, final Map<String, Object> params, final int pageNo, final int pageSize)
 			throws DaoException {
 		List<T> list = hibernateTemplate.execute(new HibernateCallback<List<T>>() {
-			public List<T> doInHibernate(Session session) throws HibernateException, SQLException {
+			public List<T> doInHibernate(Session session) throws HibernateException{
 				Query query = session.createQuery(hql);
 				setParameter(query, params);
 				if (pageNo >= 0 && pageSize >= 0) {
@@ -252,7 +254,7 @@ public abstract class AbstractHibernateEntityDao<T extends IEntity> {
 
 	public long selectRowCount(final String hql, final Map<String, Object> params) throws DaoException {
 		Long count = hibernateTemplate.execute(new HibernateCallback<Long>() {
-			public Long doInHibernate(Session session) throws HibernateException, SQLException {
+			public Long doInHibernate(Session session) throws HibernateException {
 				Query query = session.createQuery(hql);
 				setParameter(query, params);
 				return (Long) query.uniqueResult();

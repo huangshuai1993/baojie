@@ -11,7 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 import com.baojie.manage.back.organize.dao.StoreDao;
@@ -30,7 +30,7 @@ public class StoreDaoImpl extends AbstractHibernateEntityDao<StoreEntity> implem
 		List<StoreEntity> list = this.getHibernateTemplate().execute(new HibernateCallback<List<StoreEntity>>() {
 			@SuppressWarnings("unchecked")
 			@Override
-			public List<StoreEntity> doInHibernate(Session session) throws HibernateException, SQLException {
+			public List<StoreEntity> doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(StoreEntity.class);
 				if (StringUtils.isNotEmpty(province)) {
 					criteria.add(Restrictions.eq("provinceCode", province));
@@ -53,7 +53,7 @@ public class StoreDaoImpl extends AbstractHibernateEntityDao<StoreEntity> implem
 			final Integer pageSize) throws BizException {
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 			@Override
-			public Long doInHibernate(Session session) throws HibernateException, SQLException {
+			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(StoreEntity.class);
 				if (StringUtils.isNotEmpty(province)) {
 					criteria.add(Restrictions.eq("provinceCode", province));

@@ -11,7 +11,7 @@ import org.hibernate.Session;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 import com.baojie.manage.back.organize.dao.WorkerDao;
@@ -30,7 +30,7 @@ public class WorkerDaoImpl extends AbstractHibernateEntityDao<WorkerEntity> impl
 		List<WorkerEntity> list = this.getHibernateTemplate().execute(new HibernateCallback<List<WorkerEntity>>() {
 			@SuppressWarnings("unchecked")
 			@Override
-			public List<WorkerEntity> doInHibernate(Session session) throws HibernateException, SQLException {
+			public List<WorkerEntity> doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(WorkerEntity.class);
 				if (StringUtils.isNotEmpty(name)) {
 					criteria.add(Restrictions.eq("name", name));
@@ -59,7 +59,7 @@ public class WorkerDaoImpl extends AbstractHibernateEntityDao<WorkerEntity> impl
 			final Integer pageNumber, final Integer pageSize) throws BizException {
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 			@Override
-			public Long doInHibernate(Session session) throws HibernateException, SQLException {
+			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(WorkerEntity.class);
 				if (StringUtils.isNotEmpty(name)) {
 					criteria.add(Restrictions.eq("name", name));

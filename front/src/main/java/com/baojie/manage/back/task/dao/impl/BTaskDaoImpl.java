@@ -14,7 +14,7 @@ import org.hibernate.criterion.CriteriaSpecification;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Projections;
 import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 import com.baojie.manage.back.task.dao.BTaskDao;
@@ -34,7 +34,7 @@ public class BTaskDaoImpl extends AbstractHibernateEntityDao<TaskEntity> impleme
 		List<TaskEntity> list = this.getHibernateTemplate().execute(new HibernateCallback<List<TaskEntity>>() {
 			@SuppressWarnings("unchecked")
 			@Override
-			public List<TaskEntity> doInHibernate(Session session) throws HibernateException, SQLException {
+			public List<TaskEntity> doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(TaskEntity.class);
 				if (StringUtils.isNotEmpty(name)) {
 					criteria.add(Restrictions.eq("name", name));
@@ -66,7 +66,7 @@ public class BTaskDaoImpl extends AbstractHibernateEntityDao<TaskEntity> impleme
 			final Long SearchStoreId) throws BizException {
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 			@Override
-			public Long doInHibernate(Session session) throws HibernateException, SQLException {
+			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(TaskEntity.class);
 				if (StringUtils.isNotEmpty(name)) {
 					criteria.add(Restrictions.eq("name", name));
@@ -97,7 +97,7 @@ public class BTaskDaoImpl extends AbstractHibernateEntityDao<TaskEntity> impleme
 		List<TaskEntity> list = this.getHibernateTemplate().execute(new HibernateCallback<List<TaskEntity>>() {
 			@SuppressWarnings("unchecked")
 			@Override
-			public List<TaskEntity> doInHibernate(Session session) throws HibernateException, SQLException {
+			public List<TaskEntity> doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(TaskEntity.class);
 				if (StringUtils.isNotEmpty(name)) {
 					criteria.add(Restrictions.eq("name", name));
@@ -139,7 +139,7 @@ public class BTaskDaoImpl extends AbstractHibernateEntityDao<TaskEntity> impleme
 			final Integer taskStatus, final Long SearchStoreId) throws BizException {
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 			@Override
-			public Long doInHibernate(Session session) throws HibernateException, SQLException {
+			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(TaskEntity.class);
 				if (StringUtils.isNotEmpty(name)) {
 					criteria.add(Restrictions.eq("name", name));
@@ -181,7 +181,7 @@ public class BTaskDaoImpl extends AbstractHibernateEntityDao<TaskEntity> impleme
 					@SuppressWarnings("unchecked")
 					@Override
 					public List<Map<String, Object>> doInHibernate(Session session)
-							throws HibernateException, SQLException {
+							throws HibernateException {
 						String hql = "select t.empId as id, count(*) as count from TaskEntity t where t.empId in (:ids) and t.taskStatus in (:taskStatus)  group by t.empId";
 						Query query = session.createQuery(hql);
 						query.setParameterList("ids", ids);
