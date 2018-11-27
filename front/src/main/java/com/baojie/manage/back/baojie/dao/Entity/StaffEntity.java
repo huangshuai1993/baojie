@@ -40,7 +40,10 @@ public class StaffEntity extends BaseEntity {
 
 	@Column
 	private String phone;
-
+	@Column
+	private Long positionId;
+	@Column
+	private String positionName;
 	@Column
 	private Long towerId;
 	@Column
@@ -164,6 +167,23 @@ public class StaffEntity extends BaseEntity {
 
 	public void setCreated(Date created) {
 		this.created = created;
+	}
+
+	
+	public Long getPositionId() {
+		return positionId;
+	}
+
+	public void setPositionId(Long positionId) {
+		this.positionId = positionId;
+	}
+
+	public String getPositionName() {
+		return positionName;
+	}
+
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
 	}
 
 	@Override
