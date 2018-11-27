@@ -42,13 +42,10 @@
 				<value>com.baojie.manage.back.sys.dao.entity.Persona_powerEntity</value>
 				<value>com.baojie.manage.back.sys.dao.entity.PersonaEntity</value>
 				<value>com.baojie.manage.back.sys.dao.entity.PowerEntity</value>
-				<!-- <value>com.baojie.manage.base.dao.entity.StoreEntity</value>
-				<value>com.baojie.manage.base.dao.entity.WorkerEntity</value>
-				<value>com.baojie.manage.base.dao.entity.PhotoEntity</value>
-				<value>com.baojie.manage.base.dao.entity.TaskEntity</value>
-				<value>com.baojie.manage.base.dao.entity.FinanceEntity</value>
-				<value>com.baojie.manage.base.dao.entity.PaymentEntity</value>
-				<value>com.baojie.manage.base.dao.entity.RefundEntity</value> -->
+				<value>com.baojie.manage.back.baojie.dao.Entity.ContractEntity</value>
+				<value>com.baojie.manage.back.baojie.dao.Entity.PositionEntity</value>
+				<value>com.baojie.manage.back.baojie.dao.Entity.StaffEntity</value>
+				<value>com.baojie.manage.back.baojie.dao.Entity.TowerEntity</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
