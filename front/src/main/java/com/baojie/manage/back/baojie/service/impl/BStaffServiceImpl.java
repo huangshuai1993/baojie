@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baojie.manage.back.baojie.dao.BStaffDao;
-import com.baojie.manage.back.baojie.dao.Entity.StaffEntity;
+import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
 import com.baojie.manage.back.baojie.form.StaffForm;
 import com.baojie.manage.back.baojie.service.BStaffService;
 import com.baojie.manage.back.common.enums.ExampleExCode;

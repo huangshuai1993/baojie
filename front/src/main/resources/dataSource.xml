@@ -42,10 +42,10 @@
 				<value>com.baojie.manage.back.sys.dao.entity.Persona_powerEntity</value>
 				<value>com.baojie.manage.back.sys.dao.entity.PersonaEntity</value>
 				<value>com.baojie.manage.back.sys.dao.entity.PowerEntity</value>
-				<value>com.baojie.manage.back.baojie.dao.Entity.ContractEntity</value>
-				<value>com.baojie.manage.back.baojie.dao.Entity.PositionEntity</value>
-				<value>com.baojie.manage.back.baojie.dao.Entity.StaffEntity</value>
-				<value>com.baojie.manage.back.baojie.dao.Entity.TowerEntity</value>
+				<value>com.baojie.manage.back.baojie.dao.entity.ContractEntity</value>
+				<value>com.baojie.manage.back.baojie.dao.entity.PositionEntity</value>
+				<value>com.baojie.manage.back.baojie.dao.entity.StaffEntity</value>
+				<value>com.baojie.manage.back.baojie.dao.entity.TowerEntity</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">
@@ -95,7 +95,7 @@
 	</aop:config>
 	
 	<!-- 配置 HibernateTemplate -->
-    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate3.HibernateTemplate">
+    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
         <property name="sessionFactory" ref="sessionFactory"></property>
     </bean>
         

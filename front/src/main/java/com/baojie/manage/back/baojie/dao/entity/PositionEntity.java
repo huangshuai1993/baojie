@@ -1,4 +1,4 @@
-package com.baojie.manage.back.baojie.dao.Entity;
+package com.baojie.manage.back.baojie.dao.entity;
 
 import java.math.BigDecimal;
 import java.util.Date;

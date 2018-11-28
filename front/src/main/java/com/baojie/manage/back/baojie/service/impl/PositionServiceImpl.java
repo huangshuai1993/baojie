@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baojie.manage.back.baojie.dao.PositionDao;
-import com.baojie.manage.back.baojie.dao.Entity.PositionEntity;
+import com.baojie.manage.back.baojie.dao.entity.PositionEntity;
 import com.baojie.manage.back.baojie.form.PositionForm;
 import com.baojie.manage.back.baojie.service.PositionService;
 import com.baojie.manage.back.common.enums.ExampleExCode;

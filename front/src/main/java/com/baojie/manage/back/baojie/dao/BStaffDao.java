@@ -2,7 +2,7 @@ package com.baojie.manage.back.baojie.dao;
 
 import java.util.List;
 
-import com.baojie.manage.back.baojie.dao.Entity.StaffEntity;
+import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.dao.IEntityDao;
 import com.baojie.manage.base.exception.BizException;

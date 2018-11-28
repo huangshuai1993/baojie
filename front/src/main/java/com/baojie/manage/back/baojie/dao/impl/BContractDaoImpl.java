@@ -13,7 +13,7 @@ import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.stereotype.Repository;
 
 import com.baojie.manage.back.baojie.dao.BContractDao;
-import com.baojie.manage.back.baojie.dao.Entity.ContractEntity;
+import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.dao.AbstractHibernateEntityDao;
 import com.baojie.manage.base.exception.BizException;

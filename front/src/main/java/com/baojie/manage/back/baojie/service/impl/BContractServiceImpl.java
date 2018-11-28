@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baojie.manage.back.baojie.dao.BContractDao;
-import com.baojie.manage.back.baojie.dao.Entity.ContractEntity;
+import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
 import com.baojie.manage.back.baojie.form.ContractForm;
 import com.baojie.manage.back.baojie.service.BContractService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
