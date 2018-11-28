@@ -129,4 +129,37 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 		}
 		return map;
 	}
+
+	@Override
+	public Map<String, Object> getContractInfo(Long id) throws BizException {
+		if (logger.isDebugEnabled()) {
+			logger.debug("--------------BContractServiceImpl.getContractInfo------------begin-->");
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			if (id == null) {
+				map.put(Const.retCode, false);
+				map.put(Const.retMsg, "合同不存在");
+	            return map;
+	        }
+			ContractEntity contract = contractDao.selectByPK(id);
+			if(contract == null){
+				map.put(Const.retCode, false);
+				map.put(Const.retMsg, "合同不存在");
+	            return map;
+			}
+			map.put(Const.retCode, true);
+			map.put("contract", "contract");
+		} catch (Exception e) {
+			map.put(Const.retCode, false);
+			map.put(Const.retMsg, "合同不存在");
+			logger.error("BContractServiceImpl.getContractInfo发生异常", e);
+			throw new BizException(ExampleExCode.EXAMPLE_NOT_FOUND);
+		} finally {
+			if (logger.isDebugEnabled()) {
+				logger.debug("--------------BContractServiceImpl.getContractInfo------------end-->");
+			}
+		}
+		return map;
+	}
 }

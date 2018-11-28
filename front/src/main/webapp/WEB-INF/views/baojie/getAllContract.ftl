@@ -148,70 +148,136 @@
                                     <div class="padd">
                                         <div class="form quick-post">
                                             <!-- Edit profile form (not working)-->
-                                            <form class="form-horizontal"  action="${contextPath}/service/employee/addEmployee">
-                                            	<input type="hidden" name="employeeId" id="employeeId"/>
+                                            <form class="form-horizontal"  action="${contextPath}/service/bcontract/addOrUpdateContract">
+                                            	<input type="hidden" name="contractId" id="contractId"/>
                                                 <!-- Title -->
                                                 <div class="form-group">
-                                                    <label class="control-label col-lg-3">登录名</label>
+                                                    <label class="control-label col-lg-3">合同名称</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" name="username" id="username" maxlength="20"  value="">
+                                                        <input type="text" class="form-control" name="contractName" id="contractName" maxlength="50"  value="">
                                                     </div>
                                                 </div>
-                                                <!-- Content -->
+                                              <div class="form-group storeIdDiv" >
+                                                <label class="control-label col-lg-3">类型</label>
+                                                <div class="col-lg-9">
+                                                    <select class="form-control" id="type" >
+                                                    	<option value="0">服务</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                                <!--detailType -->
+                                                <div class="form-group storeIdDiv" >
+                                                    <label class="control-label col-lg-3">类型明细</label>
+                                                    <div class="col-lg-9">
+                                                        <select class="form-control" id="detailType" >
+                                                        	<option value="0">自接</option>
+                                                        	<option value="1">外包</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                                 <div class="form-group">
-                                                    <label class="control-label col-lg-3">姓名</label>
+                                                    <label class="control-label col-lg-3">我方单位</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" name="realName" id="realName" value="" maxlength="10">
+                                                        <input type="text" class="form-control" maxlength="30"  name="company" id="company" value="">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label col-lg-3">身份证号</label>
+                                                    <label class="control-label col-lg-3">对方单位</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" maxlength="18"  name="employIDCardNum" id="employIDCardNum" value="">
+                                                        <input type="text" class="form-control" maxlength="30"  name="serviceCompany" id="serviceCompany" value="">
                                                     </div>
                                                 </div>
+                                                
                                                 <div class="form-group">
-                                                    <label class="control-label col-lg-3">手机号码</label>
+                                                    <label class="control-label col-lg-3">合同生效时间</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" name="phone" id="phone" onkeyup="value=value.replace(/[^\d]/g,'')"  value="" maxlength="11">
+                                                        <input type="text" class="form-control" maxlength="30"  name="commencementDate" id="commencementDate" value="">
                                                     </div>
                                                 </div>
-                                                <div class="form-group" style="display:none;" id="employeePassword">
-                                                    <label class="control-label col-lg-3">员工密码</label>
+                                                
+                                                
+                                                  <div class="form-group">
+                                                    <label class="control-label col-lg-3">合同终止时间</label>
                                                     <div class="col-lg-9">
-                                                        <input type="password" class="form-control" name="password" id="password" value="">
+                                                        <input type="text" class="form-control" maxlength="30"  name="terminationDate" id="terminationDate" value="">
+                                                    </div>
+                                                </div>
+                                                
+                                                  <div class="form-group">
+                                                    <label class="control-label col-lg-3">合同总价</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" maxlength="30"  name="totalPrices" id="totalPrices" value="">
+                                                    </div>
+                                                </div>
+                                                
+                                                  <div class="form-group">
+                                                    <label class="control-label col-lg-3">合同月金额</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" maxlength="30"  name="monthPrices" id="monthPrices" value="">
+                                                    </div>
+                                                </div>
+                                                
+                                                  <div class="form-group">
+                                                    <label class="control-label col-lg-3">合同已付金额</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" maxlength="30"  name="paidPrices" id="paidPrices" value="">
+                                                    </div>
+                                                </div>
+                                                
+                                                
+                                                  <div class="form-group">
+                                                    <label class="control-label col-lg-3">合同余额</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" maxlength="30"  name="balance" id="balance" value="">
+                                                    </div>
+                                                </div>
+                                                
+                                                  <div class="form-group">
+                                                    <label class="control-label col-lg-3">合同人数</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" maxlength="30"  name="peopleCount" id="peopleCount" value="">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label class="control-label col-lg-3">合同份数</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" maxlength="30"  name="copies" id="copies" value="">
+                                                    </div>
+                                                </div>
+                                                
+                                                 <div class="form-group">
+                                                    <label class="control-label col-lg-3">经办人</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" maxlength="30"  name="transactor" id="transactor" value="">
+                                                    </div>
+                                                </div>
+                                                
+                                                <div class="form-group">
+                                                    <label class="control-label col-lg-3">联系方式</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" name="contact" id="contact" onkeyup="value=value.replace(/[^\d]/g,'')"  value="" maxlength="11">
                                                     </div>
                                                 </div>
                                                 <!-- 所属角色 -->
                                                 <div class="form-group">
-                                                    <label class="control-label col-lg-3">所属角色</label>
+                                                    <label class="control-label col-lg-3">合同履行情况</label>
                                                     <div class="col-lg-9">
-                                                        <select class="form-control" id="ddlRegType" onchange="btnChange(this[selectedIndex].value)";>
-	                                                        <#list personas as p>
-	                                                        	<option value="${p.personaId}">${p.personaName}</option>
-	                                                        </#list>
+                                                        <select class="form-control" id="status">
+	                                                        	<option value="1">正常履行</option>
+	                                                        	<option value="2">到期终止</option>
+	                                                        	<option value="3">变更</option>
+	                                                        	<option value="4">解除</option>
                                                         </select>
                                                     </div>
                                                 </div>
-	                                            <!-- 所属门店-->    
-												<div class="form-group storeIdDiv" >
-                                                    <label class="control-label col-lg-3">所属门店</label>
-                                                    <div class="col-lg-9">
-                                                        <select class="form-control" id="storeIds" >
-	                                                        <#list stores as s>
-	                                                        	<option value="${s.id}">${s.name}</option>
-	                                                        </#list>
-                                                        </select>
-                                                    </div>
-                                                </div>
-
                                                 <!-- Buttons -->
                                                 <div class="form-group">
                                                     <!-- Buttons -->
                                                     <div class="col-lg-12 text-center">
-                                                        <button class="btn btn-success mlt7" type="button" id="saveEmployee">
+                                                        <button class="btn btn-success mlt7" type="button" id="saveContract">
                                                             <i class="icon-ok"></i>
-                                                            保存
+                                                            		保存
                                                         </button>
                                                     </div>
                                                 </div>
@@ -248,7 +314,7 @@
 		 }
 	 }
 	</script>
-    <form action="${contextPath}/service/employee/getAllEmployees" method="post" id="myForm">
+    <form action="${contextPath}/service/bcontract/getAllContract" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     </form>
 </body>

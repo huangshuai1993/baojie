@@ -21,7 +21,7 @@ import com.baojie.manage.base.controller.BaseController;
 import com.baojie.manage.base.exception.BizException;
 
 @Controller
-@RequestMapping("bcontract")
+@RequestMapping("/bcontract")
 public class BContractController extends BaseController {
 	@Autowired
 	private BContractService contractService;
@@ -86,6 +86,12 @@ public class BContractController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> deleteContract(Long id) throws BizException {
 		return contractService.deleteContract(id);
+	}
+	
+	@RequestMapping("/getContractInfo")
+	@ResponseBody
+	public Map<String, Object> getContractInfo(Long id) throws BizException {
+		return contractService.getContractInfo(id);
 	}
 	
 }

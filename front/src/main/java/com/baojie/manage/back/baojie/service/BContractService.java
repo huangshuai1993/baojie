@@ -14,4 +14,6 @@ public interface BContractService {
 	public Integer addContract(ContractForm contract) throws BizException;
 	
 	public Map<String, Object> deleteContract(Long id)throws BizException;
+	
+	public Map<String, Object> getContractInfo(Long id)throws BizException;
 }
