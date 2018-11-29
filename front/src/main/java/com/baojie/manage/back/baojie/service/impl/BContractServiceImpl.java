@@ -12,6 +12,9 @@ import com.baojie.manage.back.baojie.dao.BContractDao;
 import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
 import com.baojie.manage.back.baojie.form.ContractForm;
 import com.baojie.manage.back.baojie.service.BContractService;
+import com.baojie.manage.back.common.enums.ContractStatusEnums;
+import com.baojie.manage.back.common.enums.ContractTypeDetailEnums;
+import com.baojie.manage.back.common.enums.ContractTypeEnums;
 import com.baojie.manage.back.common.enums.ExampleExCode;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.BeanUtils;
@@ -39,6 +42,11 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 				List<ContractEntity> list = contractPageList.getList();
 				if (!CollectionUtils.isEmpty(list)) {
 					List<ContractForm> list2 = BeanUtils.copyByList(list, ContractForm.class);
+					for (ContractForm contractForm : list2) {
+						contractForm.setTypeName(ContractTypeEnums.getName(contractForm.getType()));
+						contractForm.setDetailTypeName(ContractTypeDetailEnums.getName(contractForm.getDetailType()));
+						contractForm.setStatusName(ContractStatusEnums.getName(contractForm.getStatus()));
+					}
 					page = new PageResults<ContractForm>(list2, pageNumber, pageSize, contractPageList.getTotalCount());
 				}
 			}
@@ -149,7 +157,7 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 	            return map;
 			}
 			map.put(Const.retCode, true);
-			map.put("contract", "contract");
+			map.put("contract", contract);
 		} catch (Exception e) {
 			map.put(Const.retCode, false);
 			map.put(Const.retMsg, "合同不存在");

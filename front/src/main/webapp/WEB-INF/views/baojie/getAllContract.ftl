@@ -69,8 +69,7 @@
 		                                        <tr>
 		                                            <td>${contract.id}</td>
 													<td>${contract.contractName}</td>
-													<td>${contract.type}</td>
-													<td>${contract.detailType}</td>
+													<td>${contract.typeName}-${contract.detailTypeName}</td>
 													<td>${contract.towerName}</td>
 													<td>${contract.company}</td>
 													<td>${contract.serviceCompany}</td>
@@ -85,16 +84,10 @@
 													<td>${contract.department}</td>
 													<td>${contract.transactor}</td>
 													<td>${contract.contact}</td>
-													<td>${contract.status}</td>
+													<td>${contract.statusName}</td>
 													<td>${contract.created}</td>
 													<td>${contract.updated}</td>
-													<td>${contract.dataFlag}</td>
 		                                            <td>
-		                                            	<#if contract.dataFlag=="1">
-		                                            		<button class="btn btn-xs btn-success btn-disable" data-contractId=${contract.id} data-state="0" title="点击禁用"><i class="icon-ban-circle" > 点击禁用</i></button>
-		                                            	<#elseif contract.dataFlag !="1">
-		                                            		<button class="btn btn-xs btn-danger btn-disable" data-contractId=${contract.id} data-state="1" title="点击启用"><i class="icon-ban-circle" > 点击启用</i></button>
-		                                            	</#if>
 		                                                <button class="btn btn-xs btn-warning btn-update" data-contractId=${contract.id} title="编辑"><i class="icon-pencil" > 编辑</i></button>
 		                                                <button class="btn btn-xs btn-danger btn-delete" data-contractId=${contract.id} title="删除"><i class="icon-del" > 删除</i></button>
 		                                            </td>
@@ -135,7 +128,6 @@
                     <div class="row">
                         <div class="col-md-4"  style="display:none;"  id="updateContract">
                             <div class="widget alert-Box">
-
                                 <div class="widget-head clearfix">
                                     <div class="pull-left">合同信息</div>
                                     <div class="widget-icons pull-right">
@@ -175,6 +167,12 @@
                                                         </select>
                                                     </div>
                                                 </div>
+                                                 <div class="form-group">
+                                                    <label class="control-label col-lg-3">标的/项目</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" maxlength="30"  name="towerName" id="towerName" value="">
+                                                    </div>
+                                                </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">我方单位</label>
                                                     <div class="col-lg-9">
@@ -191,7 +189,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">合同生效时间</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" maxlength="30"  name="commencementDate" id="commencementDate" value="">
+                                                        <input type="text" class="form-control" maxlength="30" placeholder="2018-01-01"  name="commencementDate" id="commencementDate" value="">
                                                     </div>
                                                 </div>
                                                 
@@ -199,28 +197,28 @@
                                                   <div class="form-group">
                                                     <label class="control-label col-lg-3">合同终止时间</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" maxlength="30"  name="terminationDate" id="terminationDate" value="">
+                                                        <input type="text" class="form-control" maxlength="30" placeholder="2018-01-01" name="terminationDate" id="terminationDate" value="">
                                                     </div>
                                                 </div>
                                                 
                                                   <div class="form-group">
                                                     <label class="control-label col-lg-3">合同总价</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" maxlength="30"  name="totalPrices" id="totalPrices" value="">
+                                                        <input type="text" class="form-control" maxlength="30" placeholder="单位：元" name="totalPrices" id="totalPrices" value="">
                                                     </div>
                                                 </div>
                                                 
                                                   <div class="form-group">
                                                     <label class="control-label col-lg-3">合同月金额</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" maxlength="30"  name="monthPrices" id="monthPrices" value="">
+                                                        <input type="text" class="form-control" maxlength="30"  placeholder="单位：元" name="monthPrices" id="monthPrices" value="">
                                                     </div>
                                                 </div>
                                                 
                                                   <div class="form-group">
                                                     <label class="control-label col-lg-3">合同已付金额</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" maxlength="30"  name="paidPrices" id="paidPrices" value="">
+                                                        <input type="text" class="form-control" maxlength="30"  placeholder="单位：元" name="paidPrices" id="paidPrices" value="">
                                                     </div>
                                                 </div>
                                                 
@@ -228,7 +226,7 @@
                                                   <div class="form-group">
                                                     <label class="control-label col-lg-3">合同余额</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" maxlength="30"  name="balance" id="balance" value="">
+                                                        <input type="text" class="form-control" maxlength="30" placeholder="单位：元" name="balance" id="balance" value="">
                                                     </div>
                                                 </div>
                                                 
@@ -245,7 +243,12 @@
                                                         <input type="text" class="form-control" maxlength="30"  name="copies" id="copies" value="">
                                                     </div>
                                                 </div>
-                                                
+                                                <div class="form-group">
+                                                    <label class="control-label col-lg-3">签约部门</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" maxlength="30"  name="department" id="department" value="">
+                                                    </div>
+                                                </div>
                                                  <div class="form-group">
                                                     <label class="control-label col-lg-3">经办人</label>
                                                     <div class="col-lg-9">
@@ -304,7 +307,7 @@
     <!-- Footer starts -->
     <!-- Scroll to top -->
     <!-- Footer ends -->
-    <script>seajs.use("employee/getAllEmployees.js");</script>
+    <script>seajs.use("baojie/getAllContract.js");</script>
       <script type="text/javascript">
 	 function btnChange(values) {
 		 if (values == "2") {

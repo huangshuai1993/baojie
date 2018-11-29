@@ -48,6 +48,7 @@ $(function(){
 				var contractId = $("#contractId").val(e.id);
 				var contractName = $("#contractName").val(e.contractName);
 				var detailType = $("#detailType").val(e.detailType);
+				var towerName = $("#towerName").val(e.towerName);
 				var company = $("#company").val(e.company);
 				var serviceCompany = $("#serviceCompany").val(e.serviceCompany);
 				var commencementDate = $("#commencementDate").val(e.commencementDate);
@@ -61,6 +62,7 @@ $(function(){
 				var transactor = $("#transactor").val(e.transactor);
 				var contact = $("#contact").val(e.contact);
 				var status = $("#status").val(e.status);
+				var department = $("#department").val(e.department);// department
 			}
 		});
 	});
@@ -71,7 +73,8 @@ $(function(){
 		var contractId = $("#contractId").val("");
 		var contractName = $("#contractName").val("");
 		//var detailType = $("#detailType").val("");
-		var company = $("#company").val(e.company);
+		var towerName = $("#towerName").val();
+		var company = $("#company").val();
 		var serviceCompany = $("#serviceCompany").val("");
 		var commencementDate = $("#commencementDate").val("");
 		var terminationDate = $("#terminationDate").val("");
@@ -83,15 +86,17 @@ $(function(){
 		var copies = $("#copies").val("");
 		var transactor = $("#transactor").val("");
 		var contact = $("#contact").val("");
-		var status = $("#status").val("0");
-		//var type = $("#type").val("");
+		var department = $("#department").val("");
+		//var status = $("#status").val("0");
+		//var type = $("#type").val("");  department
 	});
-	//添加员工
+	//添加合同
 	$("#saveContract").on("click",function(){
 		var contractId = $("#contractId").val();
 		var contractName = $("#contractName").val();
 		var detailType = $("#detailType").val();
-		var company = $("#company").val(e.company);
+		var towerName = $("#towerName").val();
+		var company = $("#company").val();
 		var serviceCompany = $("#serviceCompany").val();
 		var commencementDate = $("#commencementDate").val();
 		var terminationDate = $("#terminationDate").val();
@@ -105,49 +110,56 @@ $(function(){
 		var contact = $("#contact").val();
 		var status = $("#status").val();
 		var type = $("#type").val();
+		var department = $("#department").val();
+		if(contractName == ''){
+			alert("合同名称不能为空!");
+			return;
+		}
+		if(company == '' || serviceCompany == ''){
+			alert("双方公司不能为空!");
+			return;
+		}
 		var postdata = {
-				"contractId":contractId,
+				"id":contractId,
 				"contractName":contractName,
 				"detailType":detailType,
+				"towerName":towerName,
 				"company":company,
 				"serviceCompany":serviceCompany,
 				"commencementDate":commencementDate,
-				"terminationDate ":terminationDate,
+				"terminationDate":terminationDate,
 				"totalPrices":totalPrices,
 				"monthPrices":monthPrices,
 				"paidPrices":paidPrices,
 				"balance":balance,
 				"peopleCount":peopleCount,
 				"copies":copies,
+				"department":department,
 				"transactor":transactor,
 				"contact":contact,
 				"status":status,
 				"type":type
 		};
 		//进行跟新操作
-		$.post(root+"/service/bcontract/addOrUpdateContract",postdata,function(data){
-			if(data.retCode){
-				alert(data.retMsg);
-				window.location.reload(true);
-			}else{
-				alert(data.retMsg);
+		$.ajax({
+			type:"POST", 
+            url:root+"/service/bcontract/addOrUpdateContract", 
+            contentType:"application/json",  //发送信息至服务器时内容编码类型。 
+            data:JSON.stringify(postdata),
+            success:function(data){
+    			if(data.retCode){
+    				alert(data.retMsg);
+    				window.location.reload(true);
+    			}else{
+    				alert(data.retMsg);
+    				return false;
+    			}
+    		},
+    		error:function(data){
+				alert("请求失败");
 				return false;
-			}
-		},"application/json");
-	});
-	
-	//启用禁用
-	$(".btn-disable").on("click",function(){
-		var custNo = $(this).attr("data-custno");
-		var state = $(this).attr("data-state");
-		$.post(root+"/service/employee/updateEmpState",{"custNo":custNo,"empStatus":state},function(data){
-			if(data.retCode){
-				alert("修改成功!");
-				window.location.reload(true);
-			}else{
-				alert("修改失败!");
-				return false;
-			}
+    		}
 		});
 	});
+	
 });

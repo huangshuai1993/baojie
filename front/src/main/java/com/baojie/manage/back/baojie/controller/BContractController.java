@@ -44,7 +44,7 @@ public class BContractController extends BaseController {
 		model.addAttribute("allContractList", allContract.getList());
 		pageUtil.setTotalCount((int) allContract.getTotalCount());
 		model.addAttribute("page", pageUtil);
-		return "employee/getAllEmployees";
+		return "baojie/getAllContract";
 	}
 
 	/**
@@ -68,11 +68,11 @@ public class BContractController extends BaseController {
 		Integer result = contractService.addContract(contract);
 		if (result.equals(0)) {
 			map.put(Const.retCode, Boolean.FALSE);
-			map.put(Const.retMsg, "添加失败!");
+			map.put(Const.retMsg, "操作失败!");
 			return map;
 		}
 		map.put(Const.retCode, Boolean.TRUE);
-		map.put(Const.retMsg, "添加成功!");
+		map.put(Const.retMsg, "操作成功!");
 		return map;
 	}
 	/**
@@ -87,7 +87,12 @@ public class BContractController extends BaseController {
 	public Map<String, Object> deleteContract(Long id) throws BizException {
 		return contractService.deleteContract(id);
 	}
-	
+	/**
+	 * 获取详情
+	 * @param id
+	 * @return
+	 * @throws BizException
+	 */
 	@RequestMapping("/getContractInfo")
 	@ResponseBody
 	public Map<String, Object> getContractInfo(Long id) throws BizException {

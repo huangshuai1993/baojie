@@ -18,6 +18,10 @@ public class ContractForm implements Serializable {
 	private int type;
 
 	private int detailType;
+	
+	private String typeName;
+	
+	private String detailTypeName;
 
 	private Long towerId;// id
 
@@ -48,7 +52,7 @@ public class ContractForm implements Serializable {
 
 	private String contact;
 	private int status;// 合同履行情况：1:正常履行、2:到期终止、3:变更、4：解除
-
+	private String statusName;
 	private String memo;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date created;// 创建时间
@@ -58,7 +62,7 @@ public class ContractForm implements Serializable {
 	/**
 	 * 状态 默认1可用
 	 */
-	private int dataFlag;
+	private Integer dataFlag;
 
 	public Long getId() {
 		return id;
@@ -244,11 +248,11 @@ public class ContractForm implements Serializable {
 		this.updated = updated;
 	}
 
-	public int getDataFlag() {
+	public Integer getDataFlag() {
 		return dataFlag;
 	}
 
-	public void setDataFlag(int dataFlag) {
+	public void setDataFlag(Integer dataFlag) {
 		this.dataFlag = dataFlag;
 	}
 
@@ -258,4 +262,27 @@ public class ContractForm implements Serializable {
 		return ReflectionToStringBuilder.toStringExclude(this, others);
 	}
 
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
+	public String getDetailTypeName() {
+		return detailTypeName;
+	}
+
+	public void setDetailTypeName(String detailTypeName) {
+		this.detailTypeName = detailTypeName;
+	}
 }
