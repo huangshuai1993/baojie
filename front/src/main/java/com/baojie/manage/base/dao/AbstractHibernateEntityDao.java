@@ -4,7 +4,6 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -167,7 +166,7 @@ public abstract class AbstractHibernateEntityDao<T extends IEntity> {
 		}
 
 		List<T> list = this.getHibernateTemplate().execute(new HibernateCallback<List<T>>() {
-			public List<T> doInHibernate(Session session) throws HibernateException{
+			public List<T> doInHibernate(Session session) throws HibernateException {
 				String hql = "from " + tableName + " e where e." + pkName + " in (:ids)";
 				Query query = session.createQuery(hql);
 				query.setParameterList("ids", ids);
@@ -219,7 +218,7 @@ public abstract class AbstractHibernateEntityDao<T extends IEntity> {
 	public List<T> selectList(final String hql, final Map<String, Object> params, final int pageNo, final int pageSize)
 			throws DaoException {
 		List<T> list = hibernateTemplate.execute(new HibernateCallback<List<T>>() {
-			public List<T> doInHibernate(Session session) throws HibernateException{
+			public List<T> doInHibernate(Session session) throws HibernateException {
 				Query query = session.createQuery(hql);
 				setParameter(query, params);
 				if (pageNo >= 0 && pageSize >= 0) {
