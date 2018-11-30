@@ -1,5 +1,6 @@
 package com.baojie.manage.back.baojie.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -87,10 +88,18 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 			if(contract == null){
 				return  result;
 			}
-			ContractEntity entity = new ContractEntity();
-			BeanUtils.copyProperties(contract, entity);
-			ContractEntity save = contractDao.save(entity);
-			if(save!=null){
+			ContractEntity entity = null;
+			if(contract.getId() != null){
+				entity = contractDao.selectByPK(contract.getId());
+				BeanUtils.copyPropertiesNotNUll(contract, entity);
+				entity.setUpdated(new Date());
+				entity = contractDao.update(entity);
+			}else{
+				entity = new ContractEntity();
+				BeanUtils.copyProperties(contract, entity);
+				entity = contractDao.insert(entity);
+			}
+			if(entity!=null){
 				result = 1;
 			}
 		} catch (Exception e) {
