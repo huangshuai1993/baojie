@@ -47,7 +47,7 @@ public class PositionDaoImpl extends AbstractHibernateEntityDao<PositionEntity> 
 			public List<PositionEntity> doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(PositionEntity.class);
 				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName", towerName));
+					criteria.add(Restrictions.like("towerName",  "%"+towerName+"%"));
 				}
 				criteria.addOrder(Order.desc("updated"));
 				criteria.setFirstResult((pageNo - 1) * pageSize);
@@ -88,7 +88,7 @@ public class PositionDaoImpl extends AbstractHibernateEntityDao<PositionEntity> 
 			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(PositionEntity.class);
 				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName", towerName));
+					criteria.add(Restrictions.like("towerName",  "%"+towerName+"%"));
 				}
 				criteria.setProjection(Projections.rowCount());
 				return (Long) criteria.uniqueResult();

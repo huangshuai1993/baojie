@@ -77,10 +77,10 @@ public class BTowerDaoImpl extends AbstractHibernateEntityDao<TowerEntity> imple
 
 				Criteria criteria = session.createCriteria(TowerEntity.class);
 				if (StringUtils.isNotEmpty(functionaryName)) {
-					criteria.add(Restrictions.like("functionaryName", functionaryName));
+					criteria.add(Restrictions.like("functionaryName", "%"+functionaryName+"%"));
 				}
 				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName", towerName));
+					criteria.add(Restrictions.like("towerName", "%"+towerName+"%"));
 				}
 
 				criteria.addOrder(Order.desc("updated"));
@@ -101,10 +101,10 @@ public class BTowerDaoImpl extends AbstractHibernateEntityDao<TowerEntity> imple
 			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(TowerEntity.class);
 				if (StringUtils.isNotEmpty(functionaryName)) {
-					criteria.add(Restrictions.like("functionaryName", functionaryName));
+					criteria.add(Restrictions.like("functionaryName", "%"+functionaryName+"%"));
 				}
 				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName", towerName));
+					criteria.add(Restrictions.like("towerName", "%"+towerName+"%"));
 				}
 
 				criteria.setProjection(Projections.rowCount());

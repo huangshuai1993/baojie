@@ -3,6 +3,10 @@ package com.baojie.manage.back.baojie.dao.impl;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -37,7 +41,14 @@ public class BStaffDaoImpl extends AbstractHibernateEntityDao<StaffEntity> imple
 		}
 		return emp;
 	}
-
+	/**
+	 * 	CriteriaBuilder builder = session.getCriteriaBuilder();
+		CriteriaQuery<StaffEntity> createQuery = builder.createQuery(StaffEntity.class);
+		Root<StaffEntity> root = createQuery.from(StaffEntity.class);
+		createQuery.select(root);
+		createQuery.where(builder.like(root.get("towerName"), "%"+towerName+"%"));
+		List<StaffEntity> list2 = session.createQuery(createQuery).getResultList();
+	 */
 	@Override
 	public PageResults<StaffEntity> getStaffList(Integer pageNo, Integer pageSize, String towerName,
 			String positionName) throws BizException {
@@ -47,10 +58,10 @@ public class BStaffDaoImpl extends AbstractHibernateEntityDao<StaffEntity> imple
 			public List<StaffEntity> doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(StaffEntity.class);
 				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName", towerName));
+					criteria.add(Restrictions.like("towerName", "%"+towerName+"%"));
 				}
 				if (StringUtils.isNotEmpty(positionName)) {
-					criteria.add(Restrictions.like("positionName", positionName));
+					criteria.add(Restrictions.like("positionName", "%"+positionName+"%"));
 				}
 				criteria.addOrder(Order.desc("updated"));
 				criteria.setFirstResult((pageNo - 1) * pageSize);
@@ -93,10 +104,10 @@ public class BStaffDaoImpl extends AbstractHibernateEntityDao<StaffEntity> imple
 			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(StaffEntity.class);
 				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName", towerName));
+					criteria.add(Restrictions.like("towerName", "%"+towerName+"%"));
 				}
 				if (StringUtils.isNotEmpty(positionName)) {
-					criteria.add(Restrictions.like("positionName", positionName));
+					criteria.add(Restrictions.like("positionName", "%"+positionName+"%"));
 				}
 				criteria.setProjection(Projections.rowCount());
 				return (Long) criteria.uniqueResult();
