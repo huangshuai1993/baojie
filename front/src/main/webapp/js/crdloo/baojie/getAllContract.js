@@ -11,16 +11,22 @@ $(function(){
 	var $ur_a = $(".pagination li a");
 	$ur_a.on("click",function(){
 		var pageNumber = $(this).attr("data-pagenum");
-		searcher(pageNumber);
+		var searchName = $("#searchName").val();
+		searcher(searchName,pageNumber);
 		$("#myForm").submit();
 	});
 	
 	//提交方法,(参数数值，当前页数)
-	function searcher(pageNumber ){
+	function searcher(searchName,pageNumber ){
 		$("#pageNumber").val(pageNumber);
+		$("#searchContractName").val(searchName);
 		$("#myForm").submit();
 	}
-	
+	//查询列表
+	$("#mySubmit").on("click",function(){
+		var searchName = $("#searchName").val();
+		searcher(searchName,1);
+	});
 	//删除方法
 	$(".btn-delete").on("click",function(){
 		var contractId = $(this).attr("data-contractId");

@@ -30,6 +30,10 @@
                                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                     </div>
                                     <div class="bread-crumb pull-right">
+	                                    <div class="form-group table-search">
+	                                        <input  id="searchName" class="form-control searchTxt" type="text" placeholder="合同名称" value="${searchName}">
+	                                     </div>
+                                     	<button id="mySubmit" class="btn btn-primary fl">查 询</button>
                                         <button class="btn btn-success btn-addContract" type="button">
                                             <i class="icon-plus"></i>
                                             		新增合同
@@ -308,17 +312,9 @@
     <!-- Scroll to top -->
     <!-- Footer ends -->
     <script>seajs.use("baojie/getAllContract.js");</script>
-      <script type="text/javascript">
-	 function btnChange(values) {
-		 if (values == "2") {
-			 $(".storeIdDiv").show();
-		 }else{
-			 $(".storeIdDiv").hide();
-		 }
-	 }
-	</script>
     <form action="${contextPath}/service/bcontract/getAllContract" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
+    	<input type="hidden" name="contractName" value="${searchName}" id="searchContractName"/>
     </form>
 </body>
 </html>

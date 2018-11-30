@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baojie.manage.back.baojie.form.ContractForm;
@@ -27,7 +28,7 @@ public class BContractController extends BaseController {
 	private BContractService contractService;
 
 	@RequestMapping("/getAllContract")
-	public String getAllContract(Model model, Integer pageNumber, Integer pageSize, String contractName,
+	public String getAllContract(Model model, Integer pageNumber, Integer pageSize,String contractName,
 			String towerName, Integer status) throws BizException {
 		logger.info("getAllContract [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize);
 		if (pageNumber == null) {
@@ -40,7 +41,7 @@ public class BContractController extends BaseController {
 		pageUtil.setPageIndex(pageNumber);
 		PageResults<ContractForm> allContract = contractService.getAllContract(pageNumber, pageSize, contractName,
 				towerName, status);
-
+		model.addAttribute("searchName", contractName);
 		model.addAttribute("allContractList", allContract.getList());
 		pageUtil.setTotalCount((int) allContract.getTotalCount());
 		model.addAttribute("page", pageUtil);

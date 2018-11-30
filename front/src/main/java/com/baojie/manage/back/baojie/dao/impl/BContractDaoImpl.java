@@ -30,7 +30,7 @@ public class BContractDaoImpl extends AbstractHibernateEntityDao<ContractEntity>
 			public List<ContractEntity> doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(ContractEntity.class);
 				if (StringUtils.isNotEmpty(contractName)) {
-					criteria.add(Restrictions.like("contractName", contractName));
+					criteria.add(Restrictions.like("contractName", "%"+contractName+"%"));
 				}
 				if (StringUtils.isNotEmpty(towerName)) {
 					criteria.add(Restrictions.like("towerName", towerName));
