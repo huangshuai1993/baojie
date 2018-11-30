@@ -16,6 +16,16 @@ public class TowerForm implements Serializable {
 	private Long towerId;// id
 
 	private String towerName;
+	private Long functionaryId;// 负责人id
+
+	private String functionaryName;
+	private String address;
+	private Long contractId;
+	private int peopleCount;
+	private int virtualCount;
+
+	private String approachTime;
+
 	private String memo;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date created;// 创建时间
@@ -80,6 +90,62 @@ public class TowerForm implements Serializable {
 	public String toString() {
 		String[] others = new String[] {};
 		return ReflectionToStringBuilder.toStringExclude(this, others);
+	}
+
+	public Long getFunctionaryId() {
+		return functionaryId;
+	}
+
+	public void setFunctionaryId(Long functionaryId) {
+		this.functionaryId = functionaryId;
+	}
+
+	public String getFunctionaryName() {
+		return functionaryName;
+	}
+
+	public void setFunctionaryName(String functionaryName) {
+		this.functionaryName = functionaryName;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+	public Long getContractId() {
+		return contractId;
+	}
+
+	public void setContractId(Long contractId) {
+		this.contractId = contractId;
+	}
+
+	public int getPeopleCount() {
+		return peopleCount;
+	}
+
+	public void setPeopleCount(int peopleCount) {
+		this.peopleCount = peopleCount;
+	}
+
+	public int getVirtualCount() {
+		return virtualCount;
+	}
+
+	public void setVirtualCount(int virtualCount) {
+		this.virtualCount = virtualCount;
+	}
+
+	public String getApproachTime() {
+		return approachTime;
+	}
+
+	public void setApproachTime(String approachTime) {
+		this.approachTime = approachTime;
 	}
 
 }

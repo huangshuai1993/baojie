@@ -53,7 +53,7 @@ public class BTowerController extends BaseController {
 		model.addAttribute("allTowerList", allTower.getList());
 		pageUtil.setTotalCount((int) allTower.getTotalCount());
 		model.addAttribute("page", pageUtil);
-		return "employee/getAllEmployees";
+		return "baojie/getAllTower";
 	}
 
 
