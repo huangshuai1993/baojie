@@ -22,7 +22,7 @@ import com.baojie.manage.base.controller.BaseController;
 import com.baojie.manage.base.exception.BizException;
 
 @Controller
-@RequestMapping("btower")
+@RequestMapping("/btower")
 public class BTowerController extends BaseController {
 	@Autowired
 	private BTowerService towerService;
@@ -49,6 +49,7 @@ public class BTowerController extends BaseController {
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
 		PageResults<TowerForm> allTower = towerService.getAllTower(pageNumber, pageSize, towerName, functionaryName);
+		model.addAttribute("searchName", towerName);
 		model.addAttribute("allTowerList", allTower.getList());
 		pageUtil.setTotalCount((int) allTower.getTotalCount());
 		model.addAttribute("page", pageUtil);
@@ -69,11 +70,11 @@ public class BTowerController extends BaseController {
 		Integer result = towerService.addTower(towerForm);
 		if (result.equals(0)) {
 			map.put(Const.retCode, Boolean.FALSE);
-			map.put(Const.retMsg, "添加失败!");
+			map.put(Const.retMsg, "操作失败!");
 			return map;
 		}
 		map.put(Const.retCode, Boolean.TRUE);
-		map.put(Const.retMsg, "添加成功!");
+		map.put(Const.retMsg, "操作成功!");
 		return map;
 	}
 	/**
@@ -88,5 +89,9 @@ public class BTowerController extends BaseController {
 	public Map<String, Object> deleteTower(Long id) throws BizException {
 		return towerService.deleteTower(id);
 	}
-	
+	@RequestMapping("/getInfoTower")
+	@ResponseBody
+	public Map<String, Object> getTowerInfo(Long id) throws BizException{
+		return towerService.getTowerInfo(id);
+	}
 }

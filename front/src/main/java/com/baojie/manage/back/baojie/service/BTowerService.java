@@ -14,4 +14,5 @@ public interface BTowerService {
 	public Integer addTower(TowerForm towerForm) throws BizException;
 
 	public Map<String, Object> deleteTower(Long id) throws BizException;
+	public Map<String, Object> getTowerInfo(Long id) throws BizException;
 }
