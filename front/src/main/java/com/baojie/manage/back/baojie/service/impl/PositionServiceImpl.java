@@ -1,5 +1,6 @@
 package com.baojie.manage.back.baojie.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.baojie.manage.back.baojie.dao.PositionDao;
 import com.baojie.manage.back.baojie.dao.entity.PositionEntity;
+import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
 import com.baojie.manage.back.baojie.form.PositionForm;
 import com.baojie.manage.back.baojie.service.PositionService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
@@ -63,9 +65,17 @@ public class PositionServiceImpl extends BaseService implements PositionService 
 				return  result;
 			}
 			PositionEntity entity = new PositionEntity();
-			BeanUtils.copyProperties(positionForm, entity);
-			PositionEntity save = positionDao.save(entity);
-			if(save!=null){
+			if(positionForm.getPositionId() != null){
+				entity = positionDao.selectByPK(positionForm.getPositionId());
+				BeanUtils.copyPropertiesNotNUll(positionForm, entity);
+				entity.setUpdated(new Date());
+				entity = positionDao.update(entity);
+			}else{
+				entity = new PositionEntity();
+				BeanUtils.copyProperties(positionForm, entity);
+				entity = positionDao.insert(entity);
+			}
+			if(entity!=null){
 				result = 1;
 			}
 		} catch (Exception e) {

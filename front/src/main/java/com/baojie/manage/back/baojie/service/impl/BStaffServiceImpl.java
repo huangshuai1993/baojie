@@ -1,5 +1,6 @@
 package com.baojie.manage.back.baojie.service.impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baojie.manage.back.baojie.dao.BStaffDao;
+import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
 import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
 import com.baojie.manage.back.baojie.form.StaffForm;
 import com.baojie.manage.back.baojie.service.BStaffService;
@@ -61,10 +63,18 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 			if (staffForm == null) {
 				return result;
 			}
-			StaffEntity entity = new StaffEntity();
-			BeanUtils.copyProperties(staffForm, entity);
-			StaffEntity save = staffDao.save(entity);
-			if (save != null) {
+			StaffEntity entity = null;
+			if(staffForm.getId() != null){
+				entity = staffDao.selectByPK(staffForm.getId());
+				BeanUtils.copyPropertiesNotNUll(staffForm, entity);
+				entity.setUpdated(new Date());
+				entity = staffDao.update(entity);
+			}else{
+				entity = new StaffEntity();
+				BeanUtils.copyProperties(staffForm, entity);
+				entity = staffDao.insert(entity);
+			}
+			if (entity != null) {
 				result = 1;
 			}
 		} catch (Exception e) {
@@ -87,13 +97,13 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 		try {
 			if (id == null) {
 				map.put(Const.retCode, false);
-				map.put(Const.retMsg, "无职称信息");
+				map.put(Const.retMsg, "无人员信息");
 				return map;
 			}
 			StaffEntity selectByPK = staffDao.selectByPK(id);
 			if (selectByPK == null) {
 				map.put(Const.retCode, false);
-				map.put(Const.retMsg, "无职称信息");
+				map.put(Const.retMsg, "无人员信息");
 				return map;
 			}
 			staffDao.deleteByPK(id);

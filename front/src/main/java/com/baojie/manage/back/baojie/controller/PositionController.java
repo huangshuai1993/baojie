@@ -27,13 +27,11 @@ public class PositionController extends BaseController {
 	private PositionService positionService;
 
 	/**
-	 * 获取所以楼盘信息
-	 * 
+	 * 获取所有职位信息
 	 * @param model
 	 * @param pageNumber
 	 * @param pageSize
 	 * @param towerName
-	 * @param status
 	 * @return
 	 * @throws BizException
 	 */
@@ -70,16 +68,16 @@ public class PositionController extends BaseController {
 		Integer result = positionService.addPosition(positionform);
 		if (result.equals(0)) {
 			map.put(Const.retCode, Boolean.FALSE);
-			map.put(Const.retMsg, "添加失败!");
+			map.put(Const.retMsg, "操作失败!");
 			return map;
 		}
 		map.put(Const.retCode, Boolean.TRUE);
-		map.put(Const.retMsg, "添加成功!");
+		map.put(Const.retMsg, "操作成功!");
 		return map;
 	}
 
 	/**
-	 * 删除楼盘
+	 * 删除职位
 	 * 
 	 * @param id
 	 * @return
