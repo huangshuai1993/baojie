@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.baojie.manage.back.baojie.dao.BStaffDao;
-import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
+import com.baojie.manage.back.baojie.dao.BTowerDao;
 import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
+import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.StaffForm;
 import com.baojie.manage.back.baojie.service.BStaffService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
@@ -25,6 +26,8 @@ import com.baojie.manage.base.service.BaseService;
 public class BStaffServiceImpl extends BaseService implements BStaffService {
 	@Autowired
 	private BStaffDao staffDao;
+	
+	private BTowerDao towerDao;
 
 	@Override
 	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, String towerName,
@@ -117,6 +120,41 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 		} finally {
 			if (logger.isDebugEnabled()) {
 				logger.debug("--------------BStaffServiceImpl.deleteStaff------------end-->");
+			}
+		}
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getStaffInfo(Long id) throws BizException {
+		if (logger.isDebugEnabled()) {
+			logger.debug("--------------BStaffServiceImpl.getStaffInfo------------begin-->");
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			if (id == null) {
+				map.put(Const.retCode, false);
+				map.put(Const.retMsg, "职员不存在");
+				return map;
+			}
+			StaffEntity staffEntity = staffDao.selectByPK(id);
+			if (staffEntity == null) {
+				map.put(Const.retCode, false);
+				map.put(Const.retMsg, "职员不存在");
+				return map;
+			}
+			List<TowerEntity> list = towerDao.queryAll();
+			map.put("towerList", list);
+			map.put(Const.retCode, true);
+			map.put("staff", staffEntity);
+		} catch (Exception e) {
+			map.put(Const.retCode, false);
+			map.put(Const.retMsg, "职员不存在");
+			logger.error("BStaffServiceImpl.getStaffInfo发生异常", e);
+			throw new BizException(ExampleExCode.EXAMPLE_NOT_FOUND);
+		} finally {
+			if (logger.isDebugEnabled()) {
+				logger.debug("--------------BStaffServiceImpl.getStaffInfo------------end-->");
 			}
 		}
 		return map;

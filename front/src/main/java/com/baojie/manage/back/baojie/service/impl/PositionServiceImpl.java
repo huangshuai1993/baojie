@@ -11,11 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.baojie.manage.back.baojie.dao.BTowerDao;
 import com.baojie.manage.back.baojie.dao.PositionDao;
-import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
 import com.baojie.manage.back.baojie.dao.entity.PositionEntity;
-import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
-import com.baojie.manage.back.baojie.dto.TowerDto;
 import com.baojie.manage.back.baojie.form.PositionForm;
 import com.baojie.manage.back.baojie.service.PositionService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
@@ -149,7 +146,7 @@ public class PositionServiceImpl extends BaseService implements PositionService 
 				return map;
 			}
 			//查询所有楼盘
-			List<TowerEntity> list = towerDao.selectList("from TowerEntity t order by t.towerId asc");
+			List<TowerEntity> list = towerDao.queryAll();
 			map.put("towerList", list);
 			map.put(Const.retCode, true);
 			map.put("position", positionEntity);

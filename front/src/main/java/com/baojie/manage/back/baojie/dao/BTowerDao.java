@@ -18,5 +18,7 @@ public interface BTowerDao extends IEntityDao<TowerEntity> {
 	public void deleteTower(TowerEntity tower) throws BizException;
 
 	public List<TowerEntity> getTowerListByTowerIds(List<Long> ids) throws BizException;
+	
+	public List<TowerEntity> queryAll() throws BizException;
 
 }

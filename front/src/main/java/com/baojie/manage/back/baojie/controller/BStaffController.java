@@ -91,4 +91,10 @@ public class BStaffController extends BaseController {
 	public Map<String, Object> deleteStaff(Long id) throws BizException {
 		return staffService.deleteStaff(id);
 	}
+	@RequestMapping("/getStaffInfo")
+	@ResponseBody
+	public Map<String, Object> getStaffInfo(Long id) throws BizException {
+		return staffService.getStaffInfo(id);
+	}
+	
 }

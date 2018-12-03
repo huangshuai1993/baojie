@@ -114,4 +114,10 @@ public class BTowerDaoImpl extends AbstractHibernateEntityDao<TowerEntity> imple
 		return count == null ? 0 : count;
 	}
 
+	@Override
+	public List<TowerEntity> queryAll() throws BizException {
+		String hql = "from TowerEntity t order by t.towerId asc";
+		return selectList(hql);
+	}
+
 }
