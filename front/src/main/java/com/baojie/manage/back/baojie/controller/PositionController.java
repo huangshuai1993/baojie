@@ -21,7 +21,7 @@ import com.baojie.manage.base.controller.BaseController;
 import com.baojie.manage.base.exception.BizException;
 
 @Controller
-@RequestMapping("position")
+@RequestMapping("/position")
 public class PositionController extends BaseController {
 	@Autowired
 	private PositionService positionService;
@@ -52,7 +52,7 @@ public class PositionController extends BaseController {
 		model.addAttribute("allPosition", allPosition.getList());
 		pageUtil.setTotalCount((int) allPosition.getTotalCount());
 		model.addAttribute("page", pageUtil);
-		return "employee/getAllEmployees";
+		return "baojie/getAllPosition";
 	}
 
 	@RequestMapping("/addOrUpdatePosition")
@@ -87,5 +87,10 @@ public class PositionController extends BaseController {
 	@ResponseBody
 	public Map<String, Object> deletePosition(Long id) throws BizException {
 		return positionService.deletePosition(id);
+	}
+	@RequestMapping("/getPositionInfo")
+	@ResponseBody
+	public Map<String, Object> getPositionInfo(Long id) throws BizException{
+		return positionService.getPositionInfo(id);
 	}
 }

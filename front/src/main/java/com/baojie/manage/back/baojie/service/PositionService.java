@@ -13,4 +13,5 @@ public interface PositionService {
 	public Integer addPosition(PositionForm positionForm) throws BizException;
 
 	public Map<String, Object> deletePosition(Long id) throws BizException;
+	public Map<String, Object> getPositionInfo(Long id) throws BizException;
 }

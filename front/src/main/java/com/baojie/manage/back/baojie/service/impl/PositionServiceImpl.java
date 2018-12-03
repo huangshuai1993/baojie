@@ -9,9 +9,13 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.baojie.manage.back.baojie.dao.BTowerDao;
 import com.baojie.manage.back.baojie.dao.PositionDao;
+import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
 import com.baojie.manage.back.baojie.dao.entity.PositionEntity;
 import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
+import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
+import com.baojie.manage.back.baojie.dto.TowerDto;
 import com.baojie.manage.back.baojie.form.PositionForm;
 import com.baojie.manage.back.baojie.service.PositionService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
@@ -26,6 +30,8 @@ public class PositionServiceImpl extends BaseService implements PositionService 
 
 	@Autowired
 	private PositionDao positionDao;
+	@Autowired
+	private BTowerDao towerDao;
 
 	@Override
 	public PageResults<PositionForm> getAllPosition(Integer pageNumber, Integer pageSize, String towerName)
@@ -118,6 +124,43 @@ public class PositionServiceImpl extends BaseService implements PositionService 
 		} finally {
 			if (logger.isDebugEnabled()) {
 				logger.debug("--------------PositionServiceImpl.deletePosition------------end-->");
+			}
+		}
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getPositionInfo(Long id) throws BizException {
+		if (logger.isDebugEnabled()) {
+			logger.debug("--------------PositionServiceImpl.getPositionInfo------------begin-->");
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+
+		try {
+			if (id == null) {
+				map.put(Const.retCode, false);
+				map.put(Const.retMsg, "职务不存在");
+				return map;
+			}
+			PositionEntity positionEntity = positionDao.selectByPK(id);
+			if (positionEntity == null) {
+				map.put(Const.retCode, false);
+				map.put(Const.retMsg, "职务不存在");
+				return map;
+			}
+			//查询所有楼盘
+			List<TowerEntity> list = towerDao.selectList("from TowerEntity t order by t.towerId asc");
+			map.put("towerList", list);
+			map.put(Const.retCode, true);
+			map.put("position", positionEntity);
+		} catch (Exception e) {
+			map.put(Const.retCode, false);
+			map.put(Const.retMsg, "职务不存在");
+			logger.error("PositionServiceImpl.getPositionInfo发生异常", e);
+			throw new BizException(ExampleExCode.EXAMPLE_NOT_FOUND);
+		} finally {
+			if (logger.isDebugEnabled()) {
+				logger.debug("--------------PositionServiceImpl.getPositionInfo------------end-->");
 			}
 		}
 		return map;

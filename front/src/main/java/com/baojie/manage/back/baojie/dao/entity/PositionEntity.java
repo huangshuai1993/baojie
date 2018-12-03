@@ -13,12 +13,15 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
 
 import com.baojie.manage.base.dao.BaseEntity;
 
 @Entity
 @Table(name = "opt_position")
-@org.hibernate.annotations.Entity(dynamicInsert = true, dynamicUpdate = true)
+@DynamicInsert
+@DynamicUpdate
 public class PositionEntity extends BaseEntity {
 
 	private static final long serialVersionUID = -2965189141967715426L;
