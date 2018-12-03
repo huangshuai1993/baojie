@@ -55,7 +55,7 @@ public class BStaffController extends BaseController {
 		model.addAttribute("allStaff", allStaff.getList());
 		pageUtil.setTotalCount((int) allStaff.getTotalCount());
 		model.addAttribute("page", pageUtil);
-		return "baojie/allStaff";
+		return "baojie/getAllStaff";
 	}
 
 	@RequestMapping("/addOrUpdateStaff")
