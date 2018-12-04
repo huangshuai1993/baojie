@@ -44,6 +44,7 @@
                                             <th>姓名</th>
                                             <th>身份证号</th>
                                             <th>年龄</th>
+                                            <th>性别</th>
                                             <th>手机号</th>
                                             <th>楼盘名称</th>
                                             <th>职位名称</th>
@@ -61,11 +62,21 @@
 		                                            <td>${staff.name}</td>
 		                                            <td>${staff.idCard}</td>
 		                                            <td>${staff.age}</td>
-		                                            <td>${staff.gender}</td>
+		                                            <#if staff.gender == 1>
+		                                            	<td>男</td>	
+		                                           <#else>
+		                                             	<td>女</td>	
+		                                            </#if>
 		                                            <td>${staff.phone}</td>
 		                                            <td>${staff.towerName}</td>
 		                                            <td>${staff.positionName}</td>
-		                                            <td>${staff.status}</td>
+		                                            <#if staff.status == 0>
+		                                            	<td>在职</td>	
+		                                           <#else>
+		                                             	<td>离职</td>	
+		                                            </#if>
+		                                            <td>${staff.created}</td>
+		                                            <td>${staff.updated}</td>
 		                                            <td>
 		                                                <button class="btn btn-xs btn-warning btn-update" data-id=${staff.id} title="编辑"><i class="icon-pencil" > 编辑</i></button>
 		                                                <button class="btn btn-xs btn-danger btn-delete" data-id=${staff.id} title="删除"><i class="icon-del" > 删除</i></button>
@@ -163,11 +174,21 @@
 	                                                        </#list>
                                                         </select>
                                                     </div>
+                                                </div>
 												<div class="form-group storeIdDiv" >
                                                     <label class="control-label col-lg-3">所属职称</label>
                                                     <div class="col-lg-9">
                                                         <select class="form-control" id="positionIds">
 	                                                       <option value="0">请选择</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group storeIdDiv" >
+                                                    <label class="control-label col-lg-3">工作状态</label>
+                                                    <div class="col-lg-9">
+                                                        <select class="form-control" id="status">
+	                                                       <option value="0">在职</option>
+	                                                       <option value="1">离职</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -209,20 +230,20 @@
       <script type="text/javascript">
       function btnChange(values) {
 	 	$.post(root+"/service/bstaff/getPositionListByTowerId",{"id":values},function(data){
+			var workList = '<option value="-1">请选择</option>';
 			if(data.retCode){
 				var dataList=data.positionList;
-				var workList = '<option value="-1">请选择</option>';
 				if(dataList.length>0){
 					var workLists=dataList.map(function(item,index){
 						var row=[
-						         '<option value="',item.id,'">',item.name,'</option>'
+						         '<option value="',item.positionId,'">',item.positionName,'</option>'
 						         ];
 						return row.join("");
 					}).join("");
 					workList+=workLists;
 				}
-				$("#positionIds").html(workList);
 			}
+			$("#positionIds").html(workList);
 	 	});
 	 }
 	</script>

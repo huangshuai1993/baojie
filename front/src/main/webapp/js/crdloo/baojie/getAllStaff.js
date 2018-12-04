@@ -60,6 +60,8 @@ $(function(){
 				var phone = $("#phone").val(e.phone);
 				var towerId = $("#towerIds").val(e.towerId);
 				var positionId = $("#positionIds").val(e.positionId);
+				var status = $("#status").val(e.status);
+				
 			}
 		});
 	});
@@ -74,6 +76,7 @@ $(function(){
 		var towerId = $("#towerIds").val("");
 		var positionId = $("#positionIds").val("");
 		var birthday = $("#birthday").val("");
+		var status = $("#status").val("");
 	});
 	$("#saveStaff").on("click",function(){
 		var staffId = $("#staffId").val();
@@ -84,6 +87,7 @@ $(function(){
 		var phone = $("#phone").val();
 		var towerId = $("#towerIds").val();
 		var positionId = $("#positionIds").val();
+		var status = $("#status").val();
 		if(name == ''){
 			alert("职员名称不能为空!");
 			return;
@@ -109,8 +113,9 @@ $(function(){
 				"gender":gender,
 				"birthday":birthday,
 				"phone":phone,
-				"towerId":towerIds,
-				"positionId":positionIds
+				"towerId":towerId,
+				"positionId":positionId,
+				"status":status
 		};
 		//进行跟新操作
 		$.ajax({
