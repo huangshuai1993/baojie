@@ -70,11 +70,17 @@ public class PositionServiceImpl extends BaseService implements PositionService 
 			PositionEntity entity = new PositionEntity();
 			if(positionForm.getPositionId() != null){
 				entity = positionDao.selectByPK(positionForm.getPositionId());
+				if(entity.getTowerId() != positionForm.getTowerId()){
+					TowerEntity towerEntity = towerDao.selectByPK(positionForm.getTowerId());
+					positionForm.setTowerName(towerEntity.getTowerName());
+				}
 				BeanUtils.copyPropertiesNotNUll(positionForm, entity);
 				entity.setUpdated(new Date());
 				entity = positionDao.update(entity);
 			}else{
 				entity = new PositionEntity();
+				TowerEntity towerEntity = towerDao.selectByPK(positionForm.getTowerId());
+				positionForm.setTowerName(towerEntity.getTowerName());
 				BeanUtils.copyProperties(positionForm, entity);
 				entity = positionDao.insert(entity);
 			}

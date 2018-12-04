@@ -1,6 +1,7 @@
 package com.baojie.manage.back.baojie.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baojie.manage.back.baojie.form.PositionForm;
+import com.baojie.manage.back.baojie.form.TowerForm;
+import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.back.baojie.service.PositionService;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.PageResults;
@@ -25,6 +28,9 @@ import com.baojie.manage.base.exception.BizException;
 public class PositionController extends BaseController {
 	@Autowired
 	private PositionService positionService;
+	
+	@Autowired
+	private BTowerService towerService;
 
 	/**
 	 * 获取所有职位信息
@@ -52,6 +58,8 @@ public class PositionController extends BaseController {
 		model.addAttribute("allPosition", allPosition.getList());
 		pageUtil.setTotalCount((int) allPosition.getTotalCount());
 		model.addAttribute("page", pageUtil);
+		List<TowerForm> queryAll = towerService.queryAll();
+		model.addAttribute("towerList", queryAll);
 		return "baojie/getAllPosition";
 	}
 
@@ -63,6 +71,11 @@ public class PositionController extends BaseController {
 		if (positionform == null) {
 			map.put(Const.retCode, Boolean.FALSE);
 			map.put(Const.retMsg, "职称信息不能为空!");
+			return map;
+		}
+		if(positionform.getTowerId() == null){
+			map.put(Const.retCode, Boolean.FALSE);
+			map.put(Const.retMsg, "楼盘信息不能为空!");
 			return map;
 		}
 		Integer result = positionService.addPosition(positionform);
@@ -88,6 +101,12 @@ public class PositionController extends BaseController {
 	public Map<String, Object> deletePosition(Long id) throws BizException {
 		return positionService.deletePosition(id);
 	}
+	/**
+	 * 获取职务详情
+	 * @param id
+	 * @return
+	 * @throws BizException
+	 */
 	@RequestMapping("/getPositionInfo")
 	@ResponseBody
 	public Map<String, Object> getPositionInfo(Long id) throws BizException{

@@ -1,5 +1,6 @@
 package com.baojie.manage.back.baojie.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -154,6 +155,27 @@ public class BTowerServiceImpl extends BaseService implements BTowerService {
 			}
 		}
 		return map;
+	}
+
+	@Override
+	public List<TowerForm> queryAll() {
+		if (logger.isDebugEnabled()) {
+			logger.debug("--------------BTowerServiceImpl.queryAll------------begin-->");
+		}
+		List<TowerForm> list = new ArrayList<>();
+		try {
+			List<TowerEntity> listEntity = towerDao.queryAll();
+			if(!CollectionUtils.isEmpty(listEntity)){
+				list = BeanUtils.copyByList(listEntity, TowerForm.class);
+			}
+		} catch (Exception e) {
+			logger.error("BTowerServiceImpl.queryAll发生异常", e);
+		} finally {
+			if (logger.isDebugEnabled()) {
+				logger.debug("--------------BTowerServiceImpl.queryAll------------end-->");
+			}
+		}
+		return list;
 	}
 
 }

@@ -24,7 +24,7 @@ import com.baojie.manage.base.controller.BaseController;
 import com.baojie.manage.base.exception.BizException;
 
 @Controller
-@RequestMapping("bstaff")
+@RequestMapping("/bstaff")
 public class BStaffController extends BaseController {
 	@Autowired
 	private BStaffService staffService;

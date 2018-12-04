@@ -1,5 +1,6 @@
 package com.baojie.manage.back.baojie.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.baojie.manage.back.baojie.form.TowerForm;
@@ -15,4 +16,6 @@ public interface BTowerService {
 
 	public Map<String, Object> deleteTower(Long id) throws BizException;
 	public Map<String, Object> getTowerInfo(Long id) throws BizException;
+	
+	public List<TowerForm> queryAll();
 }
