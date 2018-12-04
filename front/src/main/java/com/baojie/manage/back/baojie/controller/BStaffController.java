@@ -1,6 +1,7 @@
 package com.baojie.manage.back.baojie.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baojie.manage.back.baojie.form.PositionForm;
 import com.baojie.manage.back.baojie.form.StaffForm;
+import com.baojie.manage.back.baojie.form.TowerForm;
 import com.baojie.manage.back.baojie.service.BStaffService;
+import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.back.baojie.service.PositionService;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.PageResults;
@@ -28,6 +31,8 @@ import com.baojie.manage.base.exception.BizException;
 public class BStaffController extends BaseController {
 	@Autowired
 	private BStaffService staffService;
+	@Autowired
+	private BTowerService towerService;
 
 	/**
 	 * 获取所有人员
@@ -55,6 +60,8 @@ public class BStaffController extends BaseController {
 		model.addAttribute("allStaff", allStaff.getList());
 		pageUtil.setTotalCount((int) allStaff.getTotalCount());
 		model.addAttribute("page", pageUtil);
+		List<TowerForm> queryAll = towerService.queryAll();
+		model.addAttribute("towerList", queryAll);
 		return "baojie/getAllStaff";
 	}
 

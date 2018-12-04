@@ -3,6 +3,8 @@ package com.baojie.manage.back.baojie.form;
 import java.io.Serializable;
 import java.util.Date;
 
+import javax.persistence.Column;
+
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -19,7 +21,7 @@ public class StaffForm implements Serializable {
 
 	private int age;
 
-	private int gender;// 0男，1女
+	private int gender;// 1男，0女
 
 	private String phone;
 
@@ -40,6 +42,20 @@ public class StaffForm implements Serializable {
 	 */
 
 	private int dataFlag = 1;
+	
+	private Long positionId;
+	private String positionName;
+	
+	private String birthday;
+
+	
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
 
 	public Long getTowerId() {
 		return towerId;
@@ -149,6 +165,22 @@ public class StaffForm implements Serializable {
 	public String toString() {
 		String[] others = new String[] {};
 		return ReflectionToStringBuilder.toStringExclude(this, others);
+	}
+
+	public Long getPositionId() {
+		return positionId;
+	}
+
+	public void setPositionId(Long positionId) {
+		this.positionId = positionId;
+	}
+
+	public String getPositionName() {
+		return positionName;
+	}
+
+	public void setPositionName(String positionName) {
+		this.positionName = positionName;
 	}
 
 }

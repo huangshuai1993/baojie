@@ -37,7 +37,8 @@ public class StaffEntity extends BaseEntity {
 	private int age;
 	@Column
 	private int gender;//0男，1女
-
+	@Column
+	private String birthday;
 	@Column
 	private String phone;
 	@Column
