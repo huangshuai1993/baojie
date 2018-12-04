@@ -79,6 +79,10 @@ $(function(){
 			alert("职务名称不能为空!");
 			return;
 		}
+		if(towerId == ''){
+			alert("楼盘信息不能为空!");
+			return;
+		}
 		var postdata = {
 				"positionId":positionId,
 				"positionName":positionName,
