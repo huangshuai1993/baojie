@@ -226,7 +226,7 @@
 	 	});
 	 }
 	</script>
-    <form action="${contextPath}/service/employee/getAllEmployees" method="post" id="myForm">
+    <form action="${contextPath}/service/bstaff/getAllStaff" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     </form>
 </body>
