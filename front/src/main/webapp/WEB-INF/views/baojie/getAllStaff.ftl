@@ -120,7 +120,7 @@
                                     <div class="padd">
                                         <div class="form quick-post">
                                             <!-- Edit profile form (not working)-->
-                                            <form class="form-horizontal"  action="${contextPath}/service/employee/addEmployee">
+                                            <form class="form-horizontal"  action="${contextPath}/service/bstaff/addOrUpdateStaff">
                                             	<input type="hidden" name="staffId" id="staffId"/>
                                                 <!-- Title -->
                                                 <div class="form-group">
@@ -157,19 +157,17 @@
                                                <div class="form-group storeIdDiv" >
                                                     <label class="control-label col-lg-3">所属楼盘</label>
                                                     <div class="col-lg-9">
-                                                        <select class="form-control" id="towerIds" >
+                                                        <select class="form-control" id="towerIds" onchange="btnChange(this[selectedIndex].value)">
 	                                                        <#list towerList as tower>
 	                                                        	<option value="${tower.towerId}">${tower.towerName}</option>
 	                                                        </#list>
                                                         </select>
                                                     </div>
 												<div class="form-group storeIdDiv" >
-                                                    <label class="control-label col-lg-3">所属门店</label>
+                                                    <label class="control-label col-lg-3">所属职称</label>
                                                     <div class="col-lg-9">
-                                                        <select class="form-control" id="positionIds" >
-	                                                        <#list positionList as s>
-	                                                        	<option value="${s.positionId}">${s.positionName}</option>
-	                                                        </#list>
+                                                        <select class="form-control" id="positionIds">
+	                                                       <option value="0">请选择</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -207,14 +205,25 @@
     <!-- Footer starts -->
     <!-- Scroll to top -->
     <!-- Footer ends -->
-    <script>seajs.use("employee/getAllEmployees.js");</script>
+    <script>seajs.use("baojie/getAllStaff.js");</script>
       <script type="text/javascript">
-	 function btnChange(values) {
-		 if (values == "2") {
-			 $(".storeIdDiv").show();
-		 }else{
-			 $(".storeIdDiv").hide();
-		 }
+      function btnChange(values) {
+	 	$.post(root+"/service/bstaff/getPositionListByTowerId",{"id":values},function(data){
+			if(data.retCode){
+				var dataList=data.positionList;
+				var workList = '<option value="-1">请选择</option>';
+				if(dataList.length>0){
+					var workLists=dataList.map(function(item,index){
+						var row=[
+						         '<option value="',item.id,'">',item.name,'</option>'
+						         ];
+						return row.join("");
+					}).join("");
+					workList+=workLists;
+				}
+				$("#positionIds").html(workList);
+			}
+	 	});
 	 }
 	</script>
     <form action="${contextPath}/service/employee/getAllEmployees" method="post" id="myForm">

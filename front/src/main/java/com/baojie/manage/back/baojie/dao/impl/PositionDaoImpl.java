@@ -97,4 +97,12 @@ public class PositionDaoImpl extends AbstractHibernateEntityDao<PositionEntity> 
 		return count == null ? 0 : count;
 	}
 
+	@Override
+	public List<PositionEntity> getPositionListByTowerId(Long id) throws BizException {
+		String hql = "from PositionEntity e where  e.towerId=:towerId";
+		Map<String, Object> params = Maps.newHashMap();
+		params.put("towerId", id);
+		return  selectList(hql, params);
+	}
+
 }

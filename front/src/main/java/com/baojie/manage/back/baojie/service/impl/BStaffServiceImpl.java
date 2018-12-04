@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import com.baojie.manage.back.baojie.dao.BStaffDao;
 import com.baojie.manage.back.baojie.dao.BTowerDao;
+import com.baojie.manage.back.baojie.dao.PositionDao;
+import com.baojie.manage.back.baojie.dao.entity.PositionEntity;
 import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.StaffForm;
@@ -18,6 +20,7 @@ import com.baojie.manage.back.baojie.service.BStaffService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.BeanUtils;
+import com.baojie.manage.base.common.util.IdCardUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
@@ -26,8 +29,10 @@ import com.baojie.manage.base.service.BaseService;
 public class BStaffServiceImpl extends BaseService implements BStaffService {
 	@Autowired
 	private BStaffDao staffDao;
-	
+	@Autowired
 	private BTowerDao towerDao;
+	@Autowired
+	private PositionDao positionDao;
 
 	@Override
 	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, String towerName,
@@ -67,13 +72,33 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 				return result;
 			}
 			StaffEntity entity = null;
-			if(staffForm.getId() != null){
+			if (staffForm.getId() != null) {
 				entity = staffDao.selectByPK(staffForm.getId());
+				if (!staffForm.getTowerId().equals(entity.getTowerId())) {
+					TowerEntity selectByPK = towerDao.selectByPK(staffForm.getTowerId());
+					staffForm.setTowerName(selectByPK.getTowerName());
+				}
+				if (!staffForm.getPositionId().equals(entity.getPositionId())) {
+					PositionEntity positionEntity = positionDao.selectByPK(staffForm.getPositionId());
+					staffForm.setPositionName(positionEntity.getPositionName());
+				}
+				if (!staffForm.getIdCard().equals(entity.getIdCard())) {
+					// 重新计算年龄
+					int age = IdCardUtils.getAge(IdCardUtils.parse(staffForm.getBirthday()));
+					staffForm.setAge(age);
+				}
 				BeanUtils.copyPropertiesNotNUll(staffForm, entity);
 				entity.setUpdated(new Date());
 				entity = staffDao.update(entity);
-			}else{
+			} else {
 				entity = new StaffEntity();
+				TowerEntity selectByPK = towerDao.selectByPK(staffForm.getTowerId());
+				staffForm.setTowerName(selectByPK.getTowerName());
+				PositionEntity positionEntity = positionDao.selectByPK(staffForm.getPositionId());
+				staffForm.setPositionName(positionEntity.getPositionName());
+				// 重新计算年龄
+				int age = IdCardUtils.getAge(IdCardUtils.parse(staffForm.getBirthday()));
+				staffForm.setAge(age);
 				BeanUtils.copyProperties(staffForm, entity);
 				entity = staffDao.insert(entity);
 			}
@@ -155,6 +180,39 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 		} finally {
 			if (logger.isDebugEnabled()) {
 				logger.debug("--------------BStaffServiceImpl.getStaffInfo------------end-->");
+			}
+		}
+		return map;
+	}
+
+	@Override
+	public Map<String, Object> getPositionListByTowerId(Long id) throws BizException {
+		if (logger.isDebugEnabled()) {
+			logger.debug("--------------BStaffServiceImpl.getPositionListByTowerId------------begin-->");
+		}
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			if (id == null) {
+				map.put(Const.retCode, false);
+				map.put(Const.retMsg, "楼盘id不能为空");
+				return map;
+			}
+			List<PositionEntity> list = positionDao.getPositionListByTowerId(id);
+			if (CollectionUtils.isEmpty(list)) {
+				map.put(Const.retCode, false);
+				map.put(Const.retMsg, "职称信息不存在");
+				return map;
+			}
+			map.put("positionList", list);
+			map.put(Const.retCode, true);
+		} catch (Exception e) {
+			map.put(Const.retCode, false);
+			map.put(Const.retMsg, "职称信息不存在");
+			logger.error("BStaffServiceImpl.getPositionListByTowerId发生异常", e);
+			throw new BizException(ExampleExCode.EXAMPLE_NOT_FOUND);
+		} finally {
+			if (logger.isDebugEnabled()) {
+				logger.debug("--------------BStaffServiceImpl.getPositionListByTowerId------------end-->");
 			}
 		}
 		return map;

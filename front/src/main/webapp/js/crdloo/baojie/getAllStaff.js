@@ -27,6 +27,7 @@ $(function(){
 		var searchName = $("#searchName").val();
 		searcher(searchName,1);
 	});
+	
 	//删除方法
 	$(".btn-delete").on("click",function(){
 		var id = $(this).attr("data-id");
@@ -54,6 +55,8 @@ $(function(){
 				var staffId = $("#staffId").val(e.id);
 				var name = $("#name").val(e.name);
 				var idCard = $("#idCard").val(e.idCard);
+				var gender=$("input[name='gender'][value='"+e.gender+"']").prop("checked","checked");
+				var birthday = $("#birthday").val(e.birthdayStr);
 				var phone = $("#phone").val(e.phone);
 				var towerId = $("#towerIds").val(e.towerId);
 				var positionId = $("#positionIds").val(e.positionId);
@@ -70,11 +73,14 @@ $(function(){
 		var phone = $("#phone").val("");
 		var towerId = $("#towerIds").val("");
 		var positionId = $("#positionIds").val("");
+		var birthday = $("#birthday").val("");
 	});
 	$("#saveStaff").on("click",function(){
 		var staffId = $("#staffId").val();
 		var name = $("#name").val();
 		var idCard = $("#idCard").val();
+		var gender = $("input[name='gender']:checked").val();
+		var birthday = $("#birthday").val();
 		var phone = $("#phone").val();
 		var towerId = $("#towerIds").val();
 		var positionId = $("#positionIds").val();
@@ -97,11 +103,14 @@ $(function(){
             }
          }
 		var postdata = {
-				"positionId":positionId,
-				"positionName":positionName,
-				"basePay":basePay,
-				"allowance":allowance,
-				"towerId":towerId
+				"id":staffId,
+				"name":name,
+				"idCard":idCard,
+				"gender":gender,
+				"birthday":birthday,
+				"phone":phone,
+				"towerId":towerIds,
+				"positionId":positionIds
 		};
 		//进行跟新操作
 		$.ajax({

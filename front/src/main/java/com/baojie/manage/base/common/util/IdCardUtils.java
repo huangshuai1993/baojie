@@ -8,13 +8,13 @@ import java.util.Date;
 public class IdCardUtils {
 
 	// 出生日期字符串转化成Date对象
-	public Date parse(String strDate) throws ParseException {
+	public static Date parse(String strDate) throws ParseException {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 		return sdf.parse(strDate);
 	}
 
 	// 由出生日期获得年龄
-	private int getAge(Date birthDay) throws Exception {
+	public static int getAge(Date birthDay) throws Exception {
 		Calendar cal = Calendar.getInstance();
 
 		if (cal.before(birthDay)) {

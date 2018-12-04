@@ -19,4 +19,6 @@ public interface PositionDao extends IEntityDao<PositionEntity> {
 	public void deletePosition(PositionEntity position) throws BizException;
 
 	public List<PositionEntity> getPositionListByPositionIds(List<Long> ids) throws BizException;
+	
+	public List<PositionEntity> getPositionListByTowerId(Long id) throws BizException;
 }

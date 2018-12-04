@@ -75,6 +75,11 @@ public class BStaffController extends BaseController {
 			map.put(Const.retMsg, "人员信息不能为空!");
 			return map;
 		}
+		if(staffForm.getTowerId() == null || staffForm.getPositionId() == null){
+			map.put(Const.retCode, Boolean.FALSE);
+			map.put(Const.retMsg, "楼盘及职务信息不能为空!");
+			return map;
+		}
 		Integer result = staffService.addStaff(staffForm);
 		if (result.equals(0)) {
 			map.put(Const.retCode, Boolean.FALSE);
@@ -98,10 +103,23 @@ public class BStaffController extends BaseController {
 	public Map<String, Object> deleteStaff(Long id) throws BizException {
 		return staffService.deleteStaff(id);
 	}
+	/**
+	 * 获取详情
+	 * @param id
+	 * @return
+	 * @throws BizException
+	 */
 	@RequestMapping("/getStaffInfo")
 	@ResponseBody
 	public Map<String, Object> getStaffInfo(Long id) throws BizException {
 		return staffService.getStaffInfo(id);
+	}
+	
+	//根据楼盘id查询所有楼盘下职务信息
+	@RequestMapping("/getPositionListByTowerId")
+	@ResponseBody
+	public Map<String, Object> getPositionListByTowerId(Long id) throws BizException {
+		return staffService.getPositionListByTowerId(id);
 	}
 	
 }

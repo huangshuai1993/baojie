@@ -15,4 +15,6 @@ public interface BStaffService {
 
 	public Map<String, Object> deleteStaff(Long id) throws BizException;
 	public Map<String, Object> getStaffInfo(Long id) throws BizException;
+	
+	public Map<String, Object> getPositionListByTowerId(Long id) throws BizException;
 }
