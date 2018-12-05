@@ -1,4 +1,7 @@
 $(function(){
+	
+	var towerId=$("#searchTower").val();
+	var searchTowerId = $("#searchTowerIds option[value='"+towerId+"']").attr("selected","selected");
 	function isPositiveNum(s){//是否为正整数  
 	    var re = /^[0-9]*[1-9][0-9]*$/ ;  
 	    return re.test(s)  
@@ -12,20 +15,23 @@ $(function(){
 	$ur_a.on("click",function(){
 		var pageNumber = $(this).attr("data-pagenum");
 		var searchName = $("#searchName").val();
-		searcher(searchName,pageNumber);
+		var searchTowerIds = $("#searchTowerIds").val();
+		searcher(searchName,searchTowerIds,pageNumber);
 		$("#myForm").submit();
 	});
 	
 	//提交方法,(参数数值，当前页数)
-	function searcher(searchName,pageNumber ){
+	function searcher(searchName,searchTowerIds,pageNumber ){
 		$("#pageNumber").val(pageNumber);
-		$("#searchTowerName").val(searchName);
+		$("#searchStaffName").val(searchName);
+		$("#searchTower").val(searchTowerIds);
 		$("#myForm").submit();
 	}
 	//查询列表
 	$("#mySubmit").on("click",function(){
 		var searchName = $("#searchName").val();
-		searcher(searchName,1);
+		var searchTowerIds = $("#searchTowerIds").val();
+		searcher(searchName,searchTowerIds,1);
 	});
 	
 	//删除方法

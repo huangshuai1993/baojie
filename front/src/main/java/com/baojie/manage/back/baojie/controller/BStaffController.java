@@ -44,10 +44,10 @@ public class BStaffController extends BaseController {
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllStaff")
-	public String getAllStaff(Model model, Integer pageNumber, Integer pageSize, String towerName,String positionName)
+	public String getAllStaff(Model model, Integer pageNumber, Integer pageSize, Long towerId,String staffName)
 			throws BizException {
-		logger.info("getAllPosition [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerName="
-				+ towerName);
+		logger.info("getAllPosition [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId=" + towerId
+				+ ", staffName=" + staffName);
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
@@ -56,12 +56,14 @@ public class BStaffController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<StaffForm> allStaff = staffService.getAllStaff(pageNumber, pageSize, towerName, positionName);
+		PageResults<StaffForm> allStaff = staffService.getAllStaff(pageNumber, pageSize, towerId, staffName);
 		model.addAttribute("allStaff", allStaff.getList());
 		pageUtil.setTotalCount((int) allStaff.getTotalCount());
 		model.addAttribute("page", pageUtil);
 		List<TowerForm> queryAll = towerService.queryAll();
 		model.addAttribute("towerList", queryAll);
+		model.addAttribute("searchTowerId", towerId);
+		model.addAttribute("searchName", staffName);
 		return "baojie/getAllStaff";
 	}
 

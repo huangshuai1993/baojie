@@ -12,7 +12,7 @@ public interface PositionDao extends IEntityDao<PositionEntity> {
 	
 	public PositionEntity getPositionByName(String name) throws BizException;
 
-	public PageResults<PositionEntity> getPositionList(Integer pageNo, Integer pageSize,String towerName) throws BizException;
+	public PageResults<PositionEntity> getPositionList(Integer pageNo, Integer pageSize,Long towerId) throws BizException;
 
 	public PositionEntity addorUpdatePosition(PositionEntity positionEntity) throws BizException;
 

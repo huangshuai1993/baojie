@@ -31,14 +31,14 @@ public class PositionServiceImpl extends BaseService implements PositionService 
 	private BTowerDao towerDao;
 
 	@Override
-	public PageResults<PositionForm> getAllPosition(Integer pageNumber, Integer pageSize, String towerName)
+	public PageResults<PositionForm> getAllPosition(Integer pageNumber, Integer pageSize, Long towerId)
 			throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------PositionServiceImpl.getAllPosition------------begin-->");
 		}
 		PageResults<PositionForm> page = new PageResults<>();
 		try {
-			PageResults<PositionEntity> positionList = positionDao.getPositionList(pageNumber, pageSize, towerName);
+			PageResults<PositionEntity> positionList = positionDao.getPositionList(pageNumber, pageSize, towerId);
 			if (positionList != null) {
 				List<PositionEntity> list = positionList.getList();
 				if (!CollectionUtils.isEmpty(list)) {

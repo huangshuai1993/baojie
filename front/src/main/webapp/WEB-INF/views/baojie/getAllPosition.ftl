@@ -29,8 +29,17 @@
                                         <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                     </div>
-                                    <div class="bread-crumb pull-right">
-                                        <button class="btn btn-success btn-addPosition" type="button">
+                                   	<div class="pull-right col-md-6">
+                                    <div class="col-lg-4">
+                                        <select class="form-control" id="searchTowerIds">
+                                        	<option value="">选择所属楼盘</option>
+                                            <#list towerList as tower>
+                                            	<option value="${tower.towerId}">${tower.towerName}</option>
+                                            </#list>
+                                        </select>
+                                   	</div>
+                                      <button id="mySubmit" class="btn btn-primary fl">查 询</button>
+                                        <button class="btn btn-success pull-right btn-addPosition" type="button">
                                             <i class="icon-plus"></i>
                                             		新增职称
                                         </button>
@@ -190,6 +199,7 @@
 	</script>
     <form action="${contextPath}/service/position/getAllPosition" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
+    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
     </form>
 </body>
 </html>

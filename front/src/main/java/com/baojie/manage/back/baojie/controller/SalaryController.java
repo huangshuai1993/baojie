@@ -58,7 +58,7 @@ public class SalaryController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<PositionForm> allPosition = positionService.getAllPosition(pageNumber, pageSize, towerName);
+		PageResults<PositionForm> allPosition = positionService.getAllPosition(pageNumber, pageSize, null);
 		model.addAttribute("allPosition", allPosition.getList());
 		pageUtil.setTotalCount((int) allPosition.getTotalCount());
 		model.addAttribute("page", pageUtil);

@@ -7,7 +7,7 @@ import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 
 public interface PositionService {
-	public PageResults<PositionForm> getAllPosition(Integer pageNumber, Integer pageSize, String towerName)
+	public PageResults<PositionForm> getAllPosition(Integer pageNumber, Integer pageSize, Long towerId)
 			throws BizException;
 
 	public Integer addPosition(PositionForm positionForm) throws BizException;

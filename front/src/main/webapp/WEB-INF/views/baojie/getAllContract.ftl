@@ -29,12 +29,12 @@
                                         <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                     </div>
-                                    <div class="bread-crumb pull-right">
+                                   <div class="pull-right col-md-6">
 	                                    <div class="form-group table-search">
 	                                        <input  id="searchName" class="form-control searchTxt" type="text" placeholder="合同名称" value="${searchName}">
 	                                     </div>
                                      	<button id="mySubmit" class="btn btn-primary fl">查 询</button>
-                                        <button class="btn btn-success btn-addContract" type="button">
+                                        <button class="btn btn-success pull-right btn-addContract" type="button">
                                             <i class="icon-plus"></i>
                                             		新增合同
                                         </button>

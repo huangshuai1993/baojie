@@ -50,18 +50,17 @@ public class BStaffDaoImpl extends AbstractHibernateEntityDao<StaffEntity> imple
 		List<StaffEntity> list2 = session.createQuery(createQuery).getResultList();
 	 */
 	@Override
-	public PageResults<StaffEntity> getStaffList(Integer pageNo, Integer pageSize, String towerName,
-			String positionName) throws BizException {
+	public PageResults<StaffEntity> getStaffList(Integer pageNo, Integer pageSize, Long towerId,String staffName) throws BizException {
 		List<StaffEntity> list = this.getHibernateTemplate().execute(new HibernateCallback<List<StaffEntity>>() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public List<StaffEntity> doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(StaffEntity.class);
-				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName", "%"+towerName+"%"));
+				if (towerId != null) {
+					criteria.add(Restrictions.eq("towerId", towerId));
 				}
-				if (StringUtils.isNotEmpty(positionName)) {
-					criteria.add(Restrictions.like("positionName", "%"+positionName+"%"));
+				if (StringUtils.isNotEmpty(staffName)) {
+					criteria.add(Restrictions.like("name", "%"+staffName+"%"));
 				}
 				criteria.addOrder(Order.desc("updated"));
 				criteria.setFirstResult((pageNo - 1) * pageSize);
@@ -69,7 +68,7 @@ public class BStaffDaoImpl extends AbstractHibernateEntityDao<StaffEntity> imple
 				return criteria.list();
 			}
 		});
-		Long count = this.queryStaffListCount(pageNo, pageSize, towerName, positionName);
+		Long count = this.queryStaffListCount(pageNo, pageSize, towerId, staffName);
 		PageResults<StaffEntity> results = new PageResults<StaffEntity>(list, pageNo, pageSize, count);
 		return results;
 	}
@@ -97,17 +96,17 @@ public class BStaffDaoImpl extends AbstractHibernateEntityDao<StaffEntity> imple
 		return null;
 	}
 
-	public Long queryStaffListCount(Integer pageNo, Integer pageSize, String towerName, String positionName)
+	public Long queryStaffListCount(Integer pageNo, Integer pageSize, Long towerId,String staffName)
 			throws BizException {
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 			@Override
 			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(StaffEntity.class);
-				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName", "%"+towerName+"%"));
+				if (towerId != null) {
+					criteria.add(Restrictions.eq("towerId", towerId));
 				}
-				if (StringUtils.isNotEmpty(positionName)) {
-					criteria.add(Restrictions.like("positionName", "%"+positionName+"%"));
+				if (StringUtils.isNotEmpty(staffName)) {
+					criteria.add(Restrictions.like("name", "%"+staffName+"%"));
 				}
 				criteria.setProjection(Projections.rowCount());
 				return (Long) criteria.uniqueResult();

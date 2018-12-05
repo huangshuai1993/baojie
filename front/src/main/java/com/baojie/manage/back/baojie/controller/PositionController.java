@@ -42,10 +42,10 @@ public class PositionController extends BaseController {
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllPosition")
-	public String getAllPosition(Model model, Integer pageNumber, Integer pageSize, String towerName)
+	public String getAllPosition(Model model, Integer pageNumber, Integer pageSize, Long towerId)
 			throws BizException {
-		logger.info("getAllPosition [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerName="
-				+ towerName);
+		logger.info("getAllPosition [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId="
+				+ towerId);
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
@@ -54,10 +54,11 @@ public class PositionController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<PositionForm> allPosition = positionService.getAllPosition(pageNumber, pageSize, towerName);
+		PageResults<PositionForm> allPosition = positionService.getAllPosition(pageNumber, pageSize, towerId);
 		model.addAttribute("allPosition", allPosition.getList());
 		pageUtil.setTotalCount((int) allPosition.getTotalCount());
 		model.addAttribute("page", pageUtil);
+		model.addAttribute("searchTowerId", towerId);
 		List<TowerForm> queryAll = towerService.queryAll();
 		model.addAttribute("towerList", queryAll);
 		return "baojie/getAllPosition";

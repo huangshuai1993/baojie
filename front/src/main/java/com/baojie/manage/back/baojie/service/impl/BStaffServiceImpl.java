@@ -35,14 +35,13 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 	private PositionDao positionDao;
 
 	@Override
-	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, String towerName,
-			String positionName) throws BizException {
+	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, Long towerId,String staffName) throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------BStaffServiceImpl.getAllStaff------------begin-->");
 		}
 		PageResults<StaffForm> response = new PageResults<StaffForm>();
 		try {
-			PageResults<StaffEntity> staffList = staffDao.getStaffList(pageNumber, pageSize, towerName, positionName);
+			PageResults<StaffEntity> staffList = staffDao.getStaffList(pageNumber, pageSize, towerId, staffName);
 			if (staffList != null) {
 				List<StaffEntity> list = staffList.getList();
 				if (!CollectionUtils.isEmpty(list)) {

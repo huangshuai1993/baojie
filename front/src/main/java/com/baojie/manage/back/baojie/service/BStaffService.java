@@ -8,7 +8,7 @@ import com.baojie.manage.base.exception.BizException;
 
 public interface BStaffService {
 	
-	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, String towerName,String positionName)
+	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, Long towerId,String staffName)
 			throws BizException;
 
 	public Integer addStaff(StaffForm staffForm) throws BizException;

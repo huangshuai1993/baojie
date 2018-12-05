@@ -39,15 +39,15 @@ public class PositionDaoImpl extends AbstractHibernateEntityDao<PositionEntity> 
 	}
 
 	@Override
-	public PageResults<PositionEntity> getPositionList(Integer pageNo, Integer pageSize, String towerName)
+	public PageResults<PositionEntity> getPositionList(Integer pageNo, Integer pageSize, Long towerId)
 			throws BizException {
 		List<PositionEntity> list = this.getHibernateTemplate().execute(new HibernateCallback<List<PositionEntity>>() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public List<PositionEntity> doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(PositionEntity.class);
-				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName",  "%"+towerName+"%"));
+				if (towerId != null) {
+					criteria.add(Restrictions.eq("towerId",  towerId));
 				}
 				criteria.addOrder(Order.desc("updated"));
 				criteria.setFirstResult((pageNo - 1) * pageSize);
@@ -55,7 +55,7 @@ public class PositionDaoImpl extends AbstractHibernateEntityDao<PositionEntity> 
 				return criteria.list();
 			}
 		});
-		Long count = this.queryPositionListCount(pageNo, pageSize, towerName);
+		Long count = this.queryPositionListCount(pageNo, pageSize, towerId);
 		PageResults<PositionEntity> results = new PageResults<PositionEntity>(list, pageNo, pageSize, count);
 		return results;
 	}
@@ -82,13 +82,13 @@ public class PositionDaoImpl extends AbstractHibernateEntityDao<PositionEntity> 
 		return null;
 	}
 
-	public Long queryPositionListCount(Integer pageNo, Integer pageSize, String towerName) throws BizException {
+	public Long queryPositionListCount(Integer pageNo, Integer pageSize, Long towerId) throws BizException {
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 			@Override
 			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(PositionEntity.class);
-				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName",  "%"+towerName+"%"));
+				if (towerId != null) {
+					criteria.add(Restrictions.eq("towerId",  towerId));
 				}
 				criteria.setProjection(Projections.rowCount());
 				return (Long) criteria.uniqueResult();

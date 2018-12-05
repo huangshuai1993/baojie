@@ -39,7 +39,6 @@
                                         		    新增楼盘
                                      </button>
                                     </div>
-                                    
                                 </div>
                                 <div class="widget-content">
                                     <table class="table table-striped table-bordered table-hover">
