@@ -30,16 +30,11 @@ import com.google.common.collect.Maps;
 public class BStaffDaoImpl extends AbstractHibernateEntityDao<StaffEntity> implements BStaffDao {
 
 	@Override
-	public StaffEntity getStaffByName(String name) throws BizException {
-		String hql = "from StaffEntity e where  e.name=:name";
+	public List<StaffEntity> getStaffByTowerId(Long towerId) throws BizException {
+		String hql = "from StaffEntity e where  e.towerId=:towerId";
 		Map<String, Object> params = Maps.newHashMap();
-		params.put("name", name);
-		List<StaffEntity> entitieList = selectList(hql, params);
-		StaffEntity emp = null;
-		if (entitieList != null && !entitieList.isEmpty()) {
-			emp = entitieList.get(0);
-		}
-		return emp;
+		params.put("towerId", towerId);
+		return selectList(hql, params);
 	}
 	/**
 	 * 	CriteriaBuilder builder = session.getCriteriaBuilder();

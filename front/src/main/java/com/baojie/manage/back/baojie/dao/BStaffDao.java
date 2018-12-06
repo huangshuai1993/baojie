@@ -8,7 +8,7 @@ import com.baojie.manage.base.dao.IEntityDao;
 import com.baojie.manage.base.exception.BizException;
 
 public interface BStaffDao extends IEntityDao<StaffEntity> {
-	public StaffEntity getStaffByName(String name) throws BizException;
+	public List<StaffEntity> getStaffByTowerId(Long towerId) throws BizException;
 
 	public PageResults<StaffEntity> getStaffList(Integer pageNo, Integer pageSize,Long towerId,String staffName) throws BizException;
 

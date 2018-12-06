@@ -8,6 +8,7 @@ import com.baojie.manage.base.exception.BizException;
 public interface SalaryDao extends IEntityDao<SalaryEntity> {
 	
 	public PageResults<SalaryEntity> getAllSalary(Integer pageNumber, Integer pageSize, Long towerId,
-			String searchName) throws BizException;
+			String searchName,String time) throws BizException;
 
+	public long queryCountSalaryByMonth(String time)throws BizException;
 }

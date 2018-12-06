@@ -47,8 +47,7 @@ public class SalaryEntity extends BaseEntity {
 	private BigDecimal otherDeductPay;// 其他扣款项
 	private BigDecimal deductTotalPay;// 扣款合计
 	private BigDecimal realPay;// 实发工资
-	@Temporal(TemporalType.DATE)
-	private Date salaryMonth;//工资时间
+	private String salaryMonth;//工资时间
 	private String memo;// 备注
 	@Column
 	@Temporal(TemporalType.TIMESTAMP)
@@ -256,11 +255,11 @@ public class SalaryEntity extends BaseEntity {
 		this.dataFlag = dataFlag;
 	}
 
-	public Date getSalaryMonth() {
+	public String getSalaryMonth() {
 		return salaryMonth;
 	}
 
-	public void setSalaryMonth(Date salaryMonth) {
+	public void setSalaryMonth(String salaryMonth) {
 		this.salaryMonth = salaryMonth;
 	}
 

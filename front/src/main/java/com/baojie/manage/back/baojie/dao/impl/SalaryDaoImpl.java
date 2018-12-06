@@ -1,6 +1,8 @@
 package com.baojie.manage.back.baojie.dao.impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.hibernate.Criteria;
@@ -24,7 +26,7 @@ public class SalaryDaoImpl extends AbstractHibernateEntityDao<SalaryEntity> impl
 
 	@Override
 	public PageResults<SalaryEntity> getAllSalary(Integer pageNumber, Integer pageSize, Long towerId,
-			String searchName) throws BizException {
+			String searchName,String time) throws BizException {
 		List<SalaryEntity> list = this.getHibernateTemplate().execute(new HibernateCallback<List<SalaryEntity>>() {
 			@SuppressWarnings("unchecked")
 			@Override
@@ -32,6 +34,9 @@ public class SalaryDaoImpl extends AbstractHibernateEntityDao<SalaryEntity> impl
 				Criteria criteria = session.createCriteria(PositionEntity.class);
 				if (towerId != null) {
 					criteria.add(Restrictions.eq("towerId", towerId));
+				}
+				if (StringUtils.isNotEmpty(time)) {
+					criteria.add(Restrictions.eq("salaryMonth",time));
 				}
 				if (StringUtils.isNotEmpty(searchName)) {
 					criteria.add(Restrictions.like("staffName", "%" + searchName + "%"));
@@ -42,13 +47,13 @@ public class SalaryDaoImpl extends AbstractHibernateEntityDao<SalaryEntity> impl
 				return criteria.list();
 			}
 		});
-		Long count = this.querySalaryCount(pageNumber, pageSize, towerId, searchName);
+		Long count = this.querySalaryCount(pageNumber, pageSize, towerId, searchName,time);
 		PageResults<SalaryEntity> results = new PageResults<SalaryEntity>(list, pageNumber, pageSize, count);
 		return results;
 	}
 
 	public Long querySalaryCount(Integer pageNumber, Integer pageSize, Long towerId,
-			String searchName)
+			String searchName,String time)
 			throws BizException {
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 			@Override
@@ -56,6 +61,9 @@ public class SalaryDaoImpl extends AbstractHibernateEntityDao<SalaryEntity> impl
 				Criteria criteria = session.createCriteria(PositionEntity.class);
 				if (towerId != null) {
 					criteria.add(Restrictions.eq("towerId", towerId));
+				}
+				if (StringUtils.isNotEmpty(time)) {
+					criteria.add(Restrictions.eq("salaryMonth",time));
 				}
 				if (StringUtils.isNotEmpty(searchName)) {
 					criteria.add(Restrictions.like("staffName", "%" + searchName + "%"));
@@ -65,5 +73,13 @@ public class SalaryDaoImpl extends AbstractHibernateEntityDao<SalaryEntity> impl
 			}
 		});
 		return count == null ? 0 : count;
+	}
+
+	@Override
+	public long queryCountSalaryByMonth(String time) throws BizException {
+		Map<String,Object> map = new HashMap<>();
+		String hql  = "from SalaryEntity e where  e.salaryMonth=:salaryMonth";
+		map.put("salaryMonth", time);
+		return selectRowCount(hql,map);
 	}
 }

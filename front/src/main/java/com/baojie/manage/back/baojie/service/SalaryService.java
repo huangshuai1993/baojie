@@ -7,5 +7,7 @@ import com.baojie.manage.base.exception.BizException;
 public interface SalaryService {
 	
 	public PageResults<SalaryForm> getAllSalary(Integer pageNumber, Integer pageSize, Long towerId,
-			String searchName) throws BizException;
+			String searchName,String time) throws BizException;
+	
+	public Integer addSalaryMonth() throws BizException;
 }

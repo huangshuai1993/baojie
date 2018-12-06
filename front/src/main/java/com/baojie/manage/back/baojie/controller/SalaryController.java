@@ -1,5 +1,6 @@
 package com.baojie.manage.back.baojie.controller;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -48,7 +49,7 @@ public class SalaryController extends BaseController {
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllSalary")
-	public String getAllSalary(Model model, Integer pageNumber, Integer pageSize, Long towerId,String searchName)
+	public String getAllSalary(Model model, Integer pageNumber, Integer pageSize, Long towerId,String searchName,String time)
 			throws BizException {
 		logger.info("getAllSalary [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId="
 				+ towerId);
@@ -60,34 +61,35 @@ public class SalaryController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<SalaryForm> allSalary = salaryService.getAllSalary(pageNumber, pageSize, towerId, searchName);
+		PageResults<SalaryForm> allSalary = salaryService.getAllSalary(pageNumber, pageSize, towerId, searchName,time);
 		model.addAttribute("allSalary", allSalary.getList());
 		pageUtil.setTotalCount((int) allSalary.getTotalCount());
 		model.addAttribute("page", pageUtil);
 		List<TowerForm> queryAll = towerService.queryAll();
 		model.addAttribute("towerList", queryAll);
+		model.addAttribute("searchTime", time);
 		return "baojie/getAllSalary";
 	}
 
-	@RequestMapping("/addOrUpdatePosition")
+	@RequestMapping("/addSalaryMonth")
 	@ResponseBody
-	public Map<String, Object> addOrUpdatePosition(HttpServletRequest request, @RequestBody PositionForm positionform)
+	public Map<String, Object> addSalaryMonth(HttpServletRequest request)
 			throws BizException {
 		Map<String, Object> map = new HashMap<String, Object>();
-		if (positionform == null) {
-			map.put(Const.retCode, Boolean.FALSE);
-			map.put(Const.retMsg, "职称信息不能为空!");
-			return map;
-		}
-		if(positionform.getTowerId() == null){
-			map.put(Const.retCode, Boolean.FALSE);
-			map.put(Const.retMsg, "楼盘信息不能为空!");
-			return map;
-		}
-		Integer result = positionService.addPosition(positionform);
+		Integer result = salaryService.addSalaryMonth();
 		if (result.equals(0)) {
 			map.put(Const.retCode, Boolean.FALSE);
 			map.put(Const.retMsg, "操作失败!");
+			return map;
+		}
+		if(result.equals(2)){
+			map.put(Const.retCode, Boolean.FALSE);
+			map.put(Const.retMsg, "已有本月工资!");
+			return map;
+		}
+		if(result.equals(3)){
+			map.put(Const.retCode, Boolean.FALSE);
+			map.put(Const.retMsg, "无职称信息!");
 			return map;
 		}
 		map.put(Const.retCode, Boolean.TRUE);
