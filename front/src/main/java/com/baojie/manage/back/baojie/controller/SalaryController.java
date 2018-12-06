@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baojie.manage.back.baojie.form.PositionForm;
+import com.baojie.manage.back.baojie.form.SalaryForm;
 import com.baojie.manage.back.baojie.form.TowerForm;
 import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.back.baojie.service.PositionService;
@@ -37,16 +38,17 @@ public class SalaryController extends BaseController {
 	private SalaryService salaryService;
 
 	/**
-	 * 获取所有职位信息
+	 * 获取工资信息
 	 * @param model
 	 * @param pageNumber
 	 * @param pageSize
-	 * @param towerName
+	 * @param towerId
+	 * @param positionName
 	 * @return
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllSalary")
-	public String getAllSalary(Model model, Integer pageNumber, Integer pageSize, Long towerId,String positionName)
+	public String getAllSalary(Model model, Integer pageNumber, Integer pageSize, Long towerId,String searchName)
 			throws BizException {
 		logger.info("getAllSalary [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId="
 				+ towerId);
@@ -58,13 +60,13 @@ public class SalaryController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<PositionForm> allPosition = positionService.getAllPosition(pageNumber, pageSize, null);
-		model.addAttribute("allPosition", allPosition.getList());
-		pageUtil.setTotalCount((int) allPosition.getTotalCount());
+		PageResults<SalaryForm> allSalary = salaryService.getAllSalary(pageNumber, pageSize, towerId, searchName);
+		model.addAttribute("allSalary", allSalary.getList());
+		pageUtil.setTotalCount((int) allSalary.getTotalCount());
 		model.addAttribute("page", pageUtil);
 		List<TowerForm> queryAll = towerService.queryAll();
 		model.addAttribute("towerList", queryAll);
-		return "baojie/getAllPosition";
+		return "baojie/getAllSalary";
 	}
 
 	@RequestMapping("/addOrUpdatePosition")

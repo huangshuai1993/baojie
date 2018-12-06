@@ -29,7 +29,13 @@
                                         <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                     </div>
-                                    <div class="pull-right col-md-6">
+                                    <div class="pull-right col-md-7">
+                                    <p class='col-lg-2 inputTitle'>请选择时间：</p>
+			                    	<div class="form-group mrt10 fl" style='position: relative;'>	
+									<div class="input-append " id="datetimepicker1">
+										<input class="Wdate form-control dtpicker validate[required] " type="text"  id="minTimeValue" value="${minTime}" placeholder="开始时间" name="minTimeValue"  onclick="WdatePicker({autoPickDate:'true',dateFmt:'yyyy-MM'})" style="width: 150px;height:32px;" />
+									</div>
+									</div>
                                     <div class="form-group table-search">
                                         <input  id="searchName" class="form-control searchTxt" type="text" placeholder="楼盘名称" value="${searchName}">
                                      </div>

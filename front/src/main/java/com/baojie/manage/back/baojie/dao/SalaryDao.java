@@ -7,7 +7,7 @@ import com.baojie.manage.base.exception.BizException;
 
 public interface SalaryDao extends IEntityDao<SalaryEntity> {
 	
-	public PageResults<SalaryEntity> getAllSalary(Integer pageNumber, Integer pageSize, String towerName,
-			String positionName) throws BizException;
+	public PageResults<SalaryEntity> getAllSalary(Integer pageNumber, Integer pageSize, Long towerId,
+			String searchName) throws BizException;
 
 }

@@ -23,18 +23,18 @@ import com.baojie.manage.base.exception.BizException;
 public class SalaryDaoImpl extends AbstractHibernateEntityDao<SalaryEntity> implements SalaryDao {
 
 	@Override
-	public PageResults<SalaryEntity> getAllSalary(Integer pageNumber, Integer pageSize, String towerName,
-			String positionName) throws BizException {
+	public PageResults<SalaryEntity> getAllSalary(Integer pageNumber, Integer pageSize, Long towerId,
+			String searchName) throws BizException {
 		List<SalaryEntity> list = this.getHibernateTemplate().execute(new HibernateCallback<List<SalaryEntity>>() {
 			@SuppressWarnings("unchecked")
 			@Override
 			public List<SalaryEntity> doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(PositionEntity.class);
-				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName", "%" + towerName + "%"));
+				if (towerId != null) {
+					criteria.add(Restrictions.eq("towerId", towerId));
 				}
-				if (StringUtils.isNotEmpty(positionName)) {
-					criteria.add(Restrictions.like("positionName", "%" + positionName + "%"));
+				if (StringUtils.isNotEmpty(searchName)) {
+					criteria.add(Restrictions.like("staffName", "%" + searchName + "%"));
 				}
 				criteria.addOrder(Order.desc("updated"));
 				criteria.setFirstResult((pageNumber - 1) * pageSize);
@@ -42,22 +42,23 @@ public class SalaryDaoImpl extends AbstractHibernateEntityDao<SalaryEntity> impl
 				return criteria.list();
 			}
 		});
-		Long count = this.querySalaryCount(pageNumber, pageSize, towerName, positionName);
+		Long count = this.querySalaryCount(pageNumber, pageSize, towerId, searchName);
 		PageResults<SalaryEntity> results = new PageResults<SalaryEntity>(list, pageNumber, pageSize, count);
 		return results;
 	}
 
-	public Long querySalaryCount(Integer pageNumber, Integer pageSize, String towerName, String positionName)
+	public Long querySalaryCount(Integer pageNumber, Integer pageSize, Long towerId,
+			String searchName)
 			throws BizException {
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 			@Override
 			public Long doInHibernate(Session session) throws HibernateException {
 				Criteria criteria = session.createCriteria(PositionEntity.class);
-				if (StringUtils.isNotEmpty(towerName)) {
-					criteria.add(Restrictions.like("towerName", "%" + towerName + "%"));
+				if (towerId != null) {
+					criteria.add(Restrictions.eq("towerId", towerId));
 				}
-				if (StringUtils.isNotEmpty(positionName)) {
-					criteria.add(Restrictions.like("positionName", "%" + positionName + "%"));
+				if (StringUtils.isNotEmpty(searchName)) {
+					criteria.add(Restrictions.like("staffName", "%" + searchName + "%"));
 				}
 				criteria.setProjection(Projections.rowCount());
 				return (Long) criteria.uniqueResult();
