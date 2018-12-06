@@ -46,10 +46,10 @@ public class SalaryController extends BaseController {
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllSalary")
-	public String getAllSalary(Model model, Integer pageNumber, Integer pageSize, String towerName,String positionName)
+	public String getAllSalary(Model model, Integer pageNumber, Integer pageSize, Long towerId,String positionName)
 			throws BizException {
-		logger.info("getAllSalary [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerName="
-				+ towerName);
+		logger.info("getAllSalary [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId="
+				+ towerId);
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
