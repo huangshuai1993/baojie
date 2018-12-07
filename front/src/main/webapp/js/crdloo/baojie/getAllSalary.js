@@ -1,4 +1,7 @@
 $(function(){
+
+	var towerId=$("#searchTower").val();
+	var searchTowerId = $("#searchTowerIds option[value='"+towerId+"']").attr("selected","selected");
 	function isPositiveNum(s){//是否为正整数  
 	    var re = /^[0-9]*[1-9][0-9]*$/ ;  
 	    return re.test(s)  
@@ -11,31 +14,31 @@ $(function(){
 	var $ur_a = $(".pagination li a");
 	$ur_a.on("click",function(){
 		var pageNumber = $(this).attr("data-pagenum");
-		var searchName = $("#searchName").val();
+		var searchTowerIds = $("#searchTowerIds").val();
 		var timeValue = $("#timeValue").val();
-		searcher(searchName,timeValue,pageNumber);
+		searcher(searchTowerIds,timeValue,pageNumber);
 		$("#myForm").submit();
 	});
 	
 	//提交方法,(参数数值，当前页数)
-	function searcher(searchName,timeValue,pageNumber ){
+	function searcher(searchTowerIds,timeValue,pageNumber ){
 		$("#pageNumber").val(pageNumber);
-		$("#searchTowerName").val(searchName);
+		$("#searchTower").val(searchName);
 		$("#time").val(timeValue);
 		$("#myForm").submit();
 	}
 	//查询列表
 	$("#mySubmit").on("click",function(){
-		var searchName = $("#searchName").val();
+		var searchTowerIds = $("#searchTowerIds").val();
 		var timeValue = $("#timeValue").val();
-		searcher(searchName,timeValue,1);
+		searcher(searchTowerIds,timeValue,1);
 	});
 	//删除方法
 	$(".btn-delete").on("click",function(){
 		var id = $(this).attr("data-id");
 		var flag = confirm("确定删除？");
 		if(flag){
-			$.post(root+"/service/btower/deleteTower",{"id":id},function(data){
+			$.post(root+"/service/salary/deleteSalary",{"id":id},function(data){
 				if(data.retCode){
 					alert("删除成功!");
 					window.location.reload(true);
@@ -50,17 +53,27 @@ $(function(){
 	//修改员工
 	$(".btn-update").on("click",function(){
 		var id = $(this).attr("data-id");
-		$.post(root+"/service/btower/getInfoTower",{"id":id},function(data){
+		$.post(root+"/service/salary/getSalaryInfo",{"id":id},function(data){
 			if(data.retCode){
-				$("#updateTower").show();
-				var e = data.tower;
-				var towerId = $("#towerId").val(e.towerId);
-				var towerName = $("#towerName").val(e.towerName);
-				var functionaryName = $("#functionaryName").val(e.functionaryName);
-				var address = $("#address").val(e.address);
-				var peopleCount = $("#peopleCount").val(e.peopleCount);
-				var virtualCount = $("#virtualCount").val(e.virtualCount);
-				var approachTime = $("#approachTime").val(e.approachTime);
+				$("#updateSalary").show();
+				var e = data.salary;
+				var id = $("#salaryId").val(e.id);
+				var salaryMonth = $("#salaryMonth").val(e.salaryMonth);
+				var staffName = $("#staffName").val(e.staffName);
+				var positionName = $("#positionName").val(e.positionName);
+				var basePay = $("#basePay").val(e.basePay);
+				var allowance = $("#allowance").val(e.allowance);
+				var workDay = $("#workDay").val(e.workDay);
+				var overtimePay = $("#overtimePay").val(e.overtimePay);
+				var holiday = $("#holiday").val(e.holiday);
+				var other = $("#other").val(e.other);
+				var sendPay = $("#sendPay").val(e.sendPay);
+				var personTax = $("#personTax").val(e.personTax);
+				var socialSecurity = $("#socialSecurity").val(e.socialSecurity);
+				var askForLeave = $("#askForLeave").val(e.askForLeave);
+				var otherDeductPay = $("#otherDeductPay").val(e.otherDeductPay);
+				var deductTotalPay = $("#deductTotalPay").val(e.deductTotalPay);
+				var realPay = $("#realPay").val(e.realPay);
 			}
 		});
 	});
@@ -78,36 +91,60 @@ $(function(){
 			}
 		});
 	});
-	//添加合同
-	$("#saveTower").on("click",function(){
-		var towerId = $("#towerId").val();
-		var towerName = $("#towerName").val();
-		var functionaryName = $("#functionaryName").val();
-		var address = $("#address").val();
-		var peopleCount = $("#peopleCount").val();
-		var virtualCount = $("#virtualCount").val();
-		var approachTime = $("#approachTime").val();
-		if(towerName == ''){
-			alert("楼盘名称不能为空!");
+	//保存修改
+	$("#saveSalary").on("click",function(){
+		var id = $("#salaryId").val();
+		var salaryMonth = $("#salaryMonth").val();
+		var staffName = $("#staffName").val();
+		var positionName = $("#positionName").val();
+		var basePay = $("#basePay").val();
+		var allowance = $("#allowance").val();
+		var workDay = $("#workDay").val();
+		var overtimePay = $("#overtimePay").val();
+		var holiday = $("#holiday").val();
+		var other = $("#other").val();
+		var sendPay = $("#sendPay").val();
+		var personTax = $("#personTax").val();
+		var socialSecurity = $("#socialSecurity").val();
+		var askForLeave = $("#askForLeave").val();
+		var otherDeductPay = $("#otherDeductPay").val();
+		var deductTotalPay = $("#deductTotalPay").val();
+		var realPay = $("#realPay").val();
+		if(basePay == ''){
+			alert("基本工资不能为空!");
 			return;
 		}
-		if(functionaryName == ''){
-			alert("负责人姓名不能为空!");
+		if(workDay == ''){
+			alert("出勤次数不能为空!");
+			return;
+		}
+		if(allowance == ''){
+			alert("岗位津贴不能为空!");
 			return;
 		}
 		var postdata = {
-				"towerId":towerId,
-				"towerName":towerName,
-				"functionaryName":functionaryName,
-				"address":address,
-				"peopleCount":peopleCount,
-				"virtualCount":virtualCount,
-				"approachTime":approachTime
+				id:"salaryId",
+				salaryMonth:"salaryMonth",
+				staffName:"staffName",
+				positionName:"positionName",
+				basePay:"basePay",
+				allowance:"allowance",
+				workDay:"workDay",
+				overtimePay:"overtimePay",
+				holiday:"holiday",
+				other:"other",
+				sendPay:"sendPay",
+				personTax:"personTax",
+				socialSecurity:"socialSecurity",
+				askForLeave:"askForLeave",
+				otherDeductPay:"otherDeductPay",
+				deductTotalPay:"deductTotalPay",
+				realPay:"realPay"
 		};
 		//进行跟新操作
 		$.ajax({
 			type:"POST", 
-            url:root+"/service/btower/addOrUpdateTower", 
+            url:root+"/service/salary/updateStaffSalary", 
             contentType:"application/json",  //发送信息至服务器时内容编码类型。 
             data:JSON.stringify(postdata),
             success:function(data){

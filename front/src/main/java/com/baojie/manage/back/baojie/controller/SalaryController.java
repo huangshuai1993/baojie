@@ -62,6 +62,7 @@ public class SalaryController extends BaseController {
 		model.addAttribute("page", pageUtil);
 		List<TowerForm> queryAll = towerService.queryAll();
 		model.addAttribute("towerList", queryAll);
+		model.addAttribute("searchTowerId", towerId);
 		model.addAttribute("searchTime", time);
 		return "baojie/getAllSalary";
 	}
