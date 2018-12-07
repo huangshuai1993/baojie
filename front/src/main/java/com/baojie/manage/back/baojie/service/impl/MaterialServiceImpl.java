@@ -11,14 +11,10 @@ import org.springframework.stereotype.Service;
 
 import com.baojie.manage.back.baojie.dao.BTowerDao;
 import com.baojie.manage.back.baojie.dao.MaterialDao;
-import com.baojie.manage.back.baojie.dao.PositionDao;
 import com.baojie.manage.back.baojie.dao.entity.MaterialEntity;
-import com.baojie.manage.back.baojie.dao.entity.PositionEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.MaterialForm;
-import com.baojie.manage.back.baojie.form.PositionForm;
 import com.baojie.manage.back.baojie.service.MaterialService;
-import com.baojie.manage.back.baojie.service.PositionService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.BeanUtils;
@@ -66,29 +62,29 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------MaterialServiceImpl.addMaterial------------begin-->");
 		}
-		Integer result  = 0;
+		Integer result = 0;
 		try {
-			if(materialForm == null){
-				return  result;
+			if (materialForm == null) {
+				return result;
 			}
 			MaterialEntity entity = new MaterialEntity();
-			if(entity.getMaterialId()!= null){
+			if (entity.getMaterialId() != null) {
 				entity = materialDao.selectByPK(materialForm.getMaterialId());
-				if(entity.getTowerId() != materialForm.getTowerId()){
+				if (entity.getTowerId() != materialForm.getTowerId()) {
 					TowerEntity towerEntity = towerDao.selectByPK(materialForm.getTowerId());
 					materialForm.setTowerName(towerEntity.getTowerName());
 				}
 				BeanUtils.copyPropertiesNotNUll(materialForm, entity);
 				entity.setUpdated(new Date());
 				entity = materialDao.update(entity);
-			}else{
+			} else {
 				entity = new MaterialEntity();
 				TowerEntity towerEntity = towerDao.selectByPK(materialForm.getTowerId());
 				materialForm.setTowerName(towerEntity.getTowerName());
 				BeanUtils.copyProperties(materialForm, entity);
 				entity = materialDao.insert(entity);
 			}
-			if(entity!=null){
+			if (entity != null) {
 				result = 1;
 			}
 		} catch (Exception e) {
@@ -103,7 +99,7 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 	}
 
 	@Override
-	public Map<String, Object> deleteMaterial(Long id)throws BizException {
+	public Map<String, Object> deleteMaterial(Long id) throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------MaterialServiceImpl.deleteMaterial------------begin-->");
 		}
@@ -155,7 +151,7 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 				map.put(Const.retMsg, "物料不存在");
 				return map;
 			}
-			//查询所有楼盘
+			// 查询所有楼盘
 			List<TowerEntity> list = towerDao.queryAll();
 			map.put("towerList", list);
 			map.put(Const.retCode, true);
