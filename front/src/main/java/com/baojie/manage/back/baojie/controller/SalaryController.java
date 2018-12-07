@@ -1,6 +1,5 @@
 package com.baojie.manage.back.baojie.controller;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,11 +13,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baojie.manage.back.baojie.form.PositionForm;
 import com.baojie.manage.back.baojie.form.SalaryForm;
 import com.baojie.manage.back.baojie.form.TowerForm;
 import com.baojie.manage.back.baojie.service.BTowerService;
-import com.baojie.manage.back.baojie.service.PositionService;
 import com.baojie.manage.back.baojie.service.SalaryService;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.PageResults;
@@ -29,8 +26,6 @@ import com.baojie.manage.base.exception.BizException;
 @Controller
 @RequestMapping("/salary")
 public class SalaryController extends BaseController {
-	@Autowired
-	private PositionService positionService;
 	
 	@Autowired
 	private BTowerService towerService;
@@ -97,17 +92,24 @@ public class SalaryController extends BaseController {
 		return map;
 	}
 
+	@RequestMapping("/updateStaffSalary")
+	@ResponseBody
+	public Map<String, Object> updateStaffSalary(HttpServletRequest request,@RequestBody SalaryForm salary)
+			throws BizException {
+		return salaryService.updateStaffSalary(salary);
+	}
+
 	/**
-	 * 删除职位
+	 * 删除工资信息
 	 * 
 	 * @param id
 	 * @return
 	 * @throws BizException
 	 */
-	@RequestMapping("/deletePosition")
+	@RequestMapping("/deleteSalary")
 	@ResponseBody
-	public Map<String, Object> deletePosition(Long id) throws BizException {
-		return positionService.deletePosition(id);
+	public Map<String, Object> deleteSalary(Long id) throws BizException {
+		return salaryService.deleteSalary(id);
 	}
 	/**
 	 * 获取职务详情
@@ -115,9 +117,9 @@ public class SalaryController extends BaseController {
 	 * @return
 	 * @throws BizException
 	 */
-	@RequestMapping("/getPositionInfo")
+	@RequestMapping("/getSalaryInfo")
 	@ResponseBody
-	public Map<String, Object> getPositionInfo(Long id) throws BizException{
-		return positionService.getPositionInfo(id);
+	public Map<String, Object> getSalaryInfo(Long id) throws BizException{
+		return salaryService.getSalaryInfo(id);
 	}
 }

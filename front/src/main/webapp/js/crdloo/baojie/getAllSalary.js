@@ -65,16 +65,18 @@ $(function(){
 		});
 	});
 	
-	//添加显示员工按钮
-	$(".btn-addTower").on("click",function(){
-		$("#updateTower").show();
-		var towerId = $("#towerId").val("");
-		var towerName = $("#towerName").val("");
-		var functionaryName = $("#functionaryName").val("");
-		var address = $("#address").val("");
-		var peopleCount = $("#peopleCount").val("");
-		var virtualCount = $("#virtualCount").val("");
-		var approachTime = $("#approachTime").val("");
+	//添加工资按钮
+	$(".btn-addSalary").on("click",function(){
+		var flag = confirm("请确认楼盘信息及职务信息是否需要改动？每个月只可生成一次工资信息！");
+		$.post(root+"/service/salary/addSalaryMonth",{},function(data){
+			if(data.retCode){
+				alert(data.retMsg);
+				window.location.reload(true);
+			}else{
+				alert(data.retMsg);
+				return false;
+			}
+		});
 	});
 	//添加合同
 	$("#saveTower").on("click",function(){

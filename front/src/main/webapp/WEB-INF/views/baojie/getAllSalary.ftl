@@ -36,9 +36,14 @@
 										<input class="Wdate form-control dtpicker validate[required] " type="text"  id="timeValue" value="${searchTime}" placeholder="工资时间" name="minTimeValue"  onclick="WdatePicker({autoPickDate:'true',dateFmt:'yyyy-MM'})" style="width: 150px;height:32px;" />
 									</div>
 									</div>
-                                    <div class="form-group table-search">
-                                        <input  id="searchName" class="form-control searchTxt" type="text" placeholder="楼盘名称" value="${searchName}">
-                                     </div>
+                                    <div class="col-lg-4">
+                                        <select class="form-control" id="searchTowerIds">
+                                        	<option value="">选择所属楼盘</option>
+                                            <#list towerList as tower>
+                                            	<option value="${tower.towerId}">${tower.towerName}</option>
+                                            </#list>
+                                        </select>
+                                   	</div>
                                      <button id="mySubmit" class="btn btn-primary fl">查 询</button>
                                      <button class="btn btn-success pull-right btn-addSalary" type="button">
                                             <i class="icon-plus"></i>
