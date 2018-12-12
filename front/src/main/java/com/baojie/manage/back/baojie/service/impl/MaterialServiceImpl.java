@@ -14,6 +14,7 @@ import com.baojie.manage.back.baojie.dao.MaterialDao;
 import com.baojie.manage.back.baojie.dao.entity.MaterialEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.MaterialForm;
+import com.baojie.manage.back.baojie.form.enums.MaterialTypeEnum;
 import com.baojie.manage.back.baojie.service.MaterialService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
 import com.baojie.manage.base.common.consts.Const;
@@ -43,6 +44,10 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 				List<MaterialEntity> list = materialList.getList();
 				if (!CollectionUtils.isEmpty(list)) {
 					List<MaterialForm> list2 = BeanUtils.copyByList(list, MaterialForm.class);
+					for (MaterialForm materialForm : list2) {
+						materialForm.setTypeName(MaterialTypeEnum.getName(materialForm.getType()));
+					}
+					
 					page = new PageResults<MaterialForm>(list2, pageNumber, pageSize, materialList.getTotalCount());
 				}
 			}

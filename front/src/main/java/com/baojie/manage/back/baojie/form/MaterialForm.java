@@ -17,6 +17,7 @@ public class MaterialForm implements Serializable {
 
 	private Integer type;
 
+	private String typeName;
 	private BigDecimal price;
 
 	private Integer count;
@@ -155,4 +156,13 @@ public class MaterialForm implements Serializable {
 		return ReflectionToStringBuilder.toStringExclude(this, others);
 	}
 
+	public String getTypeName() {
+		return typeName;
+	}
+
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
+	}
+
+	
 }
