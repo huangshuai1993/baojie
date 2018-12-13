@@ -115,10 +115,10 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-4"  style="display:none;"  id="updatePosition">
+                        <div class="col-md-4"  style="display:none;"  id="updateMaterial">
                             <div class="widget alert-Box">
                                 <div class="widget-head clearfix">
-                                    <div class="pull-left">职称信息</div>
+                                    <div class="pull-left">物料信息</div>
                                     <div class="widget-icons pull-right">
                                         <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
@@ -128,13 +128,13 @@
                                     <div class="padd">
                                         <div class="form quick-post">
                                             <!-- Edit profile form (not working)-->
-                                            <form class="form-horizontal"  action="${contextPath}/service/position/addOrUpdatePosition">
-                                            	<input type="hidden" name="positionId" id="positionId"/>
+                                            <form class="form-horizontal"  action="${contextPath}/service/material/addOrUpdateMaterial">
+                                            	<input type="hidden" name="materialId" id="materialId"/>
                                                 <!-- Title -->
                                                 <div class="form-group">
-                                                    <label class="control-label col-lg-3">职位名称</label>
+                                                    <label class="control-label col-lg-3">物料名称</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" name="positionName" id="positionName" maxlength="50"  value="">
+                                                        <input type="text" class="form-control" name="materialName" id="materialName" maxlength="50"  value="">
                                                     </div>
                                                 </div>
                                                  <!-- 所属楼盘-->    
@@ -148,16 +148,38 @@
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="form-group">
-                                                    <label class="control-label col-lg-3">基本工资</label>
+                                                <div class="form-group storeIdDiv" >
+                                                    <label class="control-label col-lg-3">所属类型</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" maxlength="18"  name="basePay" id="basePay" value="" onkeyup="value=value.replace(/[^\d]/g,'')">
+                                                        <select class="form-control" id="type" >
+	                                                        <#list materialTypes as types>
+	                                                        	<option value="${types.getCode()}">${types.getName()}</option>
+	                                                        </#list>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
-                                                    <label class="control-label col-lg-3">岗位津贴</label>
+                                                    <label class="control-label col-lg-3">进价</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" name="allowance" id="allowance" onkeyup="value=value.replace(/[^\d]/g,'')"  value="" maxlength="11">
+                                                        <input type="text" class="form-control" maxlength="18"  name="price" id="price" value="" onkeyup="value=value.replace(/[^\d]/g,'')">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-lg-3">数量</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" name="count" id="count" onkeyup="value=value.replace(/[^\d]/g,'')"  value="" maxlength="11">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-lg-3">总价</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" name="totalPrice" id="totalPrice" onkeyup="value=value.replace(/[^\d]/g,'')"  value="" maxlength="11">
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="control-label col-lg-3">进货日期</label>
+                                                    <div class="col-lg-9">
+                                                        <input type="text" class="form-control" name="purchaseTime" placeholder="2018-01-01" id="purchaseTime"  value="" maxlength="30">
                                                     </div>
                                                 </div>
 
@@ -165,7 +187,7 @@
                                                 <div class="form-group">
                                                     <!-- Buttons -->
                                                     <div class="col-lg-12 text-center">
-                                                        <button class="btn btn-success mlt7" type="button" id="savePosition">
+                                                        <button class="btn btn-success mlt7" type="button" id="saveMaterial">
                                                             <i class="icon-ok"></i>
                                                             保存
                                                         </button>
@@ -193,17 +215,8 @@
     <!-- Footer starts -->
     <!-- Scroll to top -->
     <!-- Footer ends -->
-    <script>seajs.use("baojie/getAllPosition.js");</script>
-      <script type="text/javascript">
-	 function btnChange(values) {
-		 if (values == "2") {
-			 $(".storeIdDiv").show();
-		 }else{
-			 $(".storeIdDiv").hide();
-		 }
-	 }
-	</script>
-    <form action="${contextPath}/service/position/getAllPosition" method="post" id="myForm">
+    <script>seajs.use("baojie/getAllMaterial.js");</script>
+    <form action="${contextPath}/service/material/getAllMaterial" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
     </form>

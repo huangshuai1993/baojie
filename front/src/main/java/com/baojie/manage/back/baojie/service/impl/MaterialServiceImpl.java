@@ -161,6 +161,8 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 			map.put("towerList", list);
 			map.put(Const.retCode, true);
 			map.put("material", materialEntity);
+			MaterialTypeEnum[] materialTypeEnum = MaterialTypeEnum.values();
+			map.put("materialTypes", materialTypeEnum);
 		} catch (Exception e) {
 			map.put(Const.retCode, false);
 			map.put(Const.retMsg, "物料不存在");
