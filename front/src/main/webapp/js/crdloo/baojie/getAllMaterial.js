@@ -52,37 +52,43 @@ $(function(){
 		var id = $(this).attr("data-id");
 		$.post(root+"/service/material/getMaterialInfo",{"id":id},function(data){
 			if(data.retCode){
-				$("#updatePosition").show();
-				var e = data.position;
+				$("#updateMaterial").show();
+				var e = data.material;
 				var materialId = $("#materialId").val(e.materialId);
 				var materialName = $("#materialName").val(e.materialName);
 				var towerId = $("#towerIds").val(e.towerId);
 				var type = $("#type").val(e.type);
 				var price = $("#price").val(e.price);
 				var count = $("#count").val(e.count);
-				var totalPrice = $("totalPrice").val(e.totalPrice);
-				var purchaseTime = $("purchaseTime").val(e.purchaseTime);
+				var totalPrice = $("#totalPrice").val(e.totalPrice);
+				var purchaseTime = $("#purchaseTime").val(e.purchaseTime);
 			}
 		});
 	});
 	
-	//添加显示员工按钮
-	$(".btn-addPosition").on("click",function(){
-		$("#updatePosition").show();
-		var positionId = $("#positionId").val("");
-		var positionName = $("#positionName").val("");
-		var basePay = $("#basePay").val("");
-		var allowance = $("#allowance").val("");
+	//添加显示物料按钮
+	$(".btn-addMaterial").on("click",function(){
+		$("#updateMaterial").show();
+		var materialId = $("#materialId").val("");
+		var materialName = $("#materialName").val("");
 		var towerId = $("#towerIds").val("");
+		var type = $("#type").val("");
+		var price = $("#price").val("");
+		var count = $("#count").val("");
+		var totalPrice = $("#totalPrice").val("");
+		var purchaseTime = $("#purchaseTime").val("");
 	});
-	$("#savePosition").on("click",function(){
-		var positionId = $("#positionId").val();
-		var positionName = $("#positionName").val();
-		var basePay = $("#basePay").val();
-		var allowance = $("#allowance").val();
+	$("#saveMaterial").on("click",function(){
+		var materialId = $("#materialId").val();
+		var materialName = $("#materialName").val();
 		var towerId = $("#towerIds").val();
-		if(positionName == ''){
-			alert("职务名称不能为空!");
+		var type = $("#type").val();
+		var price = $("#price").val();
+		var count = $("#count").val();
+		var totalPrice = $("#totalPrice").val();
+		var purchaseTime = $("#purchaseTime").val();
+		if(materialName == ''){
+			alert("物料名称不能为空!");
 			return;
 		}
 		if(towerId == ''){
@@ -90,11 +96,14 @@ $(function(){
 			return;
 		}
 		var postdata = {
-				"positionId":positionId,
-				"positionName":positionName,
-				"basePay":basePay,
-				"allowance":allowance,
-				"towerId":towerId
+				"materialId":materialId,
+				"materialName":materialName,
+				"towerId":towerId,
+				"type":type,
+				"price":price,
+				"count":count,
+				"totalPrice":totalPrice,
+				"purchaseTime":purchaseTime
 		};
 		//进行跟新操作
 		$.ajax({

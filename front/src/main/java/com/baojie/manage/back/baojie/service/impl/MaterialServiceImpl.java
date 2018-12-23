@@ -23,7 +23,7 @@ import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
 
-@Service("positionService")
+@Service("materialService")
 public class MaterialServiceImpl extends BaseService implements MaterialService {
 
 	@Autowired
@@ -73,7 +73,7 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 				return result;
 			}
 			MaterialEntity entity = new MaterialEntity();
-			if (entity.getMaterialId() != null) {
+			if (materialForm.getMaterialId() != null) {
 				entity = materialDao.selectByPK(materialForm.getMaterialId());
 				if (entity.getTowerId() != materialForm.getTowerId()) {
 					TowerEntity towerEntity = towerDao.selectByPK(materialForm.getTowerId());

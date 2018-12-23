@@ -78,7 +78,7 @@
 		                                             <td>${material.updated}</td>
 		                                            <td>
 		                                                <button class="btn btn-xs btn-warning btn-update" data-id=${material.materialId} title="编辑"><i class="icon-pencil" > 编辑</i></button>
-		                                                <button class="btn btn-xs btn-danger btn-delete" data-i=${material.materialId} title="删除"><i class="icon-del" > 删除</i></button>
+		                                                <button class="btn btn-xs btn-danger btn-delete" data-id=${material.materialId} title="删除"><i class="icon-del" > 删除</i></button>
 		                                            </td>
 		                                        </tr>
 	                                        </#list>

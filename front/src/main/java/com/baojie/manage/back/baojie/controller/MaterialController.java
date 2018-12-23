@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baojie.manage.back.baojie.form.MaterialForm;
 import com.baojie.manage.back.baojie.form.PositionForm;
 import com.baojie.manage.back.baojie.form.TowerForm;
+import com.baojie.manage.back.baojie.form.enums.MaterialTypeEnum;
 import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.back.baojie.service.MaterialService;
 import com.baojie.manage.back.baojie.service.PositionService;
@@ -35,11 +36,11 @@ public class MaterialController extends BaseController {
 	private BTowerService towerService;
 
 	/**
-	 * 获取所有职位信息
+	 * 获取所有物料信息
 	 * @param model
 	 * @param pageNumber
 	 * @param pageSize
-	 * @param towerName
+	 * @param towerId
 	 * @return
 	 * @throws BizException
 	 */
@@ -63,6 +64,8 @@ public class MaterialController extends BaseController {
 		model.addAttribute("searchTowerId", towerId);
 		List<TowerForm> queryAll = towerService.queryAll();
 		model.addAttribute("towerList", queryAll);
+		MaterialTypeEnum[] materialTypeEnum = MaterialTypeEnum.values();
+		model.addAttribute("materialTypes", materialTypeEnum);
 		return "baojie/getAllMaterial";
 	}
 
