@@ -47,6 +47,18 @@ $(function(){
 		}
 	});
 	
+	//导出方法
+	$(".btn-csvDownload").on("click",function(){
+		var pageNumber = $(this).attr("data-pagenum");
+		var searchName = $("#searchTowerIds").val();
+		var flag = confirm("确认导出？");
+		if(flag){
+			$("#pageNumber").val(pageNumber);
+			$("#searchTower").val(searchName);
+			$("#csvDownLoadAllMaterial").submit();
+		}
+	});
+	
 	//修改员工
 	$(".btn-update").on("click",function(){
 		var id = $(this).attr("data-id");

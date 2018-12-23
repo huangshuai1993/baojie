@@ -1,11 +1,15 @@
 package com.baojie.manage.back.baojie.controller;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baojie.manage.back.baojie.form.MaterialForm;
-import com.baojie.manage.back.baojie.form.PositionForm;
 import com.baojie.manage.back.baojie.form.TowerForm;
 import com.baojie.manage.back.baojie.form.enums.MaterialTypeEnum;
 import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.back.baojie.service.MaterialService;
-import com.baojie.manage.back.baojie.service.PositionService;
 import com.baojie.manage.base.common.consts.Const;
+import com.baojie.manage.base.common.util.CsvDownloadUtil;
+import com.baojie.manage.base.common.util.DateUtil;
+import com.baojie.manage.base.common.util.JsonUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.common.util.PageUtil;
 import com.baojie.manage.base.controller.BaseController;
@@ -31,12 +36,61 @@ import com.baojie.manage.base.exception.BizException;
 public class MaterialController extends BaseController {
 	@Autowired
 	private MaterialService materialService;
-	
+
 	@Autowired
 	private BTowerService towerService;
 
+	
+	/**
+	 * 导出csv表格
+	 * 
+	 * @param model
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param towerId
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("/csvDownLoadAllMaterial")
+	public void csvDownLoadAllMaterial(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, Long towerId) throws Exception {
+		logger.info(
+				"csvDownLoadAllMaterial [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId=" + towerId);
+		if (pageNumber == null) {
+			pageNumber = 1;
+		}
+		if (pageSize == null) {
+			pageSize = 30;
+		}
+		PageUtil pageUtil = new PageUtil(pageSize);
+		pageUtil.setPageIndex(pageNumber);
+		PageResults<MaterialForm> allMaterial = materialService.getAllMaterial(pageNumber, pageSize, towerId);
+		List<Map<String, Object>> csvData = allMaterial.getList().stream().map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
+		})).collect(Collectors.toList());
+		long totalCount = allMaterial.getTotalCount();
+		String sheetNamePrefix = DateUtil.getDateStr(DateUtil.TIME_STR_FORMAT);
+         Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(MaterialForm.class);
+         CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
+         CsvDownloadUtil.writeData(csvHeader, csvData, response);
+         csvData.clear();
+         //总页数
+         long totalPageNum = (totalCount / pageSize) + (totalCount % pageSize == 0 ? 0 : 1);
+         if (totalPageNum > 1) {
+             for (int i = 2; i <= totalPageNum; i++) {
+            	 pageNumber = i;
+            	 PageResults<MaterialForm> material = materialService.getAllMaterial(pageNumber, pageSize, towerId);
+                     csvData = material.getList().stream()
+                         .map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
+                         })).collect(Collectors.toList());
+	                 CsvDownloadUtil.writeData(csvHeader, csvData, response);
+	                 csvData.clear();
+             }
+         }
+	}
+	
+	
 	/**
 	 * 获取所有物料信息
+	 * 
 	 * @param model
 	 * @param pageNumber
 	 * @param pageSize
@@ -45,15 +99,14 @@ public class MaterialController extends BaseController {
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllMaterial")
-	public String getAllMaterial(Model model, Integer pageNumber, Integer pageSize, Long towerId)
-			throws BizException {
-		logger.info("getAllMaterial [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId="
-				+ towerId);
+	public String getAllMaterial(Model model, Integer pageNumber, Integer pageSize, Long towerId) throws BizException {
+		logger.info(
+				"getAllMaterial [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId=" + towerId);
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
 		if (pageSize == null) {
-			pageSize = 20;
+			pageSize = 30;
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
@@ -79,7 +132,7 @@ public class MaterialController extends BaseController {
 			map.put(Const.retMsg, "物料信息不能为空!");
 			return map;
 		}
-		if(materialForm.getTowerId() == null){
+		if (materialForm.getTowerId() == null) {
 			map.put(Const.retCode, Boolean.FALSE);
 			map.put(Const.retMsg, "楼盘信息不能为空!");
 			return map;
@@ -107,15 +160,17 @@ public class MaterialController extends BaseController {
 	public Map<String, Object> deleteMaterial(Long id) throws BizException {
 		return materialService.deleteMaterial(id);
 	}
+
 	/**
 	 * 获取职务详情
+	 * 
 	 * @param id
 	 * @return
 	 * @throws BizException
 	 */
 	@RequestMapping("/getMaterialInfo")
 	@ResponseBody
-	public Map<String, Object> getMaterialInfo(Long id) throws BizException{
+	public Map<String, Object> getMaterialInfo(Long id) throws BizException {
 		return materialService.getMaterialInfo(id);
 	}
 }

@@ -1737,4 +1737,6 @@ select option{ height:22px; padding-top:3px; }
 		.taskCountDiv,.taskCountDivs{
 			margin-top: 20px;
 		}
-   		
+.marginR10{
+	margin-right:10px;	
+}
