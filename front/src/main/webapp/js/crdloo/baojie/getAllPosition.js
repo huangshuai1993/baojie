@@ -25,6 +25,18 @@ $(function(){
 		$("#searchTower").val(searchName);
 		$("#myForm").submit();
 	}
+	
+	//导出方法
+	$(".btn-csvDownload").on("click",function(){
+		var pageNumber = $(this).attr("data-pagenum");
+		var searchName = $("#searchTowerIds").val();
+		var flag = confirm("确认导出？");
+		if(flag){
+			$("#pageNumber").val(pageNumber);
+			$("#searchTower").val(searchName);
+			$("#csvDownLoadAllPosition").submit();
+		}
+	});
 	//查询列表
 	$("#mySubmit").on("click",function(){
 		var searchName = $("#searchTowerIds").val();

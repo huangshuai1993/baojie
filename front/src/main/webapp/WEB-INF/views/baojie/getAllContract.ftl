@@ -34,7 +34,10 @@
 	                                        <input  id="searchName" class="form-control searchTxt" type="text" placeholder="合同名称" value="${searchName}">
 	                                     </div>
                                      	<button id="mySubmit" class="btn btn-primary fl">查 询</button>
-                                        <button class="btn btn-success pull-right btn-addContract" type="button">
+                                      	 <button class="btn btn-success pull-right btn-csvDownload" type="button">
+                                            		导出
+                                        </button>
+                                        <button class="marginR10 btn btn-success pull-right btn-addContract" type="button">
                                             <i class="icon-plus"></i>
                                             		新增合同
                                         </button>
@@ -313,6 +316,10 @@
     <!-- Footer ends -->
     <script>seajs.use("baojie/getAllContract.js");</script>
     <form action="${contextPath}/service/bcontract/getAllContract" method="post" id="myForm">
+    	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
+    	<input type="hidden" name="contractName" value="${searchName}" id="searchContractName"/>
+    </form>
+    <form action="${contextPath}/service/bcontract/csvDownLoadAllContract" method="post" id="csvDownLoadAllContract">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     	<input type="hidden" name="contractName" value="${searchName}" id="searchContractName"/>
     </form>

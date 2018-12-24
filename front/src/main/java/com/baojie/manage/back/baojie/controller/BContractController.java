@@ -46,8 +46,8 @@ public class BContractController extends BaseController {
 	 * @return
 	 * @throws Exception 
 	 */
-	@RequestMapping("/csvDownLoadAllMaterial")
-	public void csvDownLoadAllMaterial(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, String contractName,
+	@RequestMapping("/csvDownLoadAllContract")
+	public void csvDownLoadAllContract(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, String contractName,
 			String towerName, Integer status) throws Exception {
 		logger.info(
 				"csvDownLoadAllMaterial [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerName=" + towerName);

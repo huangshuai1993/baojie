@@ -27,6 +27,20 @@ $(function(){
 		$("#searchTower").val(searchTowerIds);
 		$("#myForm").submit();
 	}
+	
+	//导出方法
+	$(".btn-csvDownload").on("click",function(){
+		var pageNumber = $(this).attr("data-pagenum");
+		var searchName = $("#searchName").val();
+		var searchTowerIds = $("#searchTowerIds").val();
+		var flag = confirm("确认导出？");
+		if(flag){
+			$("#pageNumber").val(pageNumber);
+			$("#searchStaffName").val(searchName);
+			$("#searchTower").val(searchTowerIds);
+			$("#csvDownLoadAllStaff").submit();
+		}
+	});
 	//查询列表
 	$("#mySubmit").on("click",function(){
 		var searchName = $("#searchName").val();

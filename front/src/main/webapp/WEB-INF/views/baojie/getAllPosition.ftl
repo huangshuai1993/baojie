@@ -39,7 +39,10 @@
                                         </select>
                                    	</div>
                                       <button id="mySubmit" class="btn btn-primary fl">查 询</button>
-                                        <button class="btn btn-success pull-right btn-addPosition" type="button">
+                                       <button class="btn btn-success pull-right btn-csvDownload" type="button">
+                                            		导出
+                                        </button>
+                                        <button class="marginR10 btn btn-success pull-right btn-addPosition" type="button">
                                             <i class="icon-plus"></i>
                                             		新增职称
                                         </button>
@@ -198,6 +201,10 @@
 	 }
 	</script>
     <form action="${contextPath}/service/position/getAllPosition" method="post" id="myForm">
+    	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
+    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
+    </form>
+      <form action="${contextPath}/service/position/csvDownLoadAllPosition" method="post" id="csvDownLoadAllPosition">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
     </form>

@@ -45,7 +45,10 @@
                                         </select>
                                    	</div>
                                      <button id="mySubmit" class="btn btn-primary fl">查 询</button>
-                                     <button class="btn btn-success pull-right btn-addSalary" type="button">
+                                     <button class="btn btn-success pull-right btn-csvDownload" type="button">
+                                            		导出
+                                        </button>
+                                     <button class="marginR10 btn btn-success pull-right btn-addSalary" type="button">
                                             <i class="icon-plus"></i>
                                         		    新增本月工资
                                      </button>
@@ -294,6 +297,11 @@
     <!-- Footer ends -->
     <script>seajs.use("baojie/getAllSalary.js");</script>
     <form action="${contextPath}/service/salary/getAllSalary" method="post" id="myForm">
+    	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
+    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
+    	<input type="hidden" name="time" value="${searchTime}" id="time"/>
+    </form>
+     <form action="${contextPath}/service/salary/csvDownLoadAllSalary" method="post" id="csvDownLoadAllSalary">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
     	<input type="hidden" name="time" value="${searchTime}" id="time"/>

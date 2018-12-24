@@ -44,6 +44,18 @@ $(function(){
 		}
 	});
 	
+	//导出方法
+	$(".btn-csvDownload").on("click",function(){
+		var pageNumber = $(this).attr("data-pagenum");
+		var searchName = $("#searchName").val();
+		var flag = confirm("确认导出？");
+		if(flag){
+			$("#pageNumber").val(pageNumber);
+			$("#searchContractName").val(searchName);
+			$("#csvDownLoadAllContract").submit();
+		}
+	});
+	
 	//修改员工
 	$(".btn-update").on("click",function(){
 		var contractId = $(this).attr("data-contractId");

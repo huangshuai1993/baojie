@@ -40,7 +40,10 @@
                                         <input  id="searchName" class="form-control searchTxt" type="text" placeholder="楼盘名称" value="${searchName}">
                                      </div>
                                      <button id="mySubmit" class="btn btn-primary fl">查 询</button>
-                                     <button class="btn btn-success pull-right btn-addTower" type="button">
+                                    <button class="btn btn-success pull-right btn-csvDownload" type="button">
+                                            		导出
+                                        </button>
+                                     <button class="marginR10 btn btn-success pull-right btn-addTower" type="button">
                                             <i class="icon-plus"></i>
                                         		    新增楼盘
                                      </button>
@@ -201,6 +204,10 @@
     <!-- Footer ends -->
     <script>seajs.use("baojie/getAllTower.js");</script>
     <form action="${contextPath}/service/btower/getAllTower" method="post" id="myForm">
+    	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
+    	<input type="hidden" name="towerName" value="${searchName}" id="searchTowerName"/>
+    </form>
+     <form action="${contextPath}/service/btower/csvDownLoadAllTower" method="post" id="csvDownLoadAllTower">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     	<input type="hidden" name="towerName" value="${searchName}" id="searchTowerName"/>
     </form>

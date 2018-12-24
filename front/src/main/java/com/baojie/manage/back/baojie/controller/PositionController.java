@@ -52,7 +52,7 @@ public class PositionController extends BaseController {
 	 * @return
 	 * @throws Exception 
 	 */
-	@RequestMapping("/csvDownLoadAllMaterial")
+	@RequestMapping("/csvDownLoadAllPosition")
 	public void csvDownLoadAllMaterial(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, Long towerId) throws Exception {
 		logger.info(
 				"csvDownLoadAllMaterial [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId=" + towerId);

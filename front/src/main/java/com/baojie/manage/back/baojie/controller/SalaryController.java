@@ -53,7 +53,7 @@ public class SalaryController extends BaseController {
 	 * @return
 	 * @throws Exception 
 	 */
-	@RequestMapping("/csvDownLoadAllMaterial")
+	@RequestMapping("/csvDownLoadAllSalary")
 	public void csvDownLoadAllMaterial(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, Long towerId,String searchName,String time) throws Exception {
 		logger.info(
 				"csvDownLoadAllMaterial [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId=" + towerId);
