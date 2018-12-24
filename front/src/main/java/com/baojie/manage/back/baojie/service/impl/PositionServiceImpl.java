@@ -21,6 +21,7 @@ import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
+import com.google.common.collect.Lists;
 
 @Service("positionService")
 public class PositionServiceImpl extends BaseService implements PositionService {
@@ -44,6 +45,8 @@ public class PositionServiceImpl extends BaseService implements PositionService 
 				if (!CollectionUtils.isEmpty(list)) {
 					List<PositionForm> list2 = BeanUtils.copyByList(list, PositionForm.class);
 					page = new PageResults<PositionForm>(list2, pageNumber, pageSize, positionList.getTotalCount());
+				}else{
+					page = new PageResults<PositionForm>(Lists.newArrayList(), pageNumber, pageSize, positionList.getTotalCount());
 				}
 			}
 		} catch (Exception e) {

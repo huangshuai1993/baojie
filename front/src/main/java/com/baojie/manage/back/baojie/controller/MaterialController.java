@@ -1,20 +1,13 @@
 package com.baojie.manage.back.baojie.controller;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.util.BeanUtil;
-import com.google.common.collect.Lists;
-
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,6 +30,7 @@ import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.common.util.PageUtil;
 import com.baojie.manage.base.controller.BaseController;
 import com.baojie.manage.base.exception.BizException;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 @Controller
 @RequestMapping("/material")
@@ -71,9 +65,6 @@ public class MaterialController extends BaseController {
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
 		PageResults<MaterialForm> allMaterial = materialService.getAllMaterial(pageNumber, pageSize, towerId);
-		if(CollectionUtils.isEmpty(allMaterial.getList())){
-			allMaterial.setList(Lists.newArrayList());
-		}
 		List<MaterialDownLoad> list = BeanUtils.copyByList(allMaterial.getList(), MaterialDownLoad.class);
 		List<Map<String, Object>> csvData = list.stream().map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
 		})).collect(Collectors.toList());
@@ -89,7 +80,8 @@ public class MaterialController extends BaseController {
              for (int i = 2; i <= totalPageNum; i++) {
             	 pageNumber = i;
             	 PageResults<MaterialForm> material = materialService.getAllMaterial(pageNumber, pageSize, towerId);
-                     csvData = material.getList().stream()
+            	 list = BeanUtils.copyByList(material.getList(), MaterialDownLoad.class);    
+            	 csvData =list.stream()
                          .map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
                          })).collect(Collectors.toList());
 	                 CsvDownloadUtil.writeData(csvHeader, csvData, response);

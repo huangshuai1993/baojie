@@ -21,6 +21,7 @@ import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
+import com.google.common.collect.Lists;
 
 @Service("btowerService")
 public class BTowerServiceImpl extends BaseService implements BTowerService {
@@ -42,6 +43,8 @@ public class BTowerServiceImpl extends BaseService implements BTowerService {
 				if (!CollectionUtils.isEmpty(list)) {
 					List<TowerForm> list2 = BeanUtils.copyByList(list, TowerForm.class);
 					page = new PageResults<TowerForm>(list2, pageNumber, pageSize, towerList.getTotalCount());
+				}else{
+					page = new PageResults<TowerForm>(Lists.newArrayList(), pageNumber, pageSize, towerList.getTotalCount());
 				}
 			}
 		} catch (Exception e) {

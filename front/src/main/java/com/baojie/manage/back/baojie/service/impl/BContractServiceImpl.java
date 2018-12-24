@@ -22,6 +22,7 @@ import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
+import com.google.common.collect.Lists;
 
 @Service("bcontractService")
 public class BContractServiceImpl extends BaseService implements BContractService {
@@ -49,6 +50,8 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 						contractForm.setStatusName(ContractStatusEnums.getName(contractForm.getStatus()));
 					}
 					page = new PageResults<ContractForm>(list2, pageNumber, pageSize, contractPageList.getTotalCount());
+				}else{
+					page = new PageResults<ContractForm>(Lists.newArrayList(), pageNumber, pageSize, contractPageList.getTotalCount());
 				}
 			}
 		} catch (Exception e) {

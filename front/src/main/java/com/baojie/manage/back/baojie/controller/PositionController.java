@@ -3,8 +3,10 @@ package com.baojie.manage.back.baojie.controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,15 +15,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.baojie.manage.back.baojie.form.MaterialDownLoad;
+import com.baojie.manage.back.baojie.form.MaterialForm;
+import com.baojie.manage.back.baojie.form.PositionDownLoad;
 import com.baojie.manage.back.baojie.form.PositionForm;
 import com.baojie.manage.back.baojie.form.TowerForm;
 import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.back.baojie.service.PositionService;
 import com.baojie.manage.base.common.consts.Const;
+import com.baojie.manage.base.common.util.BeanUtils;
+import com.baojie.manage.base.common.util.CsvDownloadUtil;
+import com.baojie.manage.base.common.util.DateUtil;
+import com.baojie.manage.base.common.util.JsonUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.common.util.PageUtil;
 import com.baojie.manage.base.controller.BaseController;
 import com.baojie.manage.base.exception.BizException;
+import com.fasterxml.jackson.core.type.TypeReference;
 
 @Controller
 @RequestMapping("/position")
@@ -31,6 +41,55 @@ public class PositionController extends BaseController {
 	
 	@Autowired
 	private BTowerService towerService;
+	
+	/**
+	 * 导出csv表格
+	 * 
+	 * @param model
+	 * @param pageNumber
+	 * @param pageSize
+	 * @param towerId
+	 * @return
+	 * @throws Exception 
+	 */
+	@RequestMapping("/csvDownLoadAllMaterial")
+	public void csvDownLoadAllMaterial(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, Long towerId) throws Exception {
+		logger.info(
+				"csvDownLoadAllMaterial [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId=" + towerId);
+		if (pageNumber == null) {
+			pageNumber = 1;
+		}
+		if (pageSize == null) {
+			pageSize = 30;
+		}
+		PageUtil pageUtil = new PageUtil(pageSize);
+		pageUtil.setPageIndex(pageNumber);
+		PageResults<PositionForm> allPosition = positionService.getAllPosition(pageNumber, pageSize, towerId);
+		List<PositionDownLoad> list = BeanUtils.copyByList(allPosition.getList(), PositionDownLoad.class);
+		List<Map<String, Object>> csvData = list.stream().map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
+		})).collect(Collectors.toList());
+		long totalCount = allPosition.getTotalCount();
+		String sheetNamePrefix = DateUtil.getDateStr(DateUtil.TIME_STR_FORMAT);
+         Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(MaterialForm.class);
+         CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
+         CsvDownloadUtil.writeData(csvHeader, csvData, response);
+         csvData.clear();
+         //总页数
+         long totalPageNum = (totalCount / pageSize) + (totalCount % pageSize == 0 ? 0 : 1);
+         if (totalPageNum > 1) {
+             for (int i = 2; i <= totalPageNum; i++) {
+            	 pageNumber = i;
+            	 PageResults<PositionForm> position = positionService.getAllPosition(pageNumber, pageSize, towerId);
+            	 list = BeanUtils.copyByList(position.getList(), PositionDownLoad.class);    
+            	 csvData =list.stream()
+                         .map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
+                         })).collect(Collectors.toList());
+	                 CsvDownloadUtil.writeData(csvHeader, csvData, response);
+	                 csvData.clear();
+             }
+         }
+	}
+	
 
 	/**
 	 * 获取所有职位信息

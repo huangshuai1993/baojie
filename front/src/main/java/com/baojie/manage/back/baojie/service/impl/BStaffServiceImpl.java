@@ -16,6 +16,8 @@ import com.baojie.manage.back.baojie.dao.entity.PositionEntity;
 import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.StaffForm;
+import com.baojie.manage.back.baojie.form.enums.GenderEnum;
+import com.baojie.manage.back.baojie.form.enums.WorkStatusEnum;
 import com.baojie.manage.back.baojie.service.BStaffService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
 import com.baojie.manage.base.common.consts.Const;
@@ -24,6 +26,7 @@ import com.baojie.manage.base.common.util.IdCardUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
+import com.google.common.collect.Lists;
 
 @Service("bstaffService")
 public class BStaffServiceImpl extends BaseService implements BStaffService {
@@ -46,7 +49,13 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 				List<StaffEntity> list = staffList.getList();
 				if (!CollectionUtils.isEmpty(list)) {
 					List<StaffForm> list2 = BeanUtils.copyByList(list, StaffForm.class);
+					for (StaffForm staffForm : list2) {
+						staffForm.setStatusName(WorkStatusEnum.getName(staffForm.getStatus()));
+						staffForm.setGenderName(GenderEnum.getName(staffForm.getGender()));
+					}
 					response = new PageResults<StaffForm>(list2, pageNumber, pageSize, staffList.getTotalCount());
+				}else{
+					response = new PageResults<StaffForm>(Lists.newArrayList(), pageNumber, pageSize, staffList.getTotalCount());
 				}
 			}
 		} catch (Exception e) {

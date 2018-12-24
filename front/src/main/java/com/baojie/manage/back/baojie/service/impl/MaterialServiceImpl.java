@@ -22,6 +22,7 @@ import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
+import com.google.common.collect.Lists;
 
 @Service("materialService")
 public class MaterialServiceImpl extends BaseService implements MaterialService {
@@ -49,6 +50,8 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 					}
 					
 					page = new PageResults<MaterialForm>(list2, pageNumber, pageSize, materialList.getTotalCount());
+				}else{
+					page = new PageResults<MaterialForm>(Lists.newArrayList(), pageNumber, pageSize, materialList.getTotalCount());
 				}
 			}
 		} catch (Exception e) {

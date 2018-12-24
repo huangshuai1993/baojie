@@ -7,46 +7,39 @@ import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-public class StaffForm implements Serializable {
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+@ApiModel("员工管理downLoad")
+public class StaffDownLoad implements Serializable {
+	private static final long serialVersionUID = 8687447271012642181L;
 
-	private static final long serialVersionUID = -4014496338243043017L;
-
-	private Long id;// id
-
+	@ApiModelProperty("员工姓名")
 	private String name;
-
+	@ApiModelProperty("身份证号")
 	private String idCard;
-
+	@ApiModelProperty("年龄")
 	private int age;
-
-	private int gender;// 1男，0女
+	@ApiModelProperty("性别")
 	private String genderName;// 1男，0女
+	@ApiModelProperty("出生日期")
+	private String birthday;
+	@ApiModelProperty("手机号")
 	private String phone;
-
-	private Long towerId;
-
+	@ApiModelProperty("所属楼盘")
 	private String towerName;
-
-	private int status;// 0在职，1离职
-	
+	@ApiModelProperty("职位")
+	private String positionName;
+	@ApiModelProperty("工作状态")
 	private String statusName;// 0在职，1离职
-
+	@ApiModelProperty("备注")
 	private String memo;
+	@ApiModelProperty("创建时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date created;// 创建时间
+	@ApiModelProperty("修改时间")
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date updated;// 修改时间
-
-	/**
-	 * 状态 默认1可用
-	 */
-
-	private int dataFlag = 1;
 	
-	private Long positionId;
-	private String positionName;
-	
-	private String birthday;
 
 	
 	public String getBirthday() {
@@ -57,13 +50,6 @@ public class StaffForm implements Serializable {
 		this.birthday = birthday;
 	}
 
-	public Long getTowerId() {
-		return towerId;
-	}
-
-	public void setTowerId(Long towerId) {
-		this.towerId = towerId;
-	}
 
 	public String getTowerName() {
 		return towerName;
@@ -85,13 +71,6 @@ public class StaffForm implements Serializable {
 		return created;
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public String getName() {
 		return name;
@@ -117,12 +96,12 @@ public class StaffForm implements Serializable {
 		this.age = age;
 	}
 
-	public int getGender() {
-		return gender;
+	public String getGenderName() {
+		return genderName;
 	}
 
-	public void setGender(int gender) {
-		this.gender = gender;
+	public void setGenderName(String genderName) {
+		this.genderName = genderName;
 	}
 
 	public String getPhone() {
@@ -133,13 +112,6 @@ public class StaffForm implements Serializable {
 		this.phone = phone;
 	}
 
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
 
 	public Date getUpdated() {
 		return updated;
@@ -149,13 +121,6 @@ public class StaffForm implements Serializable {
 		this.updated = updated;
 	}
 
-	public int getDataFlag() {
-		return dataFlag;
-	}
-
-	public void setDataFlag(int dataFlag) {
-		this.dataFlag = dataFlag;
-	}
 
 	public void setCreated(Date created) {
 		this.created = created;
@@ -165,14 +130,6 @@ public class StaffForm implements Serializable {
 	public String toString() {
 		String[] others = new String[] {};
 		return ReflectionToStringBuilder.toStringExclude(this, others);
-	}
-
-	public Long getPositionId() {
-		return positionId;
-	}
-
-	public void setPositionId(Long positionId) {
-		this.positionId = positionId;
 	}
 
 	public String getPositionName() {
@@ -190,12 +147,7 @@ public class StaffForm implements Serializable {
 	public void setStatusName(String statusName) {
 		this.statusName = statusName;
 	}
+	
+	
 
-	public String getGenderName() {
-		return genderName;
-	}
-
-	public void setGenderName(String genderName) {
-		this.genderName = genderName;
-	}
 }
