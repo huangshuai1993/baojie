@@ -52,11 +52,8 @@ public class CsvDownloadUtil {
 			}
 			sb.append("\n");
 		}
-		logger.info("设置自动机吗");
 		ServletOutputStream out = response.getOutputStream();
-		out.write(new byte []{( byte ) 0xEF ,( byte ) 0xBB ,( byte ) 0xBF });//加上bom头，才不会中文乱码 
 		out.write(sb.toString().getBytes());
-		logger.info("开始生成csv文件");
 		out.flush();
 	}
 
@@ -76,6 +73,9 @@ public class CsvDownloadUtil {
 		response.setCharacterEncoding("utf-8");
 		response.setHeader("content-disposition", "attachment;filename=" + fileName);
 		response.setContentType("application/octet-stream;file-name=" + fileName);
+		ServletOutputStream out = response.getOutputStream();
+		out.write(new byte []{( byte ) 0xEF ,( byte ) 0xBB ,( byte ) 0xBF });//加上bom头，才不会中文乱码 
+		out.flush();
 		// 写入第一行header
 		List header = Arrays.asList(csvHeader);
 		writeData(csvHeader, header, response);

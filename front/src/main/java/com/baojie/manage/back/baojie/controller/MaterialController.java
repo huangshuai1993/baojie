@@ -4,12 +4,17 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.util.BeanUtil;
+import com.google.common.collect.Lists;
+
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,12 +22,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.baojie.manage.back.baojie.form.MaterialDownLoad;
 import com.baojie.manage.back.baojie.form.MaterialForm;
 import com.baojie.manage.back.baojie.form.TowerForm;
 import com.baojie.manage.back.baojie.form.enums.MaterialTypeEnum;
 import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.back.baojie.service.MaterialService;
 import com.baojie.manage.base.common.consts.Const;
+import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.CsvDownloadUtil;
 import com.baojie.manage.base.common.util.DateUtil;
 import com.baojie.manage.base.common.util.JsonUtils;
@@ -64,7 +71,11 @@ public class MaterialController extends BaseController {
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
 		PageResults<MaterialForm> allMaterial = materialService.getAllMaterial(pageNumber, pageSize, towerId);
-		List<Map<String, Object>> csvData = allMaterial.getList().stream().map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
+		if(CollectionUtils.isEmpty(allMaterial.getList())){
+			allMaterial.setList(Lists.newArrayList());
+		}
+		List<MaterialDownLoad> list = BeanUtils.copyByList(allMaterial.getList(), MaterialDownLoad.class);
+		List<Map<String, Object>> csvData = list.stream().map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
 		})).collect(Collectors.toList());
 		long totalCount = allMaterial.getTotalCount();
 		String sheetNamePrefix = DateUtil.getDateStr(DateUtil.TIME_STR_FORMAT);
