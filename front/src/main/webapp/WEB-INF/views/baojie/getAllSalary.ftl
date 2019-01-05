@@ -36,7 +36,7 @@
 										<input class="Wdate form-control dtpicker validate[required] " type="text"  id="timeValue" value="${searchTime}" placeholder="工资时间" name="minTimeValue"  onclick="WdatePicker({autoPickDate:'true',dateFmt:'yyyy-MM'})" style="width: 150px;height:32px;" />
 									</div>
 									</div>
-                                    <div class="col-lg-4">
+                                    <div class="col-lg-3">
                                         <select class="form-control" id="searchTowerIds">
                                         	<option value="">选择所属楼盘</option>
                                             <#list towerList as tower>
@@ -82,7 +82,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <#if allTowerList ??>
+                                        <#if allSalary ??>
                                         	<#list  allSalary as salary>
 		                                        <tr>
 		                                        	<td>${salary.id}</td>
@@ -106,8 +106,8 @@
 	                                            	<td>${salary.created}</td>
 	                                            	<td>${salary.updated}</td>
 		                                            <td>
-		                                                <button class="btn btn-xs btn-warning btn-update" data-id=${tower.towerId} title="修改"><i class="icon-pencil" > 修改</i></button>
-		                                                <button class="btn btn-xs btn-danger btn-delete" data-id=${tower.towerId} title="删除"><i class="icon-del" > 删除</i></button>
+		                                                <button class="btn btn-xs btn-warning btn-update" data-id=${salary.id} title="修改"><i class="icon-pencil" > 修改</i></button>
+		                                                <button class="btn btn-xs btn-danger btn-delete" data-id=${salary.id} title="删除"><i class="icon-del" > 删除</i></button>
 		                                            </td>
 		                                        </tr>
 	                                        </#list>

@@ -11,7 +11,7 @@ public interface SalaryService {
 	public PageResults<SalaryForm> getAllSalary(Integer pageNumber, Integer pageSize, Long towerId,
 			String searchName,String time) throws BizException;
 	
-	public Integer addSalaryMonth() throws BizException;
+	public Integer addSalaryMonth() throws Exception;
 	
 	public Map<String, Object> getSalaryInfo(Long id)throws BizException;
 	

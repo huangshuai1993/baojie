@@ -23,7 +23,7 @@ $(function(){
 	//提交方法,(参数数值，当前页数)
 	function searcher(searchTowerIds,timeValue,pageNumber ){
 		$("#pageNumber").val(pageNumber);
-		$("#searchTower").val(searchName);
+		$("#searchTower").val(searchTowerIds);
 		$("#time").val(timeValue);
 		$("#myForm").submit();
 	}
@@ -36,7 +36,7 @@ $(function(){
 		var flag = confirm("确认导出？");
 		if(flag){
 			$("#pageNumber").val(pageNumber);
-			$("#searchTower").val(searchName);
+			$("#searchTower").val(searchTowerIds);
 			$("#time").val(timeValue);
 			$("#csvDownLoadAllSalary").submit();
 		}

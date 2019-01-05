@@ -259,6 +259,9 @@ public abstract class AbstractHibernateEntityDao<T extends IEntity> {
 				return (Long) query.uniqueResult();
 			}
 		});
+		if(count == null){
+			return 0L;
+		}
 		return count.longValue();
 	}
 

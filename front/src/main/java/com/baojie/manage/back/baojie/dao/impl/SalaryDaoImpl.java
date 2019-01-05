@@ -31,7 +31,7 @@ public class SalaryDaoImpl extends AbstractHibernateEntityDao<SalaryEntity> impl
 			@SuppressWarnings("unchecked")
 			@Override
 			public List<SalaryEntity> doInHibernate(Session session) throws HibernateException {
-				Criteria criteria = session.createCriteria(PositionEntity.class);
+				Criteria criteria = session.createCriteria(SalaryEntity.class);
 				if (towerId != null) {
 					criteria.add(Restrictions.eq("towerId", towerId));
 				}
@@ -58,7 +58,7 @@ public class SalaryDaoImpl extends AbstractHibernateEntityDao<SalaryEntity> impl
 		Long count = this.getHibernateTemplate().execute(new HibernateCallback<Long>() {
 			@Override
 			public Long doInHibernate(Session session) throws HibernateException {
-				Criteria criteria = session.createCriteria(PositionEntity.class);
+				Criteria criteria = session.createCriteria(SalaryEntity.class);
 				if (towerId != null) {
 					criteria.add(Restrictions.eq("towerId", towerId));
 				}
@@ -78,7 +78,7 @@ public class SalaryDaoImpl extends AbstractHibernateEntityDao<SalaryEntity> impl
 	@Override
 	public long queryCountSalaryByMonth(String time) throws BizException {
 		Map<String,Object> map = new HashMap<>();
-		String hql  = "from SalaryEntity e where  e.salaryMonth=:salaryMonth";
+		String hql  = "from SalaryEntity e where e.salaryMonth=:salaryMonth";
 		map.put("salaryMonth", time);
 		return selectRowCount(hql,map);
 	}

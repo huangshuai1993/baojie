@@ -66,7 +66,7 @@ public class BContractController extends BaseController {
 		})).collect(Collectors.toList());
 		long totalCount = allContract.getTotalCount();
 		String sheetNamePrefix = DateUtil.getDateStr(DateUtil.TIME_STR_FORMAT);
-         Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(ContractForm.class);
+         Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(ContractDownLoad.class);
          CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
          CsvDownloadUtil.writeData(csvHeader, csvData, response);
          csvData.clear();

@@ -7,9 +7,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baojie.manage.back.baojie.dao.BStaffDao;
 import com.baojie.manage.back.baojie.dao.BTowerDao;
@@ -69,7 +71,8 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 	}
 
 	@Override
-	public Integer addSalaryMonth() throws BizException {
+	@Transactional
+	public Integer addSalaryMonth() throws Exception{
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------SalaryServiceImpl.addSalaryMonth------------begin-->");
 		}
@@ -79,7 +82,7 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 			String date = DateUtil.getDateString(new Date(), DateUtil.DATESHOWFORMAT).substring(0,7);
 			//查询是否已经生成过当月工资
 			long count = salaryDao.queryCountSalaryByMonth(date);
-			if(count < 1){
+			if(count > 1){
 				return 2;
 			}
 			//查询所有楼盘  按楼盘生成员工工资
@@ -88,6 +91,7 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 				return response;
 			}
 			for (TowerEntity tower : allTower) {
+				//校验
 				//查询楼盘下员工   职称
 				List<PositionEntity> positionList = positionDao.getPositionListByTowerId(tower.getTowerId());
 				if(CollectionUtils.isEmpty(positionList)){
@@ -99,6 +103,14 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 				if(CollectionUtils.isEmpty(staffByTowerId)){
 					return response;
 				}
+			}
+			for (TowerEntity tower : allTower) {
+				//生成
+				//查询楼盘下员工   职称
+				List<PositionEntity> positionList = positionDao.getPositionListByTowerId(tower.getTowerId());
+				Map<Long,PositionEntity> map = positionList.stream().collect(Collectors.toMap(o->o.getPositionId(), i->i));
+				//查询所有楼盘下人员
+				List<StaffEntity> staffByTowerId = staffDao.getStaffByTowerId(tower.getTowerId());
 				SalaryEntity entity = new SalaryEntity();
 				for (StaffEntity staff : staffByTowerId) {
 					entity.setStaffId(staff.getId());
@@ -116,10 +128,11 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 					salaryDao.insert(entity);
 				}
 			}
+			
 			response = 1;
 		} catch (Exception e) {
 			logger.error("SalaryServiceImpl.addSalaryMonth发生异常", e);
-			throw new BizException(ExampleExCode.EXAMPLE_NOT_FOUND);
+			throw new Exception("方法异常");
 		} finally {
 			if (logger.isDebugEnabled()) {
 				logger.debug("--------------SalaryServiceImpl.addSalaryMonth------------end-->");
