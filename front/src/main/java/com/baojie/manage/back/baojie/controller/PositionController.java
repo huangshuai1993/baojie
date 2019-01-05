@@ -70,7 +70,7 @@ public class PositionController extends BaseController {
 		})).collect(Collectors.toList());
 		long totalCount = allPosition.getTotalCount();
 		String sheetNamePrefix = DateUtil.getDateStr(DateUtil.TIME_STR_FORMAT);
-         Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(MaterialForm.class);
+         Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(PositionDownLoad.class);
          CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
          CsvDownloadUtil.writeData(csvHeader, csvData, response);
          csvData.clear();

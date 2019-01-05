@@ -69,7 +69,7 @@ public class BStaffController extends BaseController {
 		})).collect(Collectors.toList());
 		long totalCount = allStaff.getTotalCount();
 		String sheetNamePrefix = DateUtil.getDateStr(DateUtil.TIME_STR_FORMAT);
-         Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(MaterialForm.class);
+         Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(StaffForm.class);
          CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
          CsvDownloadUtil.writeData(csvHeader, csvData, response);
          csvData.clear();
