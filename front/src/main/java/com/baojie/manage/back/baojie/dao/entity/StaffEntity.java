@@ -194,4 +194,12 @@ public class StaffEntity extends BaseEntity {
 		return ReflectionToStringBuilder.toStringExclude(this, others);
 	}
 
+	public String getBirthday() {
+		return birthday;
+	}
+
+	public void setBirthday(String birthday) {
+		this.birthday = birthday;
+	}
+
 }

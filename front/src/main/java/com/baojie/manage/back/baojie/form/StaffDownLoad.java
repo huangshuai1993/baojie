@@ -11,8 +11,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 @ApiModel("员工管理downLoad")
 public class StaffDownLoad implements Serializable {
-	private static final long serialVersionUID = 8687447271012642181L;
 
+	private static final long serialVersionUID = -8962790558205609276L;
 	@ApiModelProperty("员工姓名")
 	private String name;
 	@ApiModelProperty("身份证号")
@@ -34,10 +34,10 @@ public class StaffDownLoad implements Serializable {
 	@ApiModelProperty("备注")
 	private String memo;
 	@ApiModelProperty("创建时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date created;// 创建时间
 	@ApiModelProperty("修改时间")
-	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	private Date updated;// 修改时间
 	
 

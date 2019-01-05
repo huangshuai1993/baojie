@@ -50,10 +50,10 @@ $(function(){
 	
 	//删除方法
 	$(".btn-delete").on("click",function(){
-		var id = $(this).attr("data-id");
+		var staffId = $(this).attr("data-staffId");
 		var flag = confirm("确定删除？");
 		if(flag){
-			$.post(root+"/service/bstaff/deleteStaff",{"id":id},function(data){
+			$.post(root+"/service/bstaff/deleteStaff",{"id":staffId},function(data){
 				if(data.retCode){
 					alert("删除成功!");
 					window.location.reload(true);
@@ -67,16 +67,16 @@ $(function(){
 	
 	//修改员工
 	$(".btn-update").on("click",function(){
-		var id = $(this).attr("data-id");
-		$.post(root+"/service/bstaff/getStaffInfo",{"id":id},function(data){
+		var staffId = $(this).attr("data-staffId");
+		$.post(root+"/service/bstaff/getStaffInfo",{"id":staffId},function(data){
 			if(data.retCode){
 				$("#updatebStaff").show();
-				var e = data.bstaff;
+				var e = data.staff;
 				var staffId = $("#staffId").val(e.id);
 				var name = $("#name").val(e.name);
 				var idCard = $("#idCard").val(e.idCard);
 				var gender=$("input[name='gender'][value='"+e.gender+"']").prop("checked","checked");
-				var birthday = $("#birthday").val(e.birthdayStr);
+				var birthday = $("#birthday").val(e.birthday);
 				var phone = $("#phone").val(e.phone);
 				var towerId = $("#towerIds").val(e.towerId);
 				var positionId = $("#positionIds").val(e.positionId);

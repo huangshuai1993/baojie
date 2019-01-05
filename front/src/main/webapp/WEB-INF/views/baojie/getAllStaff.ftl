@@ -93,8 +93,8 @@
 		                                            <td>${staff.created}</td>
 		                                            <td>${staff.updated}</td>
 		                                            <td>
-		                                                <button class="btn btn-xs btn-warning btn-update" data-id=${staff.id} title="编辑"><i class="icon-pencil" > 编辑</i></button>
-		                                                <button class="btn btn-xs btn-danger btn-delete" data-id=${staff.id} title="删除"><i class="icon-del" > 删除</i></button>
+		                                                <button class="btn btn-xs btn-warning btn-update" data-staffId=${staff.id} title="编辑"><i class="icon-pencil" > 编辑</i></button>
+		                                                <button class="btn btn-xs btn-danger btn-delete" data-staffId=${staff.id} title="删除"><i class="icon-del" > 删除</i></button>
 		                                            </td>
 		                                        </tr>
 	                                        </#list>

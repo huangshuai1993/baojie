@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baojie.manage.back.baojie.form.MaterialForm;
 import com.baojie.manage.back.baojie.form.StaffDownLoad;
 import com.baojie.manage.back.baojie.form.StaffForm;
 import com.baojie.manage.back.baojie.form.TowerForm;
@@ -69,7 +68,7 @@ public class BStaffController extends BaseController {
 		})).collect(Collectors.toList());
 		long totalCount = allStaff.getTotalCount();
 		String sheetNamePrefix = DateUtil.getDateStr(DateUtil.TIME_STR_FORMAT);
-         Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(StaffForm.class);
+         Map<String, String> csvHeader = CsvDownloadUtil.getCSVHeader(StaffDownLoad.class);
          CsvDownloadUtil.writeHeader(csvHeader, sheetNamePrefix, response);
          CsvDownloadUtil.writeData(csvHeader, csvData, response);
          csvData.clear();

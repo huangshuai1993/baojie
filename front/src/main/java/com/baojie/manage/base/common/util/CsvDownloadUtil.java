@@ -131,7 +131,10 @@ public class CsvDownloadUtil {
 		String returnVal = strVal;
 		// 是数字直接加=""返回
 		if (isNumeric(returnVal)) {
-			return returnVal;
+			if(returnVal.length()<11){
+				return returnVal;
+			}
+			return "''"+returnVal+"''";
 		} else {
 			// 加空格避免日期格式化
 			returnVal = " " + returnVal;

@@ -20,6 +20,7 @@ public class StaffForm implements Serializable {
 	private int age;
 
 	private int gender;// 1男，0女
+	private String birthday;
 	private String genderName;// 1男，0女
 	private String phone;
 
@@ -28,7 +29,7 @@ public class StaffForm implements Serializable {
 	private String towerName;
 
 	private int status;// 0在职，1离职
-	
+
 	private String statusName;// 0在职，1离职
 
 	private String memo;
@@ -42,13 +43,10 @@ public class StaffForm implements Serializable {
 	 */
 
 	private int dataFlag = 1;
-	
+
 	private Long positionId;
 	private String positionName;
-	
-	private String birthday;
 
-	
 	public String getBirthday() {
 		return birthday;
 	}
