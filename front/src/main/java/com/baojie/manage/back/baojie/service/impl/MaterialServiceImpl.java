@@ -37,14 +37,14 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 	private TowerDao towerDao;
 
 	@Override
-	public PageResults<MaterialForm> getAllMaterial(Integer pageNumber, Integer pageSize, Long towerId)
-			throws BizException {
+	public PageResults<MaterialForm> getAllMaterial(Integer pageNumber, Integer pageSize, Long towerId,
+			String beginTime, String endTime) throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------MaterialServiceImpl.getAllMaterial------------begin-->");
 		}
 		PageResults<MaterialForm> page = new PageResults<>();
 		try {
-			List<MaterialEntity> materialList = materialDao.getMaterialList(pageNumber, pageSize, towerId);
+			List<MaterialEntity> materialList = materialDao.getMaterialList(pageNumber, pageSize, towerId,beginTime,endTime);
 			PageInfo<MaterialEntity> pageInfo = new PageInfo<MaterialEntity>(materialList);
 			if (!CollectionUtils.isEmpty(materialList)) {
 				List<MaterialForm> list2 = BeanUtils.copyByList(materialList, MaterialForm.class);

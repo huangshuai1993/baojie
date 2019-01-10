@@ -32,7 +32,9 @@ $(function(){
 	//查询列表
 	$("#mySubmit").on("click",function(){
 		var searchName = $("#searchTowerIds").val();
-		searcher(searchName,1);
+		var searchBeginTime = $("#beginTime").val();
+		var searchEndTime = $("#endTime").val();
+		searcher(searchName,1,searchBeginTime,searchEndTime);
 	});
 	//删除方法
 	$(".btn-delete").on("click",function(){
@@ -55,10 +57,14 @@ $(function(){
 	$(".btn-csvDownload").on("click",function(){
 		var pageNumber = $(this).attr("data-pagenum");
 		var searchName = $("#searchTowerIds").val();
+		var searchBeginTime = $("#beginTime").val();
+		var searchEndTime = $("#endTime").val();
 		var flag = confirm("确认导出？");
 		if(flag){
 			$("#pageNumber").val(pageNumber);
 			$("#searchTower").val(searchName);
+			$("#searchBeginTime").val(searchBeginTime);
+			$("#searchEndTime").val(searchEndTime);
 			$("#csvDownLoadAllMaterial").submit();
 		}
 	});

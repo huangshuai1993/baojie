@@ -7,7 +7,7 @@ import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 
 public interface MaterialService {
-	public PageResults<MaterialForm> getAllMaterial(Integer pageNumber, Integer pageSize, Long towerId)
+	public PageResults<MaterialForm> getAllMaterial(Integer pageNumber, Integer pageSize, Long towerId,String beginTime,String endTime)
 			throws BizException;
 
 	public Integer addMaterial(MaterialForm materialForm) throws BizException;

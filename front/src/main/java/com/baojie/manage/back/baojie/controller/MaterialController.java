@@ -53,7 +53,7 @@ public class MaterialController extends BaseController {
 	 * @throws Exception 
 	 */
 	@RequestMapping("/csvDownLoadAllMaterial")
-	public void csvDownLoadAllMaterial(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, Long towerId) throws Exception {
+	public void csvDownLoadAllMaterial(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, Long towerId,String beginTime,String endTime) throws Exception {
 		logger.info(
 				"csvDownLoadAllMaterial [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId=" + towerId);
 		if (pageNumber == null) {
@@ -64,7 +64,7 @@ public class MaterialController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<MaterialForm> allMaterial = materialService.getAllMaterial(pageNumber, pageSize, towerId);
+		PageResults<MaterialForm> allMaterial = materialService.getAllMaterial(pageNumber, pageSize, towerId,beginTime,endTime);
 		List<MaterialDownLoad> list = BeanUtils.copyByList(allMaterial.getList(), MaterialDownLoad.class);
 		List<Map<String, Object>> csvData = list.stream().map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
 		})).collect(Collectors.toList());
@@ -79,7 +79,7 @@ public class MaterialController extends BaseController {
          if (totalPageNum > 1) {
              for (int i = 2; i <= totalPageNum; i++) {
             	 pageNumber = i;
-            	 PageResults<MaterialForm> material = materialService.getAllMaterial(pageNumber, pageSize, towerId);
+            	 PageResults<MaterialForm> material = materialService.getAllMaterial(pageNumber, pageSize, towerId,beginTime,endTime);
             	 list = BeanUtils.copyByList(material.getList(), MaterialDownLoad.class);    
             	 csvData =list.stream()
                          .map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
@@ -102,7 +102,7 @@ public class MaterialController extends BaseController {
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllMaterial")
-	public String getAllMaterial(Model model, Integer pageNumber, Integer pageSize, Long towerId) throws BizException {
+	public String getAllMaterial(Model model, Integer pageNumber, Integer pageSize, Long towerId,String beginTime,String endTime) throws BizException {
 		logger.info(
 				"getAllMaterial [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId=" + towerId);
 		if (pageNumber == null) {
@@ -113,7 +113,7 @@ public class MaterialController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<MaterialForm> allMaterial = materialService.getAllMaterial(pageNumber, pageSize, towerId);
+		PageResults<MaterialForm> allMaterial = materialService.getAllMaterial(pageNumber, pageSize, towerId,beginTime,endTime);
 		model.addAttribute("allMaterial", allMaterial.getList());
 		pageUtil.setTotalCount((int) allMaterial.getTotalCount());
 		model.addAttribute("page", pageUtil);
