@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,11 +15,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baojie.manage.back.baojie.form.MaterialDownLoad;
-import com.baojie.manage.back.baojie.form.MaterialForm;
 import com.baojie.manage.back.baojie.form.TowerDownLoad;
 import com.baojie.manage.back.baojie.form.TowerForm;
-import com.baojie.manage.back.baojie.service.BContractService;
 import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.BeanUtils;
@@ -32,7 +28,6 @@ import com.baojie.manage.base.common.util.PageUtil;
 import com.baojie.manage.base.controller.BaseController;
 import com.baojie.manage.base.exception.BizException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.Lists;
 
 @Controller
 @RequestMapping("/btower")

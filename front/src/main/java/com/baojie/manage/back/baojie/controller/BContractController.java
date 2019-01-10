@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baojie.manage.back.baojie.form.ContractDownLoad;
 import com.baojie.manage.back.baojie.form.ContractForm;
-import com.baojie.manage.back.baojie.form.MaterialForm;
 import com.baojie.manage.back.baojie.service.BContractService;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.BeanUtils;
