@@ -12,87 +12,103 @@
               http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc.xsd
               http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd ">
 	
-	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource"
-		destroy-method="close">
-		<property name="driverClass" value="${com.baojie.audit.jdbc.driver}" />
-		<property name="jdbcUrl" value="${com.baojie.audit.jdbc.url}" />
-		<property name="user" value="${com.baojie.audit.jdbc.user}" />
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource">
+		<property name="driverClassName" value="${com.baojie.audit.jdbc.driver}" />
+		<property name="url" value="${com.baojie.audit.jdbc.url}" />
+		<property name="username" value="${com.baojie.audit.jdbc.user}" />
 		<property name="password" value="${com.baojie.audit.jdbc.password}" />
-		<property name="initialPoolSize" value="${com.baojie.audit.jdbc.initPoolSize}" />
-		<property name="minPoolSize" value="${com.baojie.audit.jdbc.initPoolSize}" />
-		<property name="maxPoolSize" value="${com.baojie.audit.jdbc.maxPoolSize}" />
-		<property name="idleConnectionTestPeriod" value="600" />
-		<property name="maxIdleTime" value="600" />
-		<property name="maxStatements" value="0" />
-		<property name="maxStatementsPerConnection" value="0" />
-		<property name="acquireIncrement" value="5" />
-		<property name="acquireRetryAttempts" value="200" />
-		<property name="acquireRetryDelay" value="180000" />
-	</bean>
-	
-	<bean id="sessionFactory"
-		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="dataSource">
-			<ref bean="dataSource" />
-		</property>
-		
-		 <property name="packagesToScan">
-            <list>
-                <!-- 可以加多个包 -->
-                <value>com.baojie.manage.back.sys.dao.entity</value>
-                <value>com.baojie.manage.back.baojie.dao.entity</value>
-            </list>
-        </property>
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.show_sql">true</prop>
-				<prop key="hibernate.use_sql_comments">false</prop>
-				<prop key="hibernate.generate_statistics">true</prop>
-				<prop key="hibernate.dialect">
-					org.hibernate.dialect.MySQL5InnoDBDialect
-				</prop>
-				<prop key="hibernate.cache.provider_class">
-					org.hibernate.cache.EhCacheProvider
-				</prop>
-				<prop key="jdbc.batch_size">50</prop>
-				<prop key="javax.persistence.validation.mode">none</prop>
-			</props>
+		<property name="initialSize" value="${com.baojie.audit.jdbc.initPoolSize}" />
+		<property name="maxWait" value="10000" /><!-- 配置获取连接等待超时的时间 -->
+		<property name="timeBetweenEvictionRunsMillis" value="60000" /><!-- 
+			配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		<property name="minEvictableIdleTimeMillis" value="300000" /><!-- 
+			配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="true" /><!-- 这里建议配置为TRUE，防止取到的连接不可用 -->
+		<property name="testOnReturn" value="false" />
+		<property name="poolPreparedStatements" value="true" /><!-- 打开PSCache，并且指定每个连接上PSCache的大小 -->
+		<property name="maxPoolPreparedStatementPerConnectionSize"
+			value="20" />
+		<property name="defaultAutoCommit" value="true" /><!-- 这里配置提交方式，默认就是TRUE，可以不用配置 -->
+		<property name="validationQuery" value="select 1 " /><!-- 验证连接有效与否的SQL，不同的数据配置不同 -->
+		<property name="filters" value="stat" />
+		<property name="proxyFilters"><!-- 监控数据库 日志 -->
+			<list>
+				<ref bean="logFilter" />
+				<ref bean="statFilter" />
+				<ref bean="wallFilter" />
+			</list>
 		</property>
 	</bean>
+	<!-- 输出可执行的SQL -->
+	<!-- druid 日志配置 -->
+	<bean id="logFilter" class="com.alibaba.druid.filter.logging.Slf4jLogFilter">
+		<property name="statementExecutableSqlLogEnable" value="true" />
+	</bean>
+	<bean id="statFilter" class="com.alibaba.druid.filter.stat.StatFilter">
+		<property name="slowSqlMillis" value="3000" />
+		<property name="logSlowSql" value="true" />
+		<property name="mergeSql" value="true" />
+	</bean>
+	<bean id="wallFilter" class="com.alibaba.druid.wall.WallFilter">
+		<property name="dbType" value="mysql" />
+		<property name="config" ref="wallFilterConfig" />
+	</bean>
+	<bean id="wallFilterConfig" class="com.alibaba.druid.wall.WallConfig"
+		init-method="init">
+		<property name="dir" value="META-INF/druid/wall/mysql" />
+	</bean>
 	
-	<!-- 定义事务管理器 -->
+	
+	<!-- 注解方式配置事务 -->
+	<tx:annotation-driven transaction-manager="transactionManager" />
+	
+	<!-- 配置事务管理器 -->
 	<bean id="transactionManager"
-		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<property name="sessionFactory" ref="sessionFactory" />
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource" />
 	</bean>
-
+	
+	<!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<!-- 自动扫描mapping.xml文件 -->
+		<!-- <property name="mapperLocations" value="classpath:com/wisdom/cloud/mapper/*/*.xml"></property> -->
+		<property name="typeAliasesPackage" value="com.baojie.manage.mapper" />
+		<property name="plugins">
+			<array>
+				<bean class="com.github.pagehelper.PageHelper">
+					<property name="properties">
+						<value>
+							dialect=mysql
+							offsetAsPageNum=true
+							rowBoundsWithCount=true
+							pageSizeZero=true
+							reasonable=false
+						</value>
+					</property>
+				</bean>
+			</array>
+		</property>
+	</bean>
+	
+	<!-- mapper接口所在包名，Spring会自动查找其下的类 --><!-- scan for mappers and let them be autowired -->
+	<bean class="tk.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="com.baojie.manage.back.*.mapper" />
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+	</bean>
+	<!-- 配置AOP -->
+	<aop:aspectj-autoproxy />
 	<tx:advice id="txAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="insert*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="cancel*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="create*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="save*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="edit*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="remove*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="modify*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="getQrCode" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="pay*" propagation="REQUIRED" rollback-for="Exception"/>
-			<tx:method name="*" propagation="SUPPORTS" read-only="true" />
-		</tx:attributes>
+    <tx:attributes>
+        <tx:method name="*" timeout="120" propagation="REQUIRED" rollback-for="Exception" />
+    </tx:attributes>
 	</tx:advice>
-
+	
 	<aop:config>
 		<aop:advisor 
 			pointcut="execution(* com.baojie.manage.*.*.service..*ServiceImpl.*(..))"
 			advice-ref="txAdvice" />
 	</aop:config>
-	
-	<!-- 配置 HibernateTemplate -->
-    <bean id="hibernateTemplate" class="org.springframework.orm.hibernate5.HibernateTemplate">
-        <property name="sessionFactory" ref="sessionFactory"></property>
-    </bean>
-        
+
 </beans>

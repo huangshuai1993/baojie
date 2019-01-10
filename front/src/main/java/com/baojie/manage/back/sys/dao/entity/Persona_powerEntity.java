@@ -1,17 +1,20 @@
 package com.baojie.manage.back.sys.dao.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import com.baojie.manage.base.dao.BaseEntity;
+import com.baojie.manage.base.common.service.BaseDO;
 
-@Entity
+import tk.mybatis.mapper.annotation.NameStyle;
+
 @Table(name = "sys_persona_power")
-public class Persona_powerEntity extends BaseEntity {
+@NameStyle
+public class Persona_powerEntity extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = -6168897443486562613L;
 

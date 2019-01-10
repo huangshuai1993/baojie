@@ -8,41 +8,38 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baojie.manage.back.common.enums.LoginExCode;
-import com.baojie.manage.back.login.dao.LoginLogDao;
 import com.baojie.manage.back.login.form.Index_MenuForm;
 import com.baojie.manage.back.login.service.LoginService;
 import com.baojie.manage.back.sys.dao.EmployeeDao;
 import com.baojie.manage.back.sys.dao.Employee_personaDao;
 import com.baojie.manage.back.sys.dao.Persona_powerDao;
-import com.baojie.manage.back.sys.dao.PowerDao;
+import com.baojie.manage.back.sys.dao.PowerEntityDao;
 import com.baojie.manage.back.sys.dao.entity.EmployeeEntity;
 import com.baojie.manage.back.sys.dao.entity.Employee_personaEntity;
 import com.baojie.manage.back.sys.dao.entity.Persona_powerEntity;
 import com.baojie.manage.back.sys.dao.entity.PowerEntity;
 import com.baojie.manage.back.sys.dto.EmployeeDto;
 import com.baojie.manage.back.sys.dto.PowerDto;
-import com.baojie.manage.back.sys.service.convertor.EmployeeConvertor;
+import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.MD5Util;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
 
-
-
 @Service("loginService")
+@Transactional
 public class LoginServiceImpl extends BaseService implements LoginService{
+	
 	@Autowired
 	private EmployeeDao employeeDao;
 	@Autowired
-	private LoginLogDao loginLogDao;
-	@Autowired
-	private Employee_personaDao employee_personaDao;
-	@Autowired
-	private PowerDao powerDao;
+	private Employee_personaDao employeePersonaEntityService;
 	@Autowired
 	private Persona_powerDao persona_powerDao;
-	
+	@Autowired
+	private PowerEntityDao powerEntityDao;
 	public EmployeeDto login(String userName, String password) throws BizException {
         EmployeeEntity employee = employeeDao.getEmployeeByUserName(userName);
         if (employee == null) {
@@ -63,13 +60,13 @@ public class LoginServiceImpl extends BaseService implements LoginService{
         }
         //LoginLogEntity loginEntity = new LoginLogEntity(employee.getEmployeeId(), LoginLogResultEnum.OK.getId(),"","");
         //loginLogDao.insert(loginEntity);
-    	EmployeeConvertor emp=new EmployeeConvertor();
-    	EmployeeDto dto = emp.entity2Dto(employee);
+    	EmployeeDto dto = new EmployeeDto();
+    	BeanUtils.copyProperties(employee, dto);
         return dto;
     }
     public List<Index_MenuForm> getMenus(EmployeeDto employee) throws BizException {
 
-        Employee_personaEntity employee_personaEntity = employee_personaDao.getEmployee_personaByEmployeeId(employee.getEmployeeId());
+        Employee_personaEntity employee_personaEntity = employeePersonaEntityService.getEmployee_personaByEmployeeId(employee.getEmployeeId());
         if (employee_personaEntity == null){
              throw new BizException("查询错误");
         }
@@ -84,8 +81,8 @@ public class LoginServiceImpl extends BaseService implements LoginService{
         // 二级菜单
         List<PowerEntity> level_two = null;
         if ("1".equals(employee.getEmployeeType())){//超级管理员拥有所有权限
-            level_one = powerDao.getLevelOne();
-            level_two =  powerDao.getPowerLevelTwo();
+            level_one = powerEntityDao.getLevelOne();
+            level_two =  powerEntityDao.getPowerLevelTwo();
         } else {
             List<Persona_powerEntity> persona_powerEn = persona_powerDao.getEntityByPersonaId(employee_personaEntity.getPersonaId());
             List<Long> powerId = new ArrayList<Long>();
@@ -93,8 +90,8 @@ public class LoginServiceImpl extends BaseService implements LoginService{
                 for (Persona_powerEntity p :persona_powerEn){
                     powerId.add(p.getPowerId());
                 }
-                level_two = powerDao.getPowerByPowerId(powerId);
-                PowerEntity pdto = powerDao.getPowerByParentId(1L);
+                level_two = powerEntityDao.getPowerByPowerId(powerId);
+                PowerEntity pdto = powerEntityDao.getPowerByParentId(1L);
                 if (pdto != null){
                     level_two.add(pdto);
                 }
@@ -107,7 +104,7 @@ public class LoginServiceImpl extends BaseService implements LoginService{
                     powerOneIds.add(id);
                 }
                 Collections.sort(powerOneIds);  
-                level_one = powerDao.getPowerByPowerId(powerOneIds);
+                level_one = powerEntityDao.getPowerByPowerId(powerOneIds);
             }
         }
         List<PowerDto> subMenu_list = null;

@@ -8,10 +8,11 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.baojie.manage.back.baojie.dao.BStaffDao;
-import com.baojie.manage.back.baojie.dao.BTowerDao;
 import com.baojie.manage.back.baojie.dao.PositionDao;
+import com.baojie.manage.back.baojie.dao.StaffDao;
+import com.baojie.manage.back.baojie.dao.TowerDao;
 import com.baojie.manage.back.baojie.dao.entity.PositionEntity;
 import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
@@ -26,37 +27,38 @@ import com.baojie.manage.base.common.util.IdCardUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 
 @Service("bstaffService")
+@Transactional
 public class BStaffServiceImpl extends BaseService implements BStaffService {
 	@Autowired
-	private BStaffDao staffDao;
+	private TowerDao towerDao;
 	@Autowired
-	private BTowerDao towerDao;
+	private StaffDao staffDao;
 	@Autowired
 	private PositionDao positionDao;
 
 	@Override
-	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, Long towerId,String staffName) throws BizException {
+	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, Long towerId, String staffName)
+			throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------BStaffServiceImpl.getAllStaff------------begin-->");
 		}
 		PageResults<StaffForm> response = new PageResults<StaffForm>();
 		try {
-			PageResults<StaffEntity> staffList = staffDao.getStaffList(pageNumber, pageSize, towerId, staffName);
-			if (staffList != null) {
-				List<StaffEntity> list = staffList.getList();
-				if (!CollectionUtils.isEmpty(list)) {
-					List<StaffForm> list2 = BeanUtils.copyByList(list, StaffForm.class);
-					for (StaffForm staffForm : list2) {
-						staffForm.setStatusName(WorkStatusEnum.getName(staffForm.getStatus()));
-						staffForm.setGenderName(GenderEnum.getName(staffForm.getGender()));
-					}
-					response = new PageResults<StaffForm>(list2, pageNumber, pageSize, staffList.getTotalCount());
-				}else{
-					response = new PageResults<StaffForm>(Lists.newArrayList(), pageNumber, pageSize, staffList.getTotalCount());
+			List<StaffEntity> staffList = staffDao.getStaffList(pageNumber, pageSize, towerId, staffName);
+			PageInfo<StaffEntity> pageInfo = new PageInfo<StaffEntity>(staffList);
+			if (!CollectionUtils.isEmpty(staffList)) {
+				List<StaffForm> list2 = BeanUtils.copyByList(staffList, StaffForm.class);
+				for (StaffForm staffForm : list2) {
+					staffForm.setStatusName(WorkStatusEnum.getName(staffForm.getStatus()));
+					staffForm.setGenderName(GenderEnum.getName(staffForm.getGender()));
 				}
+				response = new PageResults<StaffForm>(list2, pageNumber, pageSize, pageInfo.getTotal());
+			} else {
+				response = new PageResults<StaffForm>(Lists.newArrayList(), pageNumber, pageSize, pageInfo.getTotal());
 			}
 		} catch (Exception e) {
 			logger.error("BStaffServiceImpl.getAllStaff发生异常", e);
@@ -80,14 +82,15 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 				return result;
 			}
 			StaffEntity entity = null;
+			Integer i = null;
 			if (staffForm.getId() != null) {
-				entity = staffDao.selectByPK(staffForm.getId());
+				entity = staffDao.queryById(staffForm.getId());
 				if (!staffForm.getTowerId().equals(entity.getTowerId())) {
-					TowerEntity selectByPK = towerDao.selectByPK(staffForm.getTowerId());
+					TowerEntity selectByPK = towerDao.queryById(staffForm.getTowerId());
 					staffForm.setTowerName(selectByPK.getTowerName());
 				}
 				if (!staffForm.getPositionId().equals(entity.getPositionId())) {
-					PositionEntity positionEntity = positionDao.selectByPK(staffForm.getPositionId());
+					PositionEntity positionEntity = positionDao.queryById(staffForm.getPositionId());
 					staffForm.setPositionName(positionEntity.getPositionName());
 				}
 				if (!staffForm.getIdCard().equals(entity.getIdCard())) {
@@ -97,20 +100,20 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 				}
 				BeanUtils.copyPropertiesNotNUll(staffForm, entity);
 				entity.setUpdated(new Date());
-				entity = staffDao.update(entity);
+				i = staffDao.updateSelective(entity);
 			} else {
 				entity = new StaffEntity();
-				TowerEntity selectByPK = towerDao.selectByPK(staffForm.getTowerId());
+				TowerEntity selectByPK = towerDao.queryById(staffForm.getTowerId());
 				staffForm.setTowerName(selectByPK.getTowerName());
-				PositionEntity positionEntity = positionDao.selectByPK(staffForm.getPositionId());
+				PositionEntity positionEntity = positionDao.queryById(staffForm.getPositionId());
 				staffForm.setPositionName(positionEntity.getPositionName());
 				// 重新计算年龄
 				int age = IdCardUtils.getAge(IdCardUtils.parse(staffForm.getBirthday()));
 				staffForm.setAge(age);
 				BeanUtils.copyProperties(staffForm, entity);
-				entity = staffDao.insert(entity);
+				i = staffDao.saveSelective(entity);
 			}
-			if (entity != null) {
+			if (i > 0) {
 				result = 1;
 			}
 		} catch (Exception e) {
@@ -136,15 +139,21 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 				map.put(Const.retMsg, "无人员信息");
 				return map;
 			}
-			StaffEntity selectByPK = staffDao.selectByPK(id);
+			StaffEntity selectByPK = staffDao.queryById(id);
 			if (selectByPK == null) {
 				map.put(Const.retCode, false);
 				map.put(Const.retMsg, "无人员信息");
 				return map;
 			}
-			staffDao.deleteByPK(id);
-			map.put(Const.retCode, true);
-			map.put(Const.retMsg, "删除成功!");
+			Integer i = staffDao.deleteById(id);
+			if (i > 0) {
+				map.put(Const.retCode, true);
+				map.put(Const.retMsg, "删除成功!");
+			} else {
+				map.put(Const.retCode, true);
+				map.put(Const.retMsg, "删除失败");
+			}
+
 		} catch (Exception e) {
 			map.put(Const.retCode, true);
 			map.put(Const.retMsg, "删除失败");
@@ -170,7 +179,7 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 				map.put(Const.retMsg, "职员不存在");
 				return map;
 			}
-			StaffEntity staffEntity = staffDao.selectByPK(id);
+			StaffEntity staffEntity = staffDao.queryById(id);
 			if (staffEntity == null) {
 				map.put(Const.retCode, false);
 				map.put(Const.retMsg, "职员不存在");

@@ -1,9 +1,9 @@
 package com.baojie.manage.back.sys.dao.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,11 +12,13 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.baojie.manage.back.sys.dto.EmployeeDto;
-import com.baojie.manage.base.dao.BaseEntity;
+import com.baojie.manage.base.common.service.BaseDO;
 
-@Entity
+import tk.mybatis.mapper.annotation.NameStyle;
+
 @Table(name = "sys_employee")
-public class EmployeeEntity extends BaseEntity {
+@NameStyle
+public class EmployeeEntity extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 2353668247642070919L;
 
@@ -28,11 +30,11 @@ public class EmployeeEntity extends BaseEntity {
 	@Column(name = "custNo", length = 64)
 	private String custNo;// 员工号
 
-	@Column(name = "username", length = 50)
-	private String username;// 员工登录账号
+	@Column(name = "userName", length = 50)
+	private String userName;// 员工登录账号
 
-	@Column(name = "password", length = 50)
-	private String password;// 员工登录密码
+	@Column(name = "passWord", length = 50)
+	private String passWord;// 员工登录密码
 
 	@Column(name = "realName", length = 20)
 	private String realName;// 员工姓名
@@ -40,8 +42,8 @@ public class EmployeeEntity extends BaseEntity {
 	@Column(name = "qq", length = 20)
 	private String qq;// 员工QQ
 
-	@Column(name = "telephone", length = 20)
-	private String telephone;// 员工办公电话
+	@Column(name = "telePhone", length = 20)
+	private String telePone;// 员工办公电话
 
 	@Column(name = "position", length = 20)
 	private String position;// 员工职位
@@ -79,11 +81,11 @@ public class EmployeeEntity extends BaseEntity {
 	public EmployeeEntity(EmployeeDto dto) {
 		this.employeeId = dto.getEmployeeId();
 		this.custNo = dto.getCustNo();
-		this.username = dto.getUsername();
-		this.password = dto.getPassword();
+		this.userName = dto.getUserName();
+		this.passWord = dto.getPassWord();
 		this.realName = dto.getRealName();
 		this.qq = dto.getQq();
-		this.telephone = dto.getTelephone();
+		this.telePone = dto.getTelePhone();
 		this.position = dto.getPosition();
 		this.sex = dto.getSex();
 		this.email = dto.getEmail();
@@ -113,19 +115,19 @@ public class EmployeeEntity extends BaseEntity {
 	}
 
 	public String getUsername() {
-		return username;
+		return userName;
 	}
 
 	public void setUsername(String username) {
-		this.username = username;
+		this.userName = username;
 	}
 
 	public String getPassword() {
-		return password;
+		return passWord;
 	}
 
 	public void setPassword(String password) {
-		this.password = password;
+		this.passWord = password;
 	}
 
 	public String getRealName() {
@@ -144,12 +146,28 @@ public class EmployeeEntity extends BaseEntity {
 		this.qq = qq;
 	}
 
-	public String getTelephone() {
-		return telephone;
+	public String getUserName() {
+		return userName;
 	}
 
-	public void setTelephone(String telephone) {
-		this.telephone = telephone;
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassWord() {
+		return passWord;
+	}
+
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
+	}
+
+	public String getTelePone() {
+		return telePone;
+	}
+
+	public void setTelePone(String telePone) {
+		this.telePone = telePone;
 	}
 
 	public String getPosition() {

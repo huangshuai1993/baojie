@@ -7,16 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.baojie.manage.back.baojie.dao.BStaffDao;
-import com.baojie.manage.back.baojie.dao.BTowerDao;
 import com.baojie.manage.back.baojie.dao.PositionDao;
 import com.baojie.manage.back.baojie.dao.SalaryDao;
+import com.baojie.manage.back.baojie.dao.StaffDao;
+import com.baojie.manage.back.baojie.dao.TowerDao;
 import com.baojie.manage.back.baojie.dao.entity.PositionEntity;
 import com.baojie.manage.back.baojie.dao.entity.SalaryEntity;
 import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
@@ -31,18 +30,21 @@ import com.baojie.manage.base.common.util.DateUtil;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
+import com.github.pagehelper.PageInfo;
+import com.google.common.collect.Lists;
 
 @Service("salaryService")
+@Transactional
 public class SalaryServiceImpl extends BaseService implements SalaryService {
-
 	@Autowired
 	private SalaryDao salaryDao;
 	@Autowired
-	private BTowerDao towerDao;
+	private TowerDao towerDao;
 	@Autowired
 	private PositionDao positionDao;
 	@Autowired
-	private BStaffDao staffDao;
+	private StaffDao staffDao;
+	
 	@Override
 	public PageResults<SalaryForm> getAllSalary(Integer pageNumber, Integer pageSize, Long towerId,
 			String searchName,String time) throws BizException {
@@ -51,13 +53,14 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 		}
 		PageResults<SalaryForm> page = new PageResults<SalaryForm>();
 		try {
-			PageResults<SalaryEntity> allSalary = salaryDao.getAllSalary(pageNumber, pageSize, towerId, searchName,time);
-			if (allSalary != null) {
-				List<SalaryEntity> list = allSalary.getList();
-				if (!CollectionUtils.isEmpty(list)) {
-					List<SalaryForm> list2 = BeanUtils.copyByList(list, SalaryForm.class);
-					page = new PageResults<SalaryForm>(list2, pageNumber, pageSize, allSalary.getTotalCount());
-				}
+			
+			List<SalaryEntity> allSalary = salaryDao.getAllSalary(pageNumber, pageSize, towerId, searchName, time);
+			PageInfo<SalaryEntity> pageInfo = new PageInfo<SalaryEntity>(allSalary);
+			if (!CollectionUtils.isEmpty(allSalary)) {
+				List<SalaryForm> list2 = BeanUtils.copyByList(allSalary, SalaryForm.class);
+				page = new PageResults<SalaryForm>(list2, pageNumber, pageSize, pageInfo.getTotal());
+			}else{
+				page = new PageResults<SalaryForm>(Lists.newArrayList(), pageNumber, pageSize, pageInfo.getTotal());
 			}
 		} catch (Exception e) {
 			logger.error("SalaryServiceImpl.getAllSalary发生异常", e);
@@ -81,7 +84,7 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 			//获取当前时间的年月  2018-12
 			String date = DateUtil.getDateString(new Date(), DateUtil.DATESHOWFORMAT).substring(0,7);
 			//查询是否已经生成过当月工资
-			long count = salaryDao.queryCountSalaryByMonth(date);
+			int count = salaryDao.queryCountSalaryByMonth(date);
 			if(count > 1){
 				return 2;
 			}
@@ -125,7 +128,7 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 					entity.setSendPay(BigDecimalUtils.add(position.getBasePay(),position.getAllowance()));
 					entity.setRealPay(BigDecimalUtils.add(position.getBasePay(),position.getAllowance()));
 					entity.setSalaryMonth(date);
-					salaryDao.insert(entity);
+					salaryDao.saveSelective(entity);
 				}
 			}
 			
@@ -153,7 +156,7 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 				map.put(Const.retMsg, "id不能为空");
 				return map;
 			}
-			SalaryEntity salaryEntity = salaryDao.selectByPK(id);
+			SalaryEntity salaryEntity = salaryDao.queryById(id);
 			if(salaryEntity == null){
 				map.put(Const.retCode, false);
 				map.put(Const.retMsg, "工资信息不存在");
@@ -186,7 +189,7 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 				return map;
 			}
 			//查询数据
-			SalaryEntity entity = salaryDao.selectByPK(salary.getId());
+			SalaryEntity entity = salaryDao.queryById(salary.getId());
 			BeanUtils.copyPropertiesNotNUll(salary, entity);
 			//累计  加项
 			BigDecimal basePay = BigDecimalUtils.add(entity.getBasePay(), entity.getAllowance());
@@ -210,14 +213,15 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 			entity.setAskForLeave(askForLeave);
 			entity.setSendPay(sendPay);
 			entity.setUpdated(new Date());
-			SalaryEntity update = salaryDao.update(entity);
-			if(update == null){
+			Integer i = salaryDao.updateSelective(entity);
+			if(i > 0){
+				map.put(Const.retCode, true);
+				map.put(Const.retMsg, "操作成功");
+				
+			}else{
 				map.put(Const.retCode, false);
 				map.put(Const.retMsg, "工资信息修改失败");
-				return map;
 			}
-			map.put(Const.retCode, true);
-			map.put(Const.retMsg, "操作成功");
 		} catch (Exception e) {
 			map.put(Const.retCode, false);
 			map.put(Const.retMsg, "工资信息修改失败");
@@ -243,13 +247,13 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 				map.put(Const.retMsg, "无工资信息");
 				return map;
 			}
-			SalaryEntity salaryEntity = salaryDao.selectByPK(id);
+			SalaryEntity salaryEntity = salaryDao.queryById(id);
 			if (salaryEntity == null) {
 				map.put(Const.retCode, false);
 				map.put(Const.retMsg, "无工资信息");
 				return map;
 			}
-			salaryDao.deleteByPK(id);
+			salaryDao.deleteById(id);
 			map.put(Const.retCode, true);
 			map.put(Const.retMsg, "删除成功!");
 		} catch (Exception e) {

@@ -17,11 +17,11 @@ public class EmployeeDto implements Serializable,IDto {
 	private Long employeeId;// 员工id
 
     private String custNo;// 员工号
-    private String username;// 员工登录账号
-    private String password;// 员工登录密码
+    private String userName;// 员工登录账号
+    private String passWord;// 员工登录密码
     private String realName;// 员工姓名
     private String qq;// 员工QQ
-    private String telephone;// 员工办公电话
+    private String telePhone;// 员工办公电话
     private String position;// 员工职位
     private String sex;// 员工性别
     private String email;// 员工邮箱
@@ -76,23 +76,33 @@ public class EmployeeDto implements Serializable,IDto {
         this.custNo = custNo;
     }
 
-    public String getUsername() {
-        return username;
-    }
+  
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
+    public String getUserName() {
+		return userName;
+	}
 
-    public String getPassword() {
-        return password;
-    }
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
+	public String getPassWord() {
+		return passWord;
+	}
 
-    public String getRealName() {
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
+	}
+
+	public String getTelePhone() {
+		return telePhone;
+	}
+
+	public void setTelePhone(String telePhone) {
+		this.telePhone = telePhone;
+	}
+
+	public String getRealName() {
         return realName;
     }
 
@@ -108,13 +118,6 @@ public class EmployeeDto implements Serializable,IDto {
         this.qq = qq;
     }
 
-    public String getTelephone() {
-        return telephone;
-    }
-
-    public void setTelephone(String telephone) {
-        this.telephone = telephone;
-    }
 
     public String getPosition() {
         return position;

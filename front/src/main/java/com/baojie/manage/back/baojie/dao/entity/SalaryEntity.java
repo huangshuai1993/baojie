@@ -1,28 +1,22 @@
 package com.baojie.manage.back.baojie.dao.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
-import com.baojie.manage.base.dao.BaseEntity;
+import com.baojie.manage.base.common.service.BaseDO;
 
-@Entity
+import tk.mybatis.mapper.annotation.NameStyle;
+
 @Table(name = "opt_salary")
-@DynamicInsert
-@DynamicUpdate
-public class SalaryEntity extends BaseEntity {
+@NameStyle
+public class SalaryEntity extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 6595827554513269632L;
 	@Id
@@ -47,15 +41,7 @@ public class SalaryEntity extends BaseEntity {
 	private BigDecimal otherDeductPay;// 其他扣款项
 	private BigDecimal deductTotalPay;// 扣款合计
 	private BigDecimal realPay;// 实发工资
-	private String salaryMonth;//工资时间
-	private String memo;// 备注
-	@Column
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date created;// 创建时间
-	@Column
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updated;// 修改时间
-	private int dataFlag = 1;// 数据标志，0 无效 1 有效a
+	private String salaryMonth;// 工资时间
 
 	@Override
 	public String toString() {
@@ -221,38 +207,6 @@ public class SalaryEntity extends BaseEntity {
 
 	public void setRealPay(BigDecimal realPay) {
 		this.realPay = realPay;
-	}
-
-	public String getMemo() {
-		return memo;
-	}
-
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
-
-	public Date getCreated() {
-		return created;
-	}
-
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
-	public Date getUpdated() {
-		return updated;
-	}
-
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
-
-	public int getDataFlag() {
-		return dataFlag;
-	}
-
-	public void setDataFlag(int dataFlag) {
-		this.dataFlag = dataFlag;
 	}
 
 	public String getSalaryMonth() {

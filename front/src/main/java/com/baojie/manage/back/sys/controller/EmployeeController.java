@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.baojie.manage.back.organize.dto.StoreDto;
-import com.baojie.manage.back.organize.form.StoreForm;
-import com.baojie.manage.back.organize.service.OrganizeManageService;
 import com.baojie.manage.back.sys.dto.EmployeeDto;
 import com.baojie.manage.back.sys.dto.PersonaDto;
 import com.baojie.manage.back.sys.form.EmployeeForm;
@@ -39,8 +36,7 @@ public class EmployeeController extends BaseController {
 	private EmployeeService employeeService;
 	@Autowired
 	private PersonaService personaService;
-	@Autowired
-	private OrganizeManageService StoreService;
+
 
 	/**
 	 * 获得员工列表
@@ -116,8 +112,8 @@ public class EmployeeController extends BaseController {
 		EmployeeDto employee = new EmployeeDto();
 		Long result = null;
 		String custNo = GetUniqueNoUtil.getCustNo();
-		employee.setUsername(username);
-		employee.setPassword(password);
+		employee.setUserName(username);
+		employee.setPassWord(password);
 		employee.setRealName(realName);
 		employee.setEmployIDCardNum(employIDCardNum);
 		employee.setPhone(phone);
@@ -256,7 +252,7 @@ public class EmployeeController extends BaseController {
 		}
 		EmployeeDto employee = new EmployeeDto();
 		employee.setCustNo(custNo);
-		employee.setUsername(username);
+		employee.setUserName(username);
 		employee.setRealName(realName);
 		employee.setEmployIDCardNum(employIDCardNum);
 		employee.setPhone(phone);

@@ -12,11 +12,11 @@ public class EmployeeForm implements Serializable  {
     private static final long serialVersionUID = 1L;
     private Long employeeId;// 员工id
     private String custNo;// 员工号
-    private String username;// 员工登录账号
-    private String password;// 员工登录密码
+    private String userName;// 员工登录账号
+    private String passWord;// 员工登录密码
     private String realName;// 员工姓名
     private String qq;// 员工QQ
-    private String telephone;// 员工办公电话
+    private String telePhone;// 员工办公电话
     private String position;// 员工职位
     private String sex;// 员工性别
     private String email;// 员工邮箱
@@ -43,11 +43,11 @@ public class EmployeeForm implements Serializable  {
     public EmployeeForm(EmployeeDto dto) {
           this.employeeId = dto.getEmployeeId();
           this.custNo = dto.getCustNo();
-          this.username = dto.getUsername();
-          this.password = dto.getPassword();
+          this.userName = dto.getUserName();
+          this.passWord = dto.getPassWord();
           this.realName = dto.getRealName();
           this.qq = dto.getQq();
-          this.telephone = dto.getTelephone();
+          this.telePhone = dto.getTelePhone();
           this.position = dto.getPosition();
           this.sex = dto.getSex();
           this.email = dto.getEmail();
@@ -62,11 +62,11 @@ public class EmployeeForm implements Serializable  {
     public EmployeeForm(EmployeeEntity entity) {
         this.employeeId = entity.getEmployeeId();
         this.custNo = entity.getCustNo();
-        this.username = entity.getUsername();
-        this.password = entity.getPassword();
+        this.userName = entity.getUsername();
+        this.passWord = entity.getPassword();
         this.realName = entity.getRealName();
         this.qq = entity.getQq();
-        this.telephone = entity.getTelephone();
+        this.telePhone = entity.getTelePone();
         this.position = entity.getPosition();
         this.sex = entity.getSex();
         this.email = entity.getEmail();
@@ -79,13 +79,32 @@ public class EmployeeForm implements Serializable  {
     }
 
   
-    public String getUsername() {
-        return username;
-    }
-    public String getPassword() {
-        return password;
-    }
-    public String getCustNo() {
+    
+    public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassWord() {
+		return passWord;
+	}
+
+	public void setPassWord(String passWord) {
+		this.passWord = passWord;
+	}
+
+	public String getTelePhone() {
+		return telePhone;
+	}
+
+	public void setTelePhone(String telePhone) {
+		this.telePhone = telePhone;
+	}
+
+	public String getCustNo() {
         return custNo;
     }
 
@@ -110,11 +129,11 @@ public class EmployeeForm implements Serializable  {
     }
 
     public String getTelephone() {
-        return telephone;
+        return telePhone;
     }
 
     public void setTelephone(String telephone) {
-        this.telephone = telephone;
+        this.telePhone = telephone;
     }
 
     public String getPosition() {
@@ -180,16 +199,6 @@ public class EmployeeForm implements Serializable  {
     public void setEmpStatus(String empStatus) {
         this.empStatus = empStatus;
     }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-
    
     public Long getEmployeeId() {
         return employeeId;

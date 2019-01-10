@@ -7,6 +7,8 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import com.baojie.manage.back.common.enums.EmployeeExCode;
 import com.baojie.manage.back.sys.dao.EmployeeDao;
@@ -18,19 +20,21 @@ import com.baojie.manage.back.sys.dao.entity.PersonaEntity;
 import com.baojie.manage.back.sys.dto.EmployeeDto;
 import com.baojie.manage.back.sys.form.PersonaForm;
 import com.baojie.manage.back.sys.service.EmployeeService;
-import com.baojie.manage.back.sys.service.convertor.EmployeeConvertor;
 import com.baojie.manage.base.common.consts.Const;
+import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.MD5Util;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
+import com.github.pagehelper.PageInfo;
 @Service("employeeService")
+@Transactional
 public class EmployeeServiceImpl extends BaseService implements EmployeeService {
 
 	@Autowired
-    private EmployeeDao employeeDao;
+	private EmployeeDao employeeDao;
 	@Autowired
-	private Employee_personaDao employee_personaDao;
+	private Employee_personaDao employeePersonaEntityService;
 	@Autowired
 	private PersonaDao personaDao;
 	@Override
@@ -40,9 +44,9 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
 		//empID_personaName_map
 		Map<Long,String> empId_personaNameMap=new HashMap<Long,String>();
 		//查询所有角色员工关系
-		List<Employee_personaEntity> allEmployee_persona = employee_personaDao.getAllEmployee_persona();
+		List<Employee_personaEntity> allEmployee_persona = employeePersonaEntityService.queryAll();
 		//查询所有角色
-		List<PersonaEntity> allPersonas = personaDao.getAllPersonas();
+		List<PersonaEntity> allPersonas = personaDao.queryAll();
 		for (PersonaEntity personaEntity : allPersonas) {
 			for (Employee_personaEntity employee_personaEntity : allEmployee_persona) {
 				if(personaEntity.getPersonaId() == employee_personaEntity.getPersonaId()){
@@ -50,15 +54,14 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
 				}
 			}
 		}
-		PageResults<EmployeeEntity> result = employeeDao.getEmployeeList(pageNumber, pageSize);
-		 EmployeeConvertor emp = new EmployeeConvertor();
-		if(result != null){
-			List<EmployeeEntity> entList =  result.getList();
-			List<EmployeeDto> dtomList = emp.entity2DtoList(entList);
+		List<EmployeeEntity> result = employeeDao.getEmployeeList(pageNumber, pageSize);
+		PageInfo<EmployeeEntity> pageInfo = new PageInfo<EmployeeEntity>(result);
+		if(!CollectionUtils.isEmpty(result)){
+			List<EmployeeDto> dtomList = BeanUtils.copyByList(result, EmployeeDto.class);
 			for (EmployeeDto employeeDto : dtomList) {
 				employeeDto.setPersoaName(empId_personaNameMap.get(employeeDto.getEmployeeId()));
 			}
-			long count = result.getTotalCount();
+			long count = pageInfo.getTotal();
 			resultForm = new PageResults<EmployeeDto>(dtomList,pageNumber,pageSize,count);
 			return resultForm;
 		}else{
@@ -69,18 +72,18 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
     @Override
     public EmployeeDto getEmployeeByUserName(String userName) throws BizException {
 
-         EmployeeEntity entity = employeeDao.getEmployeeByUserName(userName);
+        EmployeeEntity entity = employeeDao.getEmployeeByUserName(userName);
         if (entity == null) {
             throw new BizException(EmployeeExCode.EMPLOYEE_NOT_FOUND);
         }
-        EmployeeConvertor emp = new EmployeeConvertor();
-        EmployeeDto dto = emp.entity2Dto(entity);
+        EmployeeDto dto = new EmployeeDto();
+        BeanUtils.copyProperties(entity, dto);
         return dto;
     
     }
 	@Override
 	public Long addEmployee(EmployeeDto employee, Long personaId) throws BizException{
-		String username = employee.getUsername();
+		String username = employee.getUserName();
 		EmployeeEntity entity = employeeDao.getEmployeeByUserName(username);
 		if(entity != null){
 			return 0l;
@@ -88,7 +91,7 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
 		Long employeeId = null;
         Long result = 1l;
         String custNo = employee.getCustNo();
-        String password = employee.getPassword();
+        String password = employee.getPassWord();
         password =  MD5Util.getMD5(password+"{"+custNo+"}");
         if (personaId == 1L){
             employee.setEmployeeType("1");
@@ -96,17 +99,20 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
             employee.setEmployeeType("2");
         }
         try {
-        	 employee.setPassword(password);
+        	 employee.setPassWord(password);
              // 添加员工
         	 //转换成entity
         	 EmployeeEntity employeeEntity =new EmployeeEntity(employee);
-        	 employeeEntity = employeeDao.addorUpdateEmployee(employeeEntity);
-             employeeId = employeeEntity.getEmployeeId();
-             // 添加权限
-             Employee_personaEntity employee_persona = new Employee_personaEntity();
-             employee_persona.setEmployeeId(employeeId);
-             employee_persona.setPersonaId(personaId);
-             employee_personaDao.addOrUpdataEmployeePersona(employee_persona);
+        	 Integer i = employeeDao.saveSelective(employeeEntity);
+        	 if(i > 0){
+        		 employeeEntity = employeeDao.getEmployeeByUserName(username);
+        		 employeeId = employeeEntity.getEmployeeId();
+                 // 添加权限
+                 Employee_personaEntity employee_persona = new Employee_personaEntity();
+                 employee_persona.setEmployeeId(employeeId);
+                 employee_persona.setPersonaId(personaId);
+                 employeePersonaEntityService.saveSelective(employee_persona);
+        	 }
 		} catch (Exception e) {
 			result = 0l;
 			e.printStackTrace();
@@ -126,9 +132,14 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
 	            return map;
 	        }
 	        employee.setEmpStatus(empStatus);
-	        employeeDao.addorUpdateEmployee(employee);
-	        map.put(Const.retCode, true);
-	        map.put(Const.retMsg, "更新成功!");
+	        Integer i = employeeDao.updateSelective(employee);
+	        if(i > 0){
+	        	map.put(Const.retCode, true);
+		        map.put(Const.retMsg, "更新成功!");
+	        }else{
+	        	map.put(Const.retCode, true);
+		        map.put(Const.retMsg, "更新失败!");
+	        }
 	        return map;
 	}
 
@@ -145,9 +156,14 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
         }
         password =  MD5Util.getMD5(password+"{"+custNo+"}");
         employee.setPassword(password);
-        employeeDao.addorUpdateEmployee(employee);
-        map.put(Const.retCode, true);
-        map.put(Const.retMsg, "修改成功");
+        Integer i = employeeDao.updateSelective(employee);
+        if(i > 0){
+        	map.put(Const.retCode, true);
+	        map.put(Const.retMsg, "修改成功!");
+        }else{
+        	map.put(Const.retCode, true);
+	        map.put(Const.retMsg, "修改失败!");
+        }
         return map;
 	}
 
@@ -162,7 +178,7 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
             return map;
         }
         //获取角色id
-        Employee_personaEntity employee_persona = employee_personaDao.getEmployee_personaByEmployeeId(employee.getEmployeeId());
+        Employee_personaEntity employee_persona = employeePersonaEntityService.getEmployee_personaByEmployeeId(employee.getEmployeeId());
         Long personaId =employee_persona.getPersonaId();
         if (personaId == null) {
             map.put(Const.retCode, false);
@@ -200,10 +216,10 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
                 return map; 
             }
             // 删除员工表  
-            employeeDao.deleteEmployee(employee);
+            employeeDao.deleteById(employee.getEmployeeId());
             //删除员工-角色对象关系表
-            Employee_personaEntity employee_personaEntity = employee_personaDao.getEmployee_personaByEmployeeId(employee.getEmployeeId());
-            employee_personaDao.deleteEmployee_persona(employee_personaEntity.getEmpId());
+            Employee_personaEntity employee_personaEntity = employeePersonaEntityService.getEmployee_personaByEmployeeId(employee.getEmployeeId());
+            employeePersonaEntityService.deleteById(employee_personaEntity.getEmpId());
             map.put(Const.retCode, true);
             map.put(Const.retMsg, "删除成功!");
         } catch (Exception e) {
@@ -225,8 +241,8 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
 	                map.put(Const.retMsg, "员工不存在");
 	                return map;
 	            }
-	            if(!employee.getUsername().equals(temp_employee.getUsername())){
-	            	EmployeeEntity EmployeeDto = employeeDao.getEmployeeByUserName(employee.getUsername());
+	            if(!employee.getUserName().equals(temp_employee.getUsername())){
+	            	EmployeeEntity EmployeeDto = employeeDao.getEmployeeByUserName(employee.getUserName());
 	            	if(EmployeeDto != null){
 	            		map.put(Const.retCode, false);
 	 	                map.put(Const.retMsg, "员工登录名重复");
@@ -234,17 +250,17 @@ public class EmployeeServiceImpl extends BaseService implements EmployeeService 
 	            	}
 	            	
 	            }
-	            temp_employee.setUsername(employee.getUsername());
+	            temp_employee.setUsername(employee.getUserName());
 	            temp_employee.setRealName(employee.getRealName());
 	            temp_employee.setEmployIDCardNum(employee.getEmployIDCardNum());
 	            temp_employee.setPhone(employee.getPhone());
 	            temp_employee.setEmployeeType(employee.getEmployeeType());
 	            // 更新员工表
-	            employeeDao.addorUpdateEmployee(temp_employee);
+	            employeeDao.updateSelective(temp_employee);
 	            // 更新员工角色关系表
-	            Employee_personaEntity employee_personaEntity = employee_personaDao.getEmployee_personaByEmployeeId(employee.getEmployeeId());
+	            Employee_personaEntity employee_personaEntity = employeePersonaEntityService.getEmployee_personaByEmployeeId(employee.getEmployeeId());
 	            employee_personaEntity.setPersonaId(personaId);
-	            employee_personaDao.addOrUpdataEmployeePersona(employee_personaEntity);
+	            employeePersonaEntityService.updateSelective(employee_personaEntity);
 	            map.put(Const.retCode, true);
 	            map.put(Const.retMsg, "更新成功");
 	        } catch (Exception e) {

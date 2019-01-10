@@ -67,7 +67,7 @@ public class LoginFilter implements Filter {
 				httpResponse.sendRedirect(LOGIN_URL);
 				return;
 			}
-			request.setAttribute("userName", dto.getUsername());
+			request.setAttribute("userName", dto.getUserName());
 			request.setAttribute("employeeId", dto.getEmployeeId());
 			request.setAttribute("storeId", dto.getStoreId());
 			// PlatformThreadLocal.getInstance().setViewId(dto.getEmployeeId().toString());

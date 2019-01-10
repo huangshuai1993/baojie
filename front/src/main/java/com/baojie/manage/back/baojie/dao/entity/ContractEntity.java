@@ -1,9 +1,9 @@
 package com.baojie.manage.back.baojie.dao.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,16 +12,14 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
-import com.baojie.manage.base.dao.BaseEntity;
+import com.baojie.manage.base.common.service.BaseDO;
 
-@Entity
+import tk.mybatis.mapper.annotation.NameStyle;
+
 @Table(name = "opt_contract")
-@DynamicInsert
-@DynamicUpdate
-public class ContractEntity extends BaseEntity {
+@NameStyle
+public class ContractEntity extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = 23765255042547423L;
 
@@ -33,10 +31,10 @@ public class ContractEntity extends BaseEntity {
 	private String contractName;
 
 	@Column
-	private int type;
+	private Integer type;
 
 	@Column
-	private int detailType;
+	private Integer detailType;
 
 	@Column
 	private Long towerId;// id
@@ -69,10 +67,10 @@ public class ContractEntity extends BaseEntity {
 	private String balance;
 
 	@Column
-	private int peopleCount;
+	private Integer peopleCount;
 
 	@Column
-	private int copies;
+	private Integer copies;
 
 	@Column
 	private String department;
@@ -83,7 +81,7 @@ public class ContractEntity extends BaseEntity {
 	@Column
 	private String contact;
 	@Column
-	private int status;// 合同履行情况：1:正常履行、2:到期终止、3:变更、4：解除
+	private Integer status;// 合同履行情况：1:正常履行、2:到期终止、3:变更、4：解除
 
 	@Column
 	private String memo;
@@ -114,22 +112,6 @@ public class ContractEntity extends BaseEntity {
 
 	public void setContractName(String contractName) {
 		this.contractName = contractName;
-	}
-
-	public int getType() {
-		return type;
-	}
-
-	public void setType(int type) {
-		this.type = type;
-	}
-
-	public int getDetailType() {
-		return detailType;
-	}
-
-	public void setDetailType(int detailType) {
-		this.detailType = detailType;
 	}
 
 	public Long getTowerId() {
@@ -212,22 +194,6 @@ public class ContractEntity extends BaseEntity {
 		this.balance = balance;
 	}
 
-	public int getPeopleCount() {
-		return peopleCount;
-	}
-
-	public void setPeopleCount(int peopleCount) {
-		this.peopleCount = peopleCount;
-	}
-
-	public int getCopies() {
-		return copies;
-	}
-
-	public void setCopies(int copies) {
-		this.copies = copies;
-	}
-
 	public String getDepartment() {
 		return department;
 	}
@@ -250,14 +216,6 @@ public class ContractEntity extends BaseEntity {
 
 	public void setContact(String contact) {
 		this.contact = contact;
-	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
 	}
 
 	public String getMemo() {
@@ -290,6 +248,46 @@ public class ContractEntity extends BaseEntity {
 
 	public void setDataFlag(Integer dataFlag) {
 		this.dataFlag = dataFlag;
+	}
+
+	public Integer getType() {
+		return type;
+	}
+
+	public void setType(Integer type) {
+		this.type = type;
+	}
+
+	public Integer getDetailType() {
+		return detailType;
+	}
+
+	public void setDetailType(Integer detailType) {
+		this.detailType = detailType;
+	}
+
+	public Integer getPeopleCount() {
+		return peopleCount;
+	}
+
+	public void setPeopleCount(Integer peopleCount) {
+		this.peopleCount = peopleCount;
+	}
+
+	public Integer getCopies() {
+		return copies;
+	}
+
+	public void setCopies(Integer copies) {
+		this.copies = copies;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	@Override

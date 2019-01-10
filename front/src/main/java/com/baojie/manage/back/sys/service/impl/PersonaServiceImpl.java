@@ -10,6 +10,7 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.baojie.manage.back.common.enums.EmployeeExCode;
 import com.baojie.manage.back.common.enums.PersonaExCode;
@@ -18,7 +19,7 @@ import com.baojie.manage.back.sys.dao.EmployeeDao;
 import com.baojie.manage.back.sys.dao.Employee_personaDao;
 import com.baojie.manage.back.sys.dao.PersonaDao;
 import com.baojie.manage.back.sys.dao.Persona_powerDao;
-import com.baojie.manage.back.sys.dao.PowerDao;
+import com.baojie.manage.back.sys.dao.PowerEntityDao;
 import com.baojie.manage.back.sys.dao.entity.EmployeeEntity;
 import com.baojie.manage.back.sys.dao.entity.Employee_personaEntity;
 import com.baojie.manage.back.sys.dao.entity.PersonaEntity;
@@ -29,71 +30,64 @@ import com.baojie.manage.back.sys.dto.Employee_personaDto;
 import com.baojie.manage.back.sys.dto.PersonaDto;
 import com.baojie.manage.back.sys.dto.PowerDto;
 import com.baojie.manage.back.sys.service.PersonaService;
-import com.baojie.manage.back.sys.service.convertor.EmployeeConvertor;
-import com.baojie.manage.back.sys.service.convertor.Employee_personaConvertor;
-import com.baojie.manage.back.sys.service.convertor.PersonaConvertor;
-import com.baojie.manage.back.sys.service.convertor.PowerConvertor;
 import com.baojie.manage.base.common.consts.Const;
+import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
 import com.google.common.collect.Lists;
 
 @Service("personaService")
+@Transactional
 public class PersonaServiceImpl extends BaseService implements PersonaService {
 
 	@Resource(name = "redisTemplate")
 	protected ValueOperations<String, String> redisCache;
 	@Autowired
-	private PersonaDao personaDao;
-	@Autowired
-	private PowerDao powerDao;
-	@Autowired
-	private Employee_personaDao employee_personaDao;
-	@Autowired
 	private EmployeeDao employeeDao;
 	@Autowired
+	private Employee_personaDao employeePersonaEntityService;
+	@Autowired
+	private PersonaDao personaDao;
+	@Autowired
 	private Persona_powerDao persona_powerDao;
+	@Autowired
+	private PowerEntityDao powerEntityDao;
 
 	@Override
 	public List<PersonaDto> getAllPersonas() throws BizException {
 
-		List<PersonaEntity> allPersona = personaDao.getAllPersonas();
+		List<PersonaEntity> allPersona = personaDao.queryAll();
 		if (allPersona == null) {
 			throw new BizException(EmployeeExCode.PERSONA_NOT_FOUND.code(), EmployeeExCode.PERSONA_NOT_FOUND.message());
 		}
-		PersonaConvertor p = new PersonaConvertor();
-		List<PersonaDto> dtoList = p.entity2DtoList(allPersona);
-		return dtoList;
+		return BeanUtils.copyByList(allPersona, PersonaDto.class);
 	}
 
 	@Override
 	public List<PowerDto> getAllPower() throws BizException {
-		List<PowerEntity> powerDatas = powerDao.getPowerDatas();
+		List<PowerEntity> powerDatas = powerEntityDao.getPowerLevelTwo();
 		List<PowerDto> dtoList = Lists.newArrayList();
 		if (CollectionUtils.isNotEmpty(powerDatas)) {
-			PowerConvertor p = new PowerConvertor();
-			dtoList = p.entity2DtoList(powerDatas);
+			dtoList = BeanUtils.copyByList(powerDatas, PowerDto.class);
 		}
 		return dtoList;
 	}
 
 	@Override
 	public List<Employee_personaDto> getEmployeeIdBypersonaId(Long personaId) throws BizException {
-		List<Employee_personaEntity> list = employee_personaDao.getEmployeeIdBypersonaId(personaId);
+		List<Employee_personaEntity> list = employeePersonaEntityService.getEmployeeIdBypersonaId(personaId);
 		if (list == null) {
 			throw new BizException(PersonaPowerExCode.EMPLOYEE_NOT_FOUND.code(),
 					PersonaPowerExCode.EMPLOYEE_NOT_FOUND.message());
 		}
-		Employee_personaConvertor p = new Employee_personaConvertor();
-		List<Employee_personaDto> dtoList = p.entity2DtoList(list);
+		List<Employee_personaDto> dtoList = BeanUtils.copyByList(list, Employee_personaDto.class);
 		return dtoList;
 	}
 
 	@Override
 	public List<EmployeeDto> getEmployeeListByEmployeeIds(List<Long> ids) throws BizException {
 		List<EmployeeEntity> employeeListByEmployeeIds = employeeDao.getEmployeeListByEmployeeIds(ids);
-		EmployeeConvertor ec = new EmployeeConvertor();
-		List<EmployeeDto> dtoList = ec.entity2DtoList(employeeListByEmployeeIds);
+		List<EmployeeDto> dtoList = BeanUtils.copyByList(employeeListByEmployeeIds, EmployeeDto.class);
 		/*
 		 * List<EmployeeForm> eForm = Lists.newArrayList(); if
 		 * (CollectionUtils.isNotEmpty(eDtoList)){ for (EmployeeDto eto :
@@ -116,9 +110,9 @@ public class PersonaServiceImpl extends BaseService implements PersonaService {
 
 	@Override
 	public List<PowerDto> getPowerByPowerId(List<Long> powerId) throws BizException {
-		List<PowerEntity> powerByPowerId = powerDao.getPowerByPowerId(powerId);
-		PowerConvertor p = new PowerConvertor();
-		List<PowerDto> dtoList = p.entity2DtoList(powerByPowerId);
+
+		List<PowerEntity> powerByPowerId = powerEntityDao.getPowerByPowerId(powerId);
+		List<PowerDto> dtoList = BeanUtils.copyByList(powerByPowerId, PowerDto.class);
 		/*
 		 * List<PowerForm> pFormList = Lists.newArrayList(); if
 		 * (CollectionUtils.isNotEmpty(pDtoList)){ for (PowerDto pto :
@@ -130,19 +124,19 @@ public class PersonaServiceImpl extends BaseService implements PersonaService {
 	@Override
 	public PersonaDto getPersonaBypersonaId(Long personaId) throws BizException {
 		PersonaEntity entity = personaDao.findPersonaBypersonaId(personaId);
-		PersonaDto pDto = null;
+		PersonaDto pDto = new PersonaDto();
 		if (entity != null) {
-			pDto = new PersonaConvertor().entity2Dto(entity);
+			BeanUtils.copyProperties(entity, pDto);
 		}
 		return pDto;
 	}
 
 	@Override
 	public List<PowerDto> getPowerOne() throws BizException {
-		List<PowerEntity> list = powerDao.getLevelOne();
+		List<PowerEntity> list = powerEntityDao.getLevelOne();
 		List<PowerDto> pDtoList = Lists.newArrayList();
 		if (CollectionUtils.isNotEmpty(list)) {
-			pDtoList = new PowerConvertor().entity2DtoList(list);
+			pDtoList = BeanUtils.copyByList(list, PowerDto.class);
 		}
 		/*
 		 * List<PowerForm> pFormList = Lists.newArrayList(); if
@@ -160,7 +154,9 @@ public class PersonaServiceImpl extends BaseService implements PersonaService {
 		if (personaId != null) {// 更新
 			List<Persona_powerEntity> pe = persona_powerDao.getEntityByPersonaId(personaId);
 			if (CollectionUtils.isNotEmpty(pe)) {
-				persona_powerDao.deleteBatch(pe);
+				for (Persona_powerEntity persona_powerEntity : pe) {
+					persona_powerDao.deleteById(persona_powerEntity.getId());
+				}
 			}
 		} else {// 添加
 			List<PersonaEntity> result = personaDao.findPersonaBypersonaName(personaName);
@@ -171,8 +167,11 @@ public class PersonaServiceImpl extends BaseService implements PersonaService {
 			pEntity.setPersonaDesc(personaDesc);
 			pEntity.setPersonaEnable("1");
 			pEntity.setPersonaName(personaName);
-			pEntity = personaDao.save(pEntity);
-			personaId = pEntity.getPersonaId();
+			Integer i = personaDao.saveSelective(pEntity);
+			if (i > 0) {
+				pEntity = personaDao.queryOne(pEntity);
+				personaId = pEntity.getPersonaId();
+			}
 		}
 		// 重新添加权限
 		if (CollectionUtils.isNotEmpty(powerIds)) {
@@ -180,18 +179,21 @@ public class PersonaServiceImpl extends BaseService implements PersonaService {
 				Persona_powerEntity personapower = new Persona_powerEntity();
 				personapower.setPersonaId(personaId);
 				personapower.setPowerId(tempLong);
-				persona_powerDao.save(personapower);
+				persona_powerDao.saveSelective(personapower);
 			}
 		}
-		return new PersonaConvertor().entity2Dto(pEntity);
+		PersonaDto dto = new PersonaDto();
+		BeanUtils.copyProperties(pEntity, dto);
+		return dto;
 	}
 
 	@Override
 	public Map<String, Object> addPowerInfo(PowerDto power) throws BizException {
 		Map<String, Object> map = new HashMap<>();
 		try {
-
-			powerDao.save(new PowerConvertor().dto2Entity(power));
+			PowerEntity en = new PowerEntity();
+			BeanUtils.copyProperties(power, en);
+			powerEntityDao.saveSelective(en);
 			redisCache.getOperations().delete(Const.MENU);
 			map.put(Const.retCode, true);
 			map.put(Const.retMsg, "添加成功");
@@ -205,15 +207,16 @@ public class PersonaServiceImpl extends BaseService implements PersonaService {
 	@Override
 	public List<EmployeeDto> getEmployeeListBypersonaId(Long personaId) throws BizException {
 
-		List<Employee_personaEntity> employeeIdBypersonaId = employee_personaDao.getEmployeeIdBypersonaId(personaId);
+		List<Employee_personaEntity> employeeIdBypersonaId = employeePersonaEntityService
+				.getEmployeeIdBypersonaId(personaId);
 		List<Long> employeeIds = Lists.newArrayList();
 		List<EmployeeDto> dtoList = null;
 		if (CollectionUtils.isNotEmpty(employeeIdBypersonaId)) {
 			for (Employee_personaEntity epentity : employeeIdBypersonaId) {
 				employeeIds.add(epentity.getEmployeeId());
 			}
-			List<EmployeeEntity> entitieList = employeeDao.selectEntitiesByPKs(employeeIds);
-			dtoList = new EmployeeConvertor().entity2DtoList(entitieList);
+			List<EmployeeEntity> entitieList = employeeDao.getEmployeeListByEmployeeIds(employeeIds);
+			dtoList = BeanUtils.copyByList(entitieList, EmployeeDto.class);
 		}
 		return dtoList;
 	}
@@ -227,8 +230,8 @@ public class PersonaServiceImpl extends BaseService implements PersonaService {
 			for (Persona_powerEntity epDto : entityList) {
 				powerIds.add(epDto.getPowerId());
 			}
-			List<PowerEntity> powerList = powerDao.selectEntitiesByPKs(powerIds);
-			List<PowerDto> dtoList = new PowerConvertor().entity2DtoList(powerList);
+			List<PowerEntity> powerList = powerEntityDao.getPowerByPowerId(powerIds);
+			List<PowerDto> dtoList = BeanUtils.copyByList(powerList, PowerDto.class);
 			return dtoList;
 		}
 		return null;

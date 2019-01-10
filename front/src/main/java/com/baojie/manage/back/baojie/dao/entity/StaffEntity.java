@@ -1,27 +1,22 @@
 package com.baojie.manage.back.baojie.dao.entity;
 
-import java.util.Date;
+import java.io.Serializable;
 
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import org.apache.commons.lang.builder.ReflectionToStringBuilder;
-import org.hibernate.annotations.DynamicInsert;
-import org.hibernate.annotations.DynamicUpdate;
 
-import com.baojie.manage.base.dao.BaseEntity;
+import com.baojie.manage.base.common.service.BaseDO;
 
-@Entity
+import tk.mybatis.mapper.annotation.NameStyle;
+
 @Table(name = "opt_staff")
-@DynamicInsert
-@DynamicUpdate
-public class StaffEntity extends BaseEntity {
+@NameStyle
+public class StaffEntity extends BaseDO implements Serializable {
 
 	private static final long serialVersionUID = -5352108387175885494L;
 
@@ -35,9 +30,9 @@ public class StaffEntity extends BaseEntity {
 	@Column
 	private String idCard;
 	@Column
-	private int age;
+	private Integer age;
 	@Column
-	private int gender;//0男，1女
+	private Integer gender;// 0男，1女
 	@Column
 	private String birthday;
 	@Column
@@ -51,21 +46,7 @@ public class StaffEntity extends BaseEntity {
 	@Column
 	private String towerName;
 	@Column
-	private int status;//0在职，1离职
-	@Column
-	private String memo;
-	@Column
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date created;// 创建时间
-	@Column
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date updated;// 修改时间
-
-	/**
-	 * 状态 默认1可用
-	 */
-	@Column
-	private int dataFlag = 1;
+	private Integer status;// 0在职，1离职
 
 	public Long getTowerId() {
 		return towerId;
@@ -81,18 +62,6 @@ public class StaffEntity extends BaseEntity {
 
 	public void setTowerName(String towerName) {
 		this.towerName = towerName;
-	}
-
-	public String getMemo() {
-		return memo;
-	}
-
-	public void setMemo(String memo) {
-		this.memo = memo;
-	}
-
-	public Date getCreated() {
-		return created;
 	}
 
 	public Long getId() {
@@ -119,22 +88,6 @@ public class StaffEntity extends BaseEntity {
 		this.idCard = idCard;
 	}
 
-	public int getAge() {
-		return age;
-	}
-
-	public void setAge(int age) {
-		this.age = age;
-	}
-
-	public int getGender() {
-		return gender;
-	}
-
-	public void setGender(int gender) {
-		this.gender = gender;
-	}
-
 	public String getPhone() {
 		return phone;
 	}
@@ -143,35 +96,6 @@ public class StaffEntity extends BaseEntity {
 		this.phone = phone;
 	}
 
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public Date getUpdated() {
-		return updated;
-	}
-
-	public void setUpdated(Date updated) {
-		this.updated = updated;
-	}
-
-	public int getDataFlag() {
-		return dataFlag;
-	}
-
-	public void setDataFlag(int dataFlag) {
-		this.dataFlag = dataFlag;
-	}
-
-	public void setCreated(Date created) {
-		this.created = created;
-	}
-
-	
 	public Long getPositionId() {
 		return positionId;
 	}
@@ -186,6 +110,30 @@ public class StaffEntity extends BaseEntity {
 
 	public void setPositionName(String positionName) {
 		this.positionName = positionName;
+	}
+
+	public Integer getAge() {
+		return age;
+	}
+
+	public void setAge(Integer age) {
+		this.age = age;
+	}
+
+	public Integer getGender() {
+		return gender;
+	}
+
+	public void setGender(Integer gender) {
+		this.gender = gender;
+	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	@Override

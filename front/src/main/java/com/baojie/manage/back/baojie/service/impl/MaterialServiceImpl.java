@@ -8,9 +8,10 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.baojie.manage.back.baojie.dao.BTowerDao;
 import com.baojie.manage.back.baojie.dao.MaterialDao;
+import com.baojie.manage.back.baojie.dao.TowerDao;
 import com.baojie.manage.back.baojie.dao.entity.MaterialEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.MaterialForm;
@@ -22,15 +23,18 @@ import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 
 @Service("materialService")
+@Transactional
 public class MaterialServiceImpl extends BaseService implements MaterialService {
 
 	@Autowired
-	private BTowerDao towerDao;
-	@Autowired
 	private MaterialDao materialDao;
+
+	@Autowired
+	private TowerDao towerDao;
 
 	@Override
 	public PageResults<MaterialForm> getAllMaterial(Integer pageNumber, Integer pageSize, Long towerId)
@@ -40,19 +44,16 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 		}
 		PageResults<MaterialForm> page = new PageResults<>();
 		try {
-			PageResults<MaterialEntity> materialList = materialDao.getMaterialList(pageNumber, pageSize, towerId);
-			if (materialList != null) {
-				List<MaterialEntity> list = materialList.getList();
-				if (!CollectionUtils.isEmpty(list)) {
-					List<MaterialForm> list2 = BeanUtils.copyByList(list, MaterialForm.class);
-					for (MaterialForm materialForm : list2) {
-						materialForm.setTypeName(MaterialTypeEnum.getName(materialForm.getType()));
-					}
-					
-					page = new PageResults<MaterialForm>(list2, pageNumber, pageSize, materialList.getTotalCount());
-				}else{
-					page = new PageResults<MaterialForm>(Lists.newArrayList(), pageNumber, pageSize, materialList.getTotalCount());
+			List<MaterialEntity> materialList = materialDao.getMaterialList(pageNumber, pageSize, towerId);
+			PageInfo<MaterialEntity> pageInfo = new PageInfo<MaterialEntity>(materialList);
+			if (!CollectionUtils.isEmpty(materialList)) {
+				List<MaterialForm> list2 = BeanUtils.copyByList(materialList, MaterialForm.class);
+				for (MaterialForm materialForm : list2) {
+					materialForm.setTypeName(MaterialTypeEnum.getName(materialForm.getType()));
 				}
+				page = new PageResults<MaterialForm>(list2, pageNumber, pageSize, pageInfo.getTotal());
+			} else {
+				page = new PageResults<MaterialForm>(Lists.newArrayList(), pageNumber, pageSize, pageInfo.getTotal());
 			}
 		} catch (Exception e) {
 			logger.error("MaterialServiceImpl.getAllMaterial发生异常", e);
@@ -75,24 +76,25 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 			if (materialForm == null) {
 				return result;
 			}
-			MaterialEntity entity = new MaterialEntity();
+			MaterialEntity entity = null;
+			Integer i = null;
 			if (materialForm.getMaterialId() != null) {
-				entity = materialDao.selectByPK(materialForm.getMaterialId());
+				entity = materialDao.queryById(materialForm.getMaterialId());
 				if (entity.getTowerId() != materialForm.getTowerId()) {
-					TowerEntity towerEntity = towerDao.selectByPK(materialForm.getTowerId());
+					TowerEntity towerEntity = towerDao.queryById(materialForm.getTowerId());
 					materialForm.setTowerName(towerEntity.getTowerName());
 				}
 				BeanUtils.copyPropertiesNotNUll(materialForm, entity);
 				entity.setUpdated(new Date());
-				entity = materialDao.update(entity);
+				i = materialDao.updateSelective(entity);
 			} else {
 				entity = new MaterialEntity();
-				TowerEntity towerEntity = towerDao.selectByPK(materialForm.getTowerId());
+				TowerEntity towerEntity = towerDao.queryById(materialForm.getTowerId());
 				materialForm.setTowerName(towerEntity.getTowerName());
 				BeanUtils.copyProperties(materialForm, entity);
-				entity = materialDao.insert(entity);
+				i = materialDao.saveSelective(entity);
 			}
-			if (entity != null) {
+			if (i > 0) {
 				result = 1;
 			}
 		} catch (Exception e) {
@@ -118,15 +120,20 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 				map.put(Const.retMsg, "无物料信息");
 				return map;
 			}
-			MaterialEntity selectByPK = materialDao.selectByPK(id);
+			MaterialEntity selectByPK = materialDao.queryById(id);
 			if (selectByPK == null) {
 				map.put(Const.retCode, false);
 				map.put(Const.retMsg, "无物料信息");
 				return map;
 			}
-			materialDao.deleteByPK(id);
-			map.put(Const.retCode, true);
-			map.put(Const.retMsg, "删除成功!");
+			Integer i = materialDao.deleteById(id);
+			if (i > 0) {
+				map.put(Const.retCode, true);
+				map.put(Const.retMsg, "删除成功!");
+			} else {
+				map.put(Const.retCode, true);
+				map.put(Const.retMsg, "删除失败");
+			}
 		} catch (Exception e) {
 			map.put(Const.retCode, true);
 			map.put(Const.retMsg, "删除失败");
@@ -153,7 +160,7 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 				map.put(Const.retMsg, "物料不存在");
 				return map;
 			}
-			MaterialEntity materialEntity = materialDao.selectByPK(id);
+			MaterialEntity materialEntity = materialDao.queryById(id);
 			if (materialEntity == null) {
 				map.put(Const.retCode, false);
 				map.put(Const.retMsg, "物料不存在");

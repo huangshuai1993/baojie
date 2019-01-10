@@ -8,8 +8,9 @@ import java.util.Map;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import com.baojie.manage.back.baojie.dao.BContractDao;
+import com.baojie.manage.back.baojie.dao.ContractDao;
 import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
 import com.baojie.manage.back.baojie.form.ContractForm;
 import com.baojie.manage.back.baojie.service.BContractService;
@@ -22,13 +23,15 @@ import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.PageResults;
 import com.baojie.manage.base.exception.BizException;
 import com.baojie.manage.base.service.BaseService;
+import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 
 @Service("bcontractService")
+@Transactional
 public class BContractServiceImpl extends BaseService implements BContractService {
 
 	@Autowired
-	private BContractDao contractDao;
+	private ContractDao contractDao;
 
 	@Override
 	public PageResults<ContractForm> getAllContract(Integer pageNumber, Integer pageSize, String contractName,
@@ -38,9 +41,9 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 		}
 		PageResults<ContractForm> page = new PageResults<>();
 		try {
-			PageResults<ContractEntity> contractPageList = contractDao.getContractList(pageNumber, pageSize,
-					contractName, towerName, status);
-			if (contractPageList != null) {
+			List<ContractEntity> contractList = contractDao.getContractList(pageNumber, pageSize, contractName, towerName, status);
+			PageInfo<ContractEntity> contractPageList = new PageInfo<ContractEntity>(contractList);
+			if(!CollectionUtils.isEmpty(contractList)){
 				List<ContractEntity> list = contractPageList.getList();
 				if (!CollectionUtils.isEmpty(list)) {
 					List<ContractForm> list2 = BeanUtils.copyByList(list, ContractForm.class);
@@ -49,10 +52,10 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 						contractForm.setDetailTypeName(ContractTypeDetailEnums.getName(contractForm.getDetailType()));
 						contractForm.setStatusName(ContractStatusEnums.getName(contractForm.getStatus()));
 					}
-					page = new PageResults<ContractForm>(list2, pageNumber, pageSize, contractPageList.getTotalCount());
-				}else{
-					page = new PageResults<ContractForm>(Lists.newArrayList(), pageNumber, pageSize, contractPageList.getTotalCount());
+					page = new PageResults<ContractForm>(list2, pageNumber, pageSize, contractPageList.getTotal());
 				}
+			}else{
+				page = new PageResults<ContractForm>(Lists.newArrayList(), pageNumber, pageSize, contractPageList.getTotal());
 			}
 		} catch (Exception e) {
 			logger.error("BContractServiceImpl.getAllContract发生异常", e);
@@ -92,17 +95,18 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 				return  result;
 			}
 			ContractEntity entity = null;
+			Integer i = null;
 			if(contract.getId() != null){
-				entity = contractDao.selectByPK(contract.getId());
+				entity = contractDao.queryById(contract.getId());
 				BeanUtils.copyPropertiesNotNUll(contract, entity);
 				entity.setUpdated(new Date());
-				entity = contractDao.update(entity);
+				i = contractDao.updateSelective(entity);
 			}else{
 				entity = new ContractEntity();
 				BeanUtils.copyProperties(contract, entity);
-				entity = contractDao.insert(entity);
+				i = contractDao.saveSelective(entity);
 			}
-			if(entity!=null){
+			if(i >0){
 				result = 1;
 			}
 		} catch (Exception e) {
@@ -128,15 +132,20 @@ public class BContractServiceImpl extends BaseService implements BContractServic
                 map.put(Const.retMsg, "无合同信息");
                 return map;
 			}
-			ContractEntity contract = contractDao.selectByPK(id);
-			if(contract == null){
+			ContractEntity entity = contractDao.queryById(id);
+			if(entity == null){
 				map.put(Const.retCode, false);
                 map.put(Const.retMsg, "无合同信息");
                 return map;
 			}
-			contractDao.deleteByPK(id);
-			map.put(Const.retCode, true);
-            map.put(Const.retMsg, "删除成功!");
+			Integer i = contractDao.deleteById(id);
+			if(i>0){
+				map.put(Const.retCode, true);
+	            map.put(Const.retMsg, "删除成功!");
+			}else{
+				map.put(Const.retCode, true);
+	            map.put(Const.retMsg, "删除失败");
+			}
 		} catch (Exception e) {
 			map.put(Const.retCode, true);
             map.put(Const.retMsg, "删除失败");
@@ -162,7 +171,7 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 				map.put(Const.retMsg, "合同不存在");
 	            return map;
 	        }
-			ContractEntity contract = contractDao.selectByPK(id);
+			ContractEntity contract = contractDao.queryById(id);
 			if(contract == null){
 				map.put(Const.retCode, false);
 				map.put(Const.retMsg, "合同不存在");
