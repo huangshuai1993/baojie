@@ -71,8 +71,16 @@
 		                                            <td>${position.towerName}</td>
 		                                            <td>${position.basePay}</td>
 		                                             <td>${position.allowance}</td>
-		                                             <td>${position.created}</td>
-		                                             <td>${position.updated}</td>
+		                                             <#if position.created ??>
+		                                            	<td>${position.created?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
+													<#if position.updated ??>
+		                                            	<td>${position.updated?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
 		                                            <td>
 		                                                <button class="btn btn-xs btn-warning btn-update" data-id=${position.positionId} title="编辑"><i class="icon-pencil" > 编辑</i></button>
 		                                                <button class="btn btn-xs btn-danger btn-delete" data-i=${position.positionId} title="删除"><i class="icon-del" > 删除</i></button>

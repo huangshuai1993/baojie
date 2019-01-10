@@ -76,8 +76,16 @@
 		                                            <td>${tower.peopleCount}</td>
 		                                            <td>${tower.virtualCount}</td>
 		                                            <td>${tower.approachTime}</td>
-	                                            	<td>${tower.created}</td>
-	                                            	<td>${tower.updated}</td>
+	                                              	<#if tower.created ??>
+	                                            	<td>${tower.created?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
+													<#if tower.updated ??>
+		                                            	<td>${tower.updated?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
 		                                            <td>
 		                                                <button class="btn btn-xs btn-warning btn-update" data-id=${tower.towerId} title="修改"><i class="icon-pencil" > 修改</i></button>
 		                                                <button class="btn btn-xs btn-danger btn-delete" data-id=${tower.towerId} title="删除"><i class="icon-del" > 删除</i></button>

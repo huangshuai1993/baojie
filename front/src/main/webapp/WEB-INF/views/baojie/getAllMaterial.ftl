@@ -77,8 +77,16 @@
 		                                             <td>${material.totalPrice}</td>
 		                                             <td>${material.purchaseTime}</td>
 		                                             <td>${material.towerName}</td>
-		                                             <td>${material.created}</td>
-		                                             <td>${material.updated}</td>
+		                                             <#if material.created ??>
+		                                            	<td>${material.created?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
+		                                            <#if material.updated ??>
+		                                            	<td>${material.updated?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
 		                                            <td>
 		                                                <button class="btn btn-xs btn-warning btn-update" data-id=${material.materialId} title="编辑"><i class="icon-pencil" > 编辑</i></button>
 		                                                <button class="btn btn-xs btn-danger btn-delete" data-id=${material.materialId} title="删除"><i class="icon-del" > 删除</i></button>

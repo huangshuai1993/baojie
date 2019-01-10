@@ -103,8 +103,16 @@
 		                                            <td>${salary.otherDeductPay}</td>
 		                                            <td>${salary.deductTotalPay}</td>
 		                                            <td>${salary.realPay}</td>
-	                                            	<td>${salary.created}</td>
-	                                            	<td>${salary.updated}</td>
+		                                             <#if salary.created ??>
+		                                            	<td>${salary.created?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
+													<#if salary.updated ??>
+		                                            	<td>${salary.updated?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
 		                                            <td>
 		                                                <button class="btn btn-xs btn-warning btn-update" data-id=${salary.id} title="修改"><i class="icon-pencil" > 修改</i></button>
 		                                                <button class="btn btn-xs btn-danger btn-delete" data-id=${salary.id} title="删除"><i class="icon-del" > 删除</i></button>

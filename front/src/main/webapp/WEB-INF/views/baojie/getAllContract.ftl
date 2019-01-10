@@ -92,8 +92,16 @@
 													<td>${contract.transactor}</td>
 													<td>${contract.contact}</td>
 													<td>${contract.statusName}</td>
-													<td>${contract.created}</td>
-													<td>${contract.updated}</td>
+													<#if contract.created ??>
+		                                            	<td>${contract.created?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
+													<#if contract.updated ??>
+		                                            	<td>${contract.updated?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
 		                                            <td>
 		                                                <button class="btn btn-xs btn-warning btn-update" data-contractId=${contract.id} title="编辑"><i class="icon-pencil" > 编辑</i></button>
 		                                                <button class="btn btn-xs btn-danger btn-delete" data-contractId=${contract.id} title="删除"><i class="icon-del" > 删除</i></button>

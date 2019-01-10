@@ -90,8 +90,16 @@
 		                                           <#else>
 		                                             	<td>离职</td>	
 		                                            </#if>
-		                                            <td>${staff.created}</td>
-		                                            <td>${staff.updated}</td>
+		                                             <#if staff.created ??>
+		                                            	<td>${staff.created?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
+													<#if staff.updated ??>
+		                                            	<td>${staff.updated?string("yyyy-MM-dd HH:mm:ss")}</td>
+		                                            <#else>
+		                                            	<td></td>
+		                                            </#if>
 		                                            <td>
 		                                                <button class="btn btn-xs btn-warning btn-update" data-staffId=${staff.id} title="编辑"><i class="icon-pencil" > 编辑</i></button>
 		                                                <button class="btn btn-xs btn-danger btn-delete" data-staffId=${staff.id} title="删除"><i class="icon-del" > 删除</i></button>
