@@ -29,8 +29,19 @@
                                         <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                     </div>
-                                   	<div class="pull-right col-md-6">
-                                    <div class="col-lg-4">
+                                   	<div class="pull-right col-md-9">
+                                   	<p class='col-lg-2 inputTitle'>请选择进货时间：</p>
+			                    	<div class="form-group mrt10 fl" style='position: relative;'>	
+									<div class="input-append " id="datetimepicker1">
+										<input class="Wdate form-control dtpicker validate[required] " type="text"  id="beginTime" value="${beginTime}" placeholder="开始时间" name="beginTime"  onclick="WdatePicker({autoPickDate:'true',dateFmt:'yyyy-MM-dd',minDate: '${minDate}', maxDate: '${maxDate}'})" style="width: 150px;height:32px;" />
+									</div>
+									</div>
+									<div class="form-group mrt10 fl" style='position: relative;'>	
+									<div class="input-append " id="datetimepicker2">
+										<input class="Wdate form-control dtpicker validate[required] " type="text"  id="endTime" value="${endTime}" placeholder="结束时间" name="endTime"  onclick="WdatePicker({autoPickDate:'true',dateFmt:'yyyy-MM-dd', minDate:'#F{$dp.$D(\'beginTime\')}', maxDate: '${maxDate}' })" style="width: 150px;height:32px;" />
+									</div>
+                                   	</div>
+                                    <div class="col-lg-2">
                                         <select class="form-control" id="searchTowerIds">
                                         	<option value="">选择所属楼盘</option>
                                             <#list towerList as tower>
@@ -230,6 +241,8 @@
     <form action="${contextPath}/service/material/getAllMaterial" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
+    	<input type="hidden" name="beginTime" value="${beginTime}" id="searchBeginTime"/>
+    	<input type="hidden" name="endTime" value="${endTime}" id="searchEndTime"/>
     </form>
     <form action="${contextPath}/service/material/csvDownLoadAllMaterial" method="post" id="csvDownLoadAllMaterial">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>

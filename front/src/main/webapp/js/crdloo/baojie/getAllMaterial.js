@@ -15,14 +15,18 @@ $(function(){
 	$ur_a.on("click",function(){
 		var pageNumber = $(this).attr("data-pagenum");
 		var searchName = $("#searchTowerIds").val();
-		searcher(searchName,pageNumber);
+		var searchBeginTime = $("#beginTime").val();
+		var searchEndTime = $("#endTime").val();
+		searcher(searchName,pageNumber,searchBeginTime,searchEndTime);
 		$("#myForm").submit();
 	});
 	
 	//提交方法,(参数数值，当前页数)
-	function searcher(searchName,pageNumber ){
+	function searcher(searchName,pageNumber,searchBeginTime,searchEndTime ){
 		$("#pageNumber").val(pageNumber);
 		$("#searchTower").val(searchName);
+		$("#searchBeginTime").val(searchBeginTime);
+		$("#searchEndTime").val(searchEndTime);
 		$("#myForm").submit();
 	}
 	//查询列表
