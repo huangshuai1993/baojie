@@ -1,6 +1,7 @@
 package com.baojie.manage.back.baojie.controller;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -67,7 +68,7 @@ public class ConfigController extends BaseController {
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllConfigDetail")
-	public String getAllConfigDetail(Model model, Integer pageNumber, Integer pageSize, String configuration) throws BizException {
+	public String getAllConfigDetail(Model model, Integer pageNumber, Integer pageSize, String configuration,String desc) throws BizException {
 		logger.info("getAllConfig [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize+ ", configuration=" + configuration);
 		if (pageNumber == null) {
 			pageNumber = 1;
@@ -77,11 +78,14 @@ public class ConfigController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<ConfigDetailForm> allConfigDetail = configService.getAllConfigDetail(pageNumber, pageSize, configuration);
+		PageResults<ConfigDetailForm> allConfigDetail = configService.getAllConfigDetail(pageNumber, pageSize, configuration,desc);
 		model.addAttribute("configuration", configuration);
 		model.addAttribute("allConfigDetail", allConfigDetail.getList());
 		pageUtil.setTotalCount((int) allConfigDetail.getTotalCount());
 		model.addAttribute("page", pageUtil);
+		List<ConfigForm> configList = configService.queryConfigAll();
+		model.addAttribute("configList", configList);
+		model.addAttribute("configuration", configuration);
 		return "baojie/getAllConfigDetail";
 	}
 	

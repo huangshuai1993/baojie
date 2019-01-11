@@ -1,4 +1,7 @@
 $(function(){
+	
+	var SeachConfiguration=$("#SeachConfiguration").val();
+	var searchConfig = $("#searchConfig option[value='"+SeachConfiguration+"']").attr("selected","selected");
 	function isPositiveNum(s){//是否为正整数  
 	    var re = /^[0-9]*[1-9][0-9]*$/ ;  
 	    return re.test(s)  

@@ -1,6 +1,6 @@
 package com.baojie.manage.back.baojie.service.impl;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,7 +14,6 @@ import com.baojie.manage.back.baojie.dao.ConfigDao;
 import com.baojie.manage.back.baojie.dao.ConfigDetailDao;
 import com.baojie.manage.back.baojie.dao.entity.ConfigDetailEntity;
 import com.baojie.manage.back.baojie.dao.entity.ConfigEntity;
-import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.ConfigDetailForm;
 import com.baojie.manage.back.baojie.form.ConfigForm;
 import com.baojie.manage.back.baojie.service.ConfigService;
@@ -62,14 +61,14 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 		return page;
 	}
 	@Override
-	public PageResults<ConfigDetailForm> getAllConfigDetail(Integer pageNumber, Integer pageSize, String configuration)
+	public PageResults<ConfigDetailForm> getAllConfigDetail(Integer pageNumber, Integer pageSize, String configuration,String desc)
 			throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------ConfigServiceImpl.getAllConfigDetail------------begin-->");
 		}
 		PageResults<ConfigDetailForm> page = new PageResults<ConfigDetailForm>();
 		try {
-			List<ConfigDetailEntity> allConfig = configDetailDao.getAllConfigDetail(pageNumber, pageSize, configuration);
+			List<ConfigDetailEntity> allConfig = configDetailDao.getAllConfigDetail(pageNumber, pageSize, configuration,desc);
 			PageInfo<ConfigDetailEntity> pageInfo = new PageInfo<ConfigDetailEntity>(allConfig);
 			if(!CollectionUtils.isEmpty(allConfig)){
 				List<ConfigDetailForm> list2 = BeanUtils.copyByList(allConfig, ConfigDetailForm.class);
@@ -295,6 +294,28 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 			}
 		}
 		return map;
+	}
+	@Override
+	public List<ConfigForm> queryConfigAll() throws BizException {
+		if (logger.isDebugEnabled()) {
+			logger.debug("--------------ConfigServiceImpl.queryAll------------begin-->");
+		}
+		List<ConfigForm> list = new ArrayList<ConfigForm>();
+		try {
+			List<ConfigEntity> queryAll = configDao.queryAll();
+			if(CollectionUtils.isNotEmpty(queryAll)){
+				list = BeanUtils.copyByList(queryAll, ConfigForm.class);
+			}
+			
+		} catch (Exception e) {
+			logger.error("ConfigServiceImpl.queryAll发生异常", e);
+			throw new BizException(ExampleExCode.EXAMPLE_NOT_FOUND);
+		} finally {
+			if (logger.isDebugEnabled()) {
+				logger.debug("--------------ConfigServiceImpl.queryAll------------end-->");
+			}
+		}
+		return list;
 	}
 	
 
