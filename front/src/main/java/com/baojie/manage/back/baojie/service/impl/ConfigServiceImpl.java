@@ -183,7 +183,7 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 			ConfigEntity configEntity = configDao.queryById(id);
 			if(configEntity == null){
 				map.put(Const.retCode, false);
-				map.put(Const.retMsg, "楼盘不存在");
+				map.put(Const.retMsg, "配置不存在");
 	            return map;
 			}
 			map.put(Const.retCode, true);
