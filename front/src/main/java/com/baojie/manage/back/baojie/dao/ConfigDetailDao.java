@@ -19,15 +19,15 @@ public class ConfigDetailDao extends BaseDao<ConfigDetailEntity> {
 	@Autowired
 	private ConfigDetailEntityMapper configDetailEntityMapper;
 
-	public List<ConfigDetailEntity>  getAllConfigDetail(Integer pageNumber, Integer pageSize, String configuration,String desc){
+	public List<ConfigDetailEntity>  getAllConfigDetail(Integer pageNumber, Integer pageSize, String configuration,String describe){
 		PageHelper.startPage(pageNumber, pageSize);
 		Example example = new Example(ConfigDetailEntity.class);
 		Example.Criteria c = example.createCriteria();
 		if (StringUtils.isNotBlank(configuration)) {
 			c.andEqualTo("configuration",configuration);
 		}
-		if (StringUtils.isNotBlank(desc)) {
-			c.andLike("desc","%"+desc+"%");
+		if (StringUtils.isNotBlank(describe)) {
+			c.andLike("describe","%"+describe+"%");
 		}
 		example.orderBy("updated").desc();
 		return configDetailEntityMapper.selectByExample(example);

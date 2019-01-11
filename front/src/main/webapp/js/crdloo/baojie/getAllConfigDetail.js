@@ -60,9 +60,9 @@ $(function(){
 				var e = data.config;
 				var id = $("#id").val(e.id);
 				var configuration = $("#configuration").val(e.configuration);
-				var des = $("#des").val(e.des);
+				var describe = $("#describe").val(e.describe);
 				var memo = $("#memo").val(e.memo);
-				var status = $("#status").val(e.status);
+				var configValue = $("#configValue").val(e.configValue);
 			}
 		});
 	});
@@ -72,16 +72,17 @@ $(function(){
 		$("#updateConfig").show();
 		var id = $("#id").val("");
 		var configuration = $("#configuration").val("");
-		var desc = $("#desc").val("");
+		var describe = $("#describe").val("");
 		var memo = $("#memo").val("");
-		var status = $("#status").val("");
+		var configValue = $("#configValue").val("");
 	});
 	//添加
 	$("#saveConfig").on("click",function(){
 		var id = $("#id").val();
 		var configuration = $("#configuration").val();
-		var desc = $("#desc").val();
+		var describe = $("#describe").val();
 		var memo = $("#memo").val();
+		var configValue = $("#configValue").val();
 		if(configuration == ''){
 			alert("配置项名称不能为空!");
 			return;
@@ -93,7 +94,7 @@ $(function(){
 		var postdata = {
 				"id":id,
 				"configuration":configuration,
-				"desc":desc,
+				"describe":describe,
 				"memo":memo
 		};
 		//进行跟新操作

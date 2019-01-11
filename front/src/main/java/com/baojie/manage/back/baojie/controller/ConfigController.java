@@ -45,7 +45,7 @@ public class ConfigController extends BaseController {
 			pageNumber = 1;
 		}
 		if (pageSize == null) {
-			pageSize = 20;
+			pageSize = 30;
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
@@ -68,17 +68,17 @@ public class ConfigController extends BaseController {
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllConfigDetail")
-	public String getAllConfigDetail(Model model, Integer pageNumber, Integer pageSize, String configuration,String desc) throws BizException {
+	public String getAllConfigDetail(Model model, Integer pageNumber, Integer pageSize, String configuration,String describe) throws BizException {
 		logger.info("getAllConfig [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize+ ", configuration=" + configuration);
 		if (pageNumber == null) {
 			pageNumber = 1;
 		}
 		if (pageSize == null) {
-			pageSize = 20;
+			pageSize = 30;
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<ConfigDetailForm> allConfigDetail = configService.getAllConfigDetail(pageNumber, pageSize, configuration,desc);
+		PageResults<ConfigDetailForm> allConfigDetail = configService.getAllConfigDetail(pageNumber, pageSize, configuration,describe);
 		model.addAttribute("configuration", configuration);
 		model.addAttribute("allConfigDetail", allConfigDetail.getList());
 		pageUtil.setTotalCount((int) allConfigDetail.getTotalCount());
@@ -86,6 +86,7 @@ public class ConfigController extends BaseController {
 		List<ConfigForm> configList = configService.queryConfigAll();
 		model.addAttribute("configList", configList);
 		model.addAttribute("configuration", configuration);
+		model.addAttribute("describe", describe);
 		return "baojie/getAllConfigDetail";
 	}
 	

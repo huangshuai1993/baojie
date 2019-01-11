@@ -11,7 +11,7 @@ import com.baojie.manage.base.exception.BizException;
 public interface ConfigService {
 	public PageResults<ConfigForm> getAllConfig(Integer pageNumber, Integer pageSize, String describe) throws BizException;
 	
-	public PageResults<ConfigDetailForm> getAllConfigDetail(Integer pageNumber, Integer pageSize, String configuration,String desc) throws BizException; 
+	public PageResults<ConfigDetailForm> getAllConfigDetail(Integer pageNumber, Integer pageSize, String configuration,String describe) throws BizException; 
 	
 	public Map<String, Object> addOrUpdateConfig(ConfigForm configForm) throws BizException;
 	
@@ -25,7 +25,6 @@ public interface ConfigService {
 	public Map<String, Object> deleteConfigDetail(Long id) throws BizException;
 	
 	public List<ConfigForm> queryConfigAll()throws BizException;
-	
 }
 
 

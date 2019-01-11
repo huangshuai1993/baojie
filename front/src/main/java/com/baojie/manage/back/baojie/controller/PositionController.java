@@ -107,7 +107,7 @@ public class PositionController extends BaseController {
 			pageNumber = 1;
 		}
 		if (pageSize == null) {
-			pageSize = 20;
+			pageSize = 30;
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);

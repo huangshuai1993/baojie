@@ -61,14 +61,14 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 		return page;
 	}
 	@Override
-	public PageResults<ConfigDetailForm> getAllConfigDetail(Integer pageNumber, Integer pageSize, String configuration,String desc)
+	public PageResults<ConfigDetailForm> getAllConfigDetail(Integer pageNumber, Integer pageSize, String configuration,String describe)
 			throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------ConfigServiceImpl.getAllConfigDetail------------begin-->");
 		}
 		PageResults<ConfigDetailForm> page = new PageResults<ConfigDetailForm>();
 		try {
-			List<ConfigDetailEntity> allConfig = configDetailDao.getAllConfigDetail(pageNumber, pageSize, configuration,desc);
+			List<ConfigDetailEntity> allConfig = configDetailDao.getAllConfigDetail(pageNumber, pageSize, configuration,describe);
 			PageInfo<ConfigDetailEntity> pageInfo = new PageInfo<ConfigDetailEntity>(allConfig);
 			if(!CollectionUtils.isEmpty(allConfig)){
 				List<ConfigDetailForm> list2 = BeanUtils.copyByList(allConfig, ConfigDetailForm.class);
