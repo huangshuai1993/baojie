@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.baojie.manage.back.baojie.form.ConfigDetailForm;
 import com.baojie.manage.back.baojie.form.ConfigForm;
-import com.baojie.manage.back.baojie.form.TowerForm;
 import com.baojie.manage.back.baojie.service.ConfigService;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.PageResults;
