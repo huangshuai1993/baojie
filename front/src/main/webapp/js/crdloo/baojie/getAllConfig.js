@@ -19,7 +19,7 @@ $(function(){
 	//提交方法,(参数数值，当前页数)
 	function searcher(searchName,pageNumber ){
 		$("#pageNumber").val(pageNumber);
-		$("#describe").val(searchName);
+		$("#configDesc").val(searchName);
 		$("#myForm").submit();
 	}
 	
@@ -54,7 +54,7 @@ $(function(){
 				var e = data.config;
 				var id = $("#id").val(e.id);
 				var configuration = $("#configuration").val(e.configuration);
-				var describe = $("#describe").val(e.describe);
+				var configDesc = $("#configDesc").val(e.configDesc);
 				var memo = $("#memo").val(e.memo);
 			}
 		});
@@ -65,27 +65,27 @@ $(function(){
 		$("#updateConfig").show();
 		var id = $("#id").val("");
 		var configuration = $("#configuration").val("");
-		var describe = $("#describe").val("");
+		var configDesc = $("#configDesc").val("");
 		var memo = $("#memo").val("");
 	});
 	//添加
 	$("#saveConfig").on("click",function(){
 		var id = $("#id").val();
 		var configuration = $("#configuration").val();
-		var describe = $("#describe").val();
+		var configDesc = $("#configDesc").val();
 		var memo = $("#memo").val();
 		if(configuration == ''){
 			alert("配置项名称不能为空!");
 			return;
 		}
-		if(describe == ''){
+		if(configDesc == ''){
 			alert("配置项描述不能为空!");
 			return;
 		}
 		var postdata = {
 				"id":id,
 				"configuration":configuration,
-				"describe":describe,
+				"configDesc":configDesc,
 				"memo":memo
 		};
 		//进行跟新操作

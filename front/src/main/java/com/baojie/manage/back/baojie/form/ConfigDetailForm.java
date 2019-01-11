@@ -19,7 +19,7 @@ public class ConfigDetailForm implements Serializable {
 	
 	private String configuration;//配置项
 	private Integer configValue;//配置明细状态
-	private String describe;//配置明细描述
+	private String configDetailDesc;//配置明细描述
 	
 	/** 备注 */
 	private String memo;
@@ -51,11 +51,12 @@ public class ConfigDetailForm implements Serializable {
 	public void setConfigValue(Integer configValue) {
 		this.configValue = configValue;
 	}
-	public String getDescribe() {
-		return describe;
+	
+	public String getConfigDetailDesc() {
+		return configDetailDesc;
 	}
-	public void setDescribe(String describe) {
-		this.describe = describe;
+	public void setConfigDetailDesc(String configDetailDesc) {
+		this.configDetailDesc = configDetailDesc;
 	}
 	public String getMemo() {
 		return memo;

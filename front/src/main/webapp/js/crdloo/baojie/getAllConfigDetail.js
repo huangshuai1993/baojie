@@ -23,7 +23,7 @@ $(function(){
 	//提交方法,(参数数值，当前页数)
 	function searcher(searchName,pageNumber,searchConfig ){
 		$("#pageNumber").val(pageNumber);
-		$("#describe").val(searchName);
+		$("#configDetailDesc").val(searchName);
 		$("#SeachConfiguration").val(searchConfig);
 		$("#myForm").submit();
 	}
@@ -60,7 +60,7 @@ $(function(){
 				var e = data.config;
 				var id = $("#id").val(e.id);
 				var configuration = $("#configuration").val(e.configuration);
-				var describe = $("#describe").val(e.describe);
+				var configDetailDesc = $("#configDetailDesc").val(e.configDetailDesc);
 				var memo = $("#memo").val(e.memo);
 				var configValue = $("#configValue").val(e.configValue);
 			}
@@ -72,7 +72,7 @@ $(function(){
 		$("#updateConfig").show();
 		var id = $("#id").val("");
 		var configuration = $("#configuration").val("");
-		var describe = $("#describe").val("");
+		var configDetailDesc = $("#configDetailDesc").val("");
 		var memo = $("#memo").val("");
 		var configValue = $("#configValue").val("");
 	});
@@ -80,21 +80,21 @@ $(function(){
 	$("#saveConfig").on("click",function(){
 		var id = $("#id").val();
 		var configuration = $("#configuration").val();
-		var describe = $("#describe").val();
+		var configDetailDesc = $("#configDetailDesc").val();
 		var memo = $("#memo").val();
 		var configValue = $("#configValue").val();
 		if(configuration == ''){
 			alert("配置项名称不能为空!");
 			return;
 		}
-		if(describe == ''){
+		if(configDetailDesc == ''){
 			alert("配置项描述不能为空!");
 			return;
 		}
 		var postdata = {
 				"id":id,
 				"configuration":configuration,
-				"describe":describe,
+				"configDetailDesc":configDetailDesc,
 				"memo":memo
 		};
 		//进行跟新操作

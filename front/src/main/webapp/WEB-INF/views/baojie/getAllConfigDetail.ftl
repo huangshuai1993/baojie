@@ -34,12 +34,12 @@
                                         <select class="form-control" id="searchConfig">
                                         	<option value="">选择所属配置项</option>
                                             <#list configList as config>
-                                            	<option value="${config.configuration}">${config.describe}</option>
+                                            	<option value="${config.configuration}">${config.configDesc}</option>
                                             </#list>
                                         </select>
                                    	</div>
                                     <div class="form-group table-search">
-                                        <input  id="searchName" class="form-control searchTxt" type="text" placeholder="配置项明细描述" value="${describe}">
+                                        <input  id="searchName" class="form-control searchTxt" type="text" placeholder="配置项明细描述" value="${configDetailDesc}">
                                      </div>
                                      <button id="mySubmit" class="btn btn-primary fl">查 询</button>
                                      <button class="marginR10 btn btn-success pull-right btn-addConfig" type="button">
@@ -68,7 +68,7 @@
 		                                        <tr>
 		                                        	<td>${config.id}</td>
 		                                            <td>${config.configuration}</td>
-		                                            <td>${config.describe}</td>
+		                                            <td>${config.configDetailDesc}</td>
 		                                            <td>${config.configValue}</td>
 		                                            <td>${config.memo}</td>
 	                                              	<#if tower.created ??>
@@ -143,7 +143,7 @@
                                                     <div class="col-lg-9">
                                                         <select class="form-control" id="configuration" >
 	                                                        <#list configList as config>
-	                                                        	<option value="${config.configuration}">${config.describe}</option>
+	                                                        	<option value="${config.configuration}">${config.configDesc}</option>
 	                                                        </#list>
                                                         </select>
                                                     </div>
@@ -151,7 +151,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">配置项明细描述</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" placeholder="配置项明细描述" name="describe" id="describe" maxlength="30"  value="">
+                                                        <input type="text" class="form-control" placeholder="配置项明细描述" name="configDetailDesc" id="configDetailDesc" maxlength="30"  value="">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -200,7 +200,7 @@
     <script>seajs.use("baojie/getAllConfigDetail.js");</script>
     <form action="${contextPath}/service/config/getAllConfigDetail" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
-    	<input type="hidden" name="describe" value="${describe}" id="describe"/>
+    	<input type="hidden" name="configDetailDesc" value="${configDetailDesc}" id="configDetailDesc"/>
     	<input type="hidden" name="configuration" value="${configuration}" id="SeachConfiguration"/>
     </form>
 </body>

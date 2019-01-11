@@ -28,7 +28,7 @@ public class ConfigEntity extends BaseDO implements Serializable {
 	private Long id;// id
 
 	private String configuration;// 配置项
-	private String describe;// 配置项描述
+	private String configDesc;// 配置项描述
 
 	public Long getId() {
 		return id;
@@ -46,11 +46,13 @@ public class ConfigEntity extends BaseDO implements Serializable {
 		this.configuration = configuration;
 	}
 
-	public String getDescribe() {
-		return describe;
+	public String getConfigDesc() {
+		return configDesc;
 	}
 
-	public void setDescribe(String describe) {
-		this.describe = describe;
+	public void setConfigDesc(String configDesc) {
+		this.configDesc = configDesc;
 	}
+
+	
 }

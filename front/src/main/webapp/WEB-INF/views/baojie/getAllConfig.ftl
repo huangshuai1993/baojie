@@ -31,7 +31,7 @@
                                     </div>
                                     <div class="pull-right col-md-7">
                                     <div class="form-group table-search">
-                                        <input  id="searchName" class="form-control searchTxt" type="text" placeholder="配置项描述" value="${describe}">
+                                        <input  id="searchName" class="form-control searchTxt" type="text" placeholder="配置项描述" value="${configDesc}">
                                      </div>
                                      <button id="mySubmit" class="btn btn-primary fl">查 询</button>
                                      <button class="marginR10 btn btn-success pull-right btn-addConfig" type="button">
@@ -59,7 +59,7 @@
 		                                        <tr>
 		                                        	<td>${config.id}</td>
 		                                            <td>${config.configuration}</td>
-		                                            <td>${config.describe}</td>
+		                                            <td>${config.configDesc}</td>
 		                                            <td>${config.memo}</td>
 	                                              	<#if tower.created ??>
 	                                            	<td>${tower.created?string("yyyy-MM-dd HH:mm:ss")}</td>
@@ -137,7 +137,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">配置项描述</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" placeholder="配置项描述" name="describe" id="describe" maxlength="30"  value="">
+                                                        <input type="text" class="form-control" placeholder="配置项描述" name="configDesc" id="configDesc" maxlength="30"  value="">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -180,7 +180,7 @@
     <script>seajs.use("baojie/getAllConfig.js");</script>
     <form action="${contextPath}/service/config/getAllConfig" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
-    	<input type="hidden" name="describe" value="${describe}" id="describe"/>
+    	<input type="hidden" name="configDesc" value="${configDesc}" id="configDesc"/>
     </form>
 </body>
 </html>

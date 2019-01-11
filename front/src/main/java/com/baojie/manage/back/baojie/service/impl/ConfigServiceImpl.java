@@ -36,13 +36,13 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 	@Autowired
 	private ConfigDetailDao configDetailDao;
 	@Override
-	public PageResults<ConfigForm> getAllConfig(Integer pageNumber, Integer pageSize, String describe) throws BizException {
+	public PageResults<ConfigForm> getAllConfig(Integer pageNumber, Integer pageSize, String configDesc) throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------ConfigServiceImpl.getAllConfig------------begin-->");
 		}
 		PageResults<ConfigForm> page = new PageResults<>();
 		try {
-			List<ConfigEntity> allConfig = configDao.getAllConfig(pageNumber, pageSize, describe);
+			List<ConfigEntity> allConfig = configDao.getAllConfig(pageNumber, pageSize, configDesc);
 			PageInfo<ConfigEntity> pageInfo = new PageInfo<ConfigEntity>(allConfig);
 			if(!CollectionUtils.isEmpty(allConfig)){
 				List<ConfigForm> list2 = BeanUtils.copyByList(allConfig, ConfigForm.class);
@@ -61,14 +61,14 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 		return page;
 	}
 	@Override
-	public PageResults<ConfigDetailForm> getAllConfigDetail(Integer pageNumber, Integer pageSize, String configuration,String describe)
+	public PageResults<ConfigDetailForm> getAllConfigDetail(Integer pageNumber, Integer pageSize, String configuration,String configDetailDesc)
 			throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------ConfigServiceImpl.getAllConfigDetail------------begin-->");
 		}
 		PageResults<ConfigDetailForm> page = new PageResults<ConfigDetailForm>();
 		try {
-			List<ConfigDetailEntity> allConfig = configDetailDao.getAllConfigDetail(pageNumber, pageSize, configuration,describe);
+			List<ConfigDetailEntity> allConfig = configDetailDao.getAllConfigDetail(pageNumber, pageSize, configuration,configDetailDesc);
 			PageInfo<ConfigDetailEntity> pageInfo = new PageInfo<ConfigDetailEntity>(allConfig);
 			if(!CollectionUtils.isEmpty(allConfig)){
 				List<ConfigDetailForm> list2 = BeanUtils.copyByList(allConfig, ConfigDetailForm.class);

@@ -10,7 +10,7 @@ public class ConfigForm implements Serializable {
 	private Long id;// id
 
 	private String configuration;// 配置项
-	private String describe;// 配置项描述
+	private String configDesc;// 配置项描述
 	/** 备注 */
 	private String memo;
 
@@ -39,12 +39,13 @@ public class ConfigForm implements Serializable {
 		this.configuration = configuration;
 	}
 
-	public String getDescribe() {
-		return describe;
+
+	public String getConfigDesc() {
+		return configDesc;
 	}
 
-	public void setDescribe(String describe) {
-		this.describe = describe;
+	public void setConfigDesc(String configDesc) {
+		this.configDesc = configDesc;
 	}
 
 	public String getMemo() {

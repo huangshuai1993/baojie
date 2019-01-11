@@ -25,12 +25,12 @@ public class ConfigDao extends BaseDao<ConfigEntity> {
 	@Autowired
 	private ConfigEntityMapper configEntityMapper;
 
-	public List<ConfigEntity> getAllConfig(Integer pageNumber, Integer pageSize, String describe){
+	public List<ConfigEntity> getAllConfig(Integer pageNumber, Integer pageSize, String configDesc){
 		PageHelper.startPage(pageNumber, pageSize);
 		Example example = new Example(ConfigEntity.class);
 		Example.Criteria c = example.createCriteria();
-		if (StringUtils.isNotBlank(describe)) {
-			c.andLike("describe", "%"+describe+"%");
+		if (StringUtils.isNotBlank(configDesc)) {
+			c.andLike("configDesc", "%"+configDesc+"%");
 		}
 		example.orderBy("updated").desc();
 		return configEntityMapper.selectByExample(example);
