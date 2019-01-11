@@ -86,7 +86,7 @@ public class ConfigController extends BaseController {
 		List<ConfigForm> configList = configService.queryConfigAll();
 		model.addAttribute("configList", configList);
 		model.addAttribute("configuration", configuration);
-		model.addAttribute("describe", describe);
+		model.addAttribute("configDetailDesc", configDetailDesc);
 		return "baojie/getAllConfigDetail";
 	}
 	
