@@ -123,7 +123,7 @@ public class BTowerController extends BaseController {
 		Map<String, Object> map = new HashMap<String, Object>();
 		if (towerForm == null) {
 			map.put(Const.retCode, Boolean.FALSE);
-			map.put(Const.retMsg, "合同信息不能为空!");
+			map.put(Const.retMsg, "楼盘信息不能为空!");
 			return map;
 		}
 		Integer result = towerService.addTower(towerForm);
