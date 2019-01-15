@@ -55,31 +55,13 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 				if (!CollectionUtils.isEmpty(list)) {
 					List<ContractForm> list2 = BeanUtils.copyByList(list, ContractForm.class);
 					//获取配置项信息
-					Map<String, String> contractType = valueOperations.get("contractType");
-					if(contractType == null){
-						List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("contractType");
-						contractType = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
-						//放入缓存 同类型放入缓存 查询所有类型放入缓存
-						valueOperations.set("contractType", contractType);
-					}
-					Map<String, String> contractDetailType = valueOperations.get("contractDetailType");
-					if(contractDetailType == null){
-						List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("contractDetailType");
-						contractDetailType = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
-						//放入缓存 同类型放入缓存 查询所有类型放入缓存
-						valueOperations.set("contractDetailType", contractDetailType);
-					}
-					Map<String, String> contractStatus = valueOperations.get("contractStatus");
-					if(contractStatus == null){
-						List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("contractStatus");
-						contractStatus = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
-						//放入缓存 同类型放入缓存 查询所有类型放入缓存
-						valueOperations.set("contractStatus", contractStatus);
-					}
+					Map<String, String> contractType = getContractType();
+					Map<String, String> contractDetailType = getContractDetailType();
+					Map<String, String> contractStatus = getContractStatus();
 					for (ContractForm contractForm : list2) {
-						contractForm.setTypeName(contractType.get(contractForm.getType()).toString());
-						contractForm.setDetailTypeName(contractDetailType.get(contractForm.getDetailType()).toString());
-						contractForm.setStatusName(contractStatus.get(contractForm.getStatus()).toString());
+						contractForm.setTypeName(contractType.get(contractForm.getType()+""));
+						contractForm.setDetailTypeName(contractDetailType.get(contractForm.getDetailType()+""));
+						contractForm.setStatusName(contractStatus.get(contractForm.getStatus()+""));
 					}
 					page = new PageResults<ContractForm>(list2, pageNumber, pageSize, contractPageList.getTotal());
 				}
@@ -95,6 +77,48 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 			}
 		}
 		return page;
+	}
+	/**
+	 * 合同状态
+	 * @return
+	 */
+	public Map<String, String> getContractStatus() {
+		Map<String, String> contractStatus = valueOperations.get("contractStatus");
+		if(contractStatus == null){
+			List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("contractStatus");
+			contractStatus = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
+			//放入缓存 同类型放入缓存 查询所有类型放入缓存
+			valueOperations.set("contractStatus", contractStatus);
+		}
+		return contractStatus;
+	}
+	/**
+	 * 合同明细类型
+	 * @return
+	 */
+	public Map<String, String> getContractDetailType() {
+		Map<String, String> contractDetailType = valueOperations.get("contractDetailType");
+		if(contractDetailType == null){
+			List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("contractDetailType");
+			contractDetailType = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
+			//放入缓存 同类型放入缓存 查询所有类型放入缓存
+			valueOperations.set("contractDetailType", contractDetailType);
+		}
+		return contractDetailType;
+	}
+	/**
+	 * 合同类型
+	 * @return
+	 */
+	public Map<String, String> getContractType() {
+		Map<String, String> contractType = valueOperations.get("contractType");
+		if(contractType == null){
+			List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("contractType");
+			contractType = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
+			//放入缓存 同类型放入缓存 查询所有类型放入缓存
+			valueOperations.set("contractType", contractType);
+		}
+		return contractType;
 	}
 
 	public void example() {

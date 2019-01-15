@@ -22,7 +22,6 @@ import com.baojie.manage.back.baojie.form.ConfigDetailForm;
 import com.baojie.manage.back.baojie.form.ConfigForm;
 import com.baojie.manage.back.baojie.service.ConfigService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
-import com.baojie.manage.back.sys.form.Region;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.PageResults;

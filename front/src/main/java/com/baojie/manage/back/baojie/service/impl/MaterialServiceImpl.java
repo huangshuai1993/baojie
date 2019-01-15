@@ -21,7 +21,6 @@ import com.baojie.manage.back.baojie.dao.entity.ConfigDetailEntity;
 import com.baojie.manage.back.baojie.dao.entity.MaterialEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.MaterialForm;
-import com.baojie.manage.back.baojie.form.enums.MaterialTypeEnum;
 import com.baojie.manage.back.baojie.service.MaterialService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
 import com.baojie.manage.base.common.consts.Const;

@@ -118,6 +118,8 @@ public class BStaffController extends BaseController {
 		model.addAttribute("towerList", queryAll);
 		model.addAttribute("searchTowerId", towerId);
 		model.addAttribute("searchName", staffName);
+		Map<String, String> staffStatusType = staffService.getStaffStatusType();
+		model.addAttribute("staffStatusType", staffStatusType);
 		return "baojie/getAllStaff";
 	}
 

@@ -4,21 +4,26 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.baojie.manage.back.baojie.dao.ConfigDetailDao;
 import com.baojie.manage.back.baojie.dao.PositionDao;
 import com.baojie.manage.back.baojie.dao.StaffDao;
 import com.baojie.manage.back.baojie.dao.TowerDao;
+import com.baojie.manage.back.baojie.dao.entity.ConfigDetailEntity;
 import com.baojie.manage.back.baojie.dao.entity.PositionEntity;
 import com.baojie.manage.back.baojie.dao.entity.StaffEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.StaffForm;
 import com.baojie.manage.back.baojie.form.enums.GenderEnum;
-import com.baojie.manage.back.baojie.form.enums.WorkStatusEnum;
 import com.baojie.manage.back.baojie.service.BStaffService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
 import com.baojie.manage.base.common.consts.Const;
@@ -39,7 +44,11 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 	private StaffDao staffDao;
 	@Autowired
 	private PositionDao positionDao;
-
+	@Resource(name = "redisTemplate")
+	protected ValueOperations<String, Map<String,String>> valueOperations;
+	
+	@Autowired
+	private ConfigDetailDao configDetailDao;
 	@Override
 	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, Long towerId, String staffName)
 			throws BizException {
@@ -52,8 +61,9 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 			PageInfo<StaffEntity> pageInfo = new PageInfo<StaffEntity>(staffList);
 			if (!CollectionUtils.isEmpty(staffList)) {
 				List<StaffForm> list2 = BeanUtils.copyByList(staffList, StaffForm.class);
+				Map<String, String> staffStatusType = getStaffStatusType();
 				for (StaffForm staffForm : list2) {
-					staffForm.setStatusName(WorkStatusEnum.getName(staffForm.getStatus()));
+					staffForm.setStatusName(staffStatusType.get(staffForm.getStatus()).toString());
 					staffForm.setGenderName(GenderEnum.getName(staffForm.getGender()));
 				}
 				response = new PageResults<StaffForm>(list2, pageNumber, pageSize, pageInfo.getTotal());
@@ -71,6 +81,20 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 		return response;
 	}
 
+	/**
+	 * 员工状态
+	 * @return
+	 */
+	public Map<String, String> getStaffStatusType() {
+		Map<String, String> staffStatus = valueOperations.get("staffStatus");
+		if(staffStatus == null){
+			List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("staffStatus");
+			staffStatus = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
+			//放入缓存 同类型放入缓存 查询所有类型放入缓存
+			valueOperations.set("staffStatus", staffStatus);
+		}
+		return staffStatus;
+	}
 	@Override
 	public Integer addStaff(StaffForm staffForm) throws BizException {
 		if (logger.isDebugEnabled()) {

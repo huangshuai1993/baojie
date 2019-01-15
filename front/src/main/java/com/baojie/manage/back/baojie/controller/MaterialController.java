@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.baojie.manage.back.baojie.form.MaterialDownLoad;
 import com.baojie.manage.back.baojie.form.MaterialForm;
 import com.baojie.manage.back.baojie.form.TowerForm;
-import com.baojie.manage.back.baojie.form.enums.MaterialTypeEnum;
 import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.back.baojie.service.MaterialService;
 import com.baojie.manage.base.common.consts.Const;
@@ -31,7 +30,6 @@ import com.baojie.manage.base.common.util.PageUtil;
 import com.baojie.manage.base.controller.BaseController;
 import com.baojie.manage.base.exception.BizException;
 import com.fasterxml.jackson.core.type.TypeReference;
-import com.google.common.collect.Maps;
 
 @Controller
 @RequestMapping("/material")

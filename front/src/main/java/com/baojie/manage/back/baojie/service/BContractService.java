@@ -16,4 +16,9 @@ public interface BContractService {
 	public Map<String, Object> deleteContract(Long id)throws BizException;
 	
 	public Map<String, Object> getContractInfo(Long id)throws BizException;
+	
+	public Map<String, String> getContractType();
+	
+	public Map<String, String> getContractDetailType() ;
+	public Map<String, String> getContractStatus();
 }

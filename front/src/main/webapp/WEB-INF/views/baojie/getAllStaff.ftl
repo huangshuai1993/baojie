@@ -210,8 +210,9 @@
                                                     <label class="control-label col-lg-3">工作状态</label>
                                                     <div class="col-lg-9">
                                                         <select class="form-control" id="status">
-	                                                       <option value="0">在职</option>
-	                                                       <option value="1">离职</option>
+	                                                       <#list staffStatusType?keys as key >
+	                                                        	<option value="${key}">${staffStatusType["${key}"]}</option>
+	                                                        </#list>
                                                         </select>
                                                     </div>
                                                 </div>

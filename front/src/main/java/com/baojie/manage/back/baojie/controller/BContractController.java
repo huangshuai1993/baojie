@@ -104,6 +104,12 @@ public class BContractController extends BaseController {
 		model.addAttribute("allContractList", allContract.getList());
 		pageUtil.setTotalCount((int) allContract.getTotalCount());
 		model.addAttribute("page", pageUtil);
+		Map<String, String> contractType = contractService.getContractType();
+		Map<String, String> contractDetailType = contractService.getContractDetailType();
+		Map<String, String> contractStatus = contractService.getContractStatus();
+		model.addAttribute("contractType", contractType);
+		model.addAttribute("contractDetailType", contractDetailType);
+		model.addAttribute("contractStatus", contractStatus);
 		return "baojie/getAllContract";
 	}
 

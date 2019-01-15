@@ -168,7 +168,9 @@
                                                 <label class="control-label col-lg-3">类型</label>
                                                 <div class="col-lg-9">
                                                     <select class="form-control" id="type" >
-                                                    	<option value="0">服务</option>
+                                                     	<#list contractType?keys as key >
+                                                        	<option value="${key}">${contractType["${key}"]}</option>
+                                                        </#list>
                                                     </select>
                                                 </div>
                                             </div>
@@ -177,8 +179,9 @@
                                                     <label class="control-label col-lg-3">类型明细</label>
                                                     <div class="col-lg-9">
                                                         <select class="form-control" id="detailType" >
-                                                        	<option value="0">自接</option>
-                                                        	<option value="1">外包</option>
+                                                        	<#list contractDetailType?keys as key >
+                                                        		<option value="${key}">${contractDetailType["${key}"]}</option>
+                                                       		 </#list>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -277,15 +280,13 @@
                                                         <input type="text" class="form-control" name="contact" id="contact" onkeyup="value=value.replace(/[^\d]/g,'')"  value="" maxlength="11">
                                                     </div>
                                                 </div>
-                                                <!-- 所属角色 -->
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">合同履行情况</label>
                                                     <div class="col-lg-9">
                                                         <select class="form-control" id="status">
-	                                                        	<option value="1">正常履行</option>
-	                                                        	<option value="2">到期终止</option>
-	                                                        	<option value="3">变更</option>
-	                                                        	<option value="4">解除</option>
+                                                        	<#list contractStatus?keys as key >
+	                                                        	<option value="${key}">${contractStatus["${key}"]}</option>
+	                                                        </#list>
                                                         </select>
                                                     </div>
                                                 </div>
