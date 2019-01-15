@@ -174,8 +174,8 @@
                                                     <label class="control-label col-lg-3">所属类型</label>
                                                     <div class="col-lg-9">
                                                         <select class="form-control" id="type" >
-	                                                        <#list materialTypes as types>
-	                                                        	<option value="${types.getCode()}">${types.getName()}</option>
+	                                                        <#list materialTypes?keys as key >
+	                                                        	<option value="${key}">${materialTypes["${key}"]}</option>
 	                                                        </#list>
                                                         </select>
                                                     </div>

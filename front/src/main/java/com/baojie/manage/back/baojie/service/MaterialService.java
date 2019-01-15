@@ -14,4 +14,6 @@ public interface MaterialService {
 
 	public Map<String, Object> deleteMaterial(Long id) throws BizException;
 	public Map<String, Object> getMaterialInfo(Long id) throws BizException;
+	
+	public Map<String, String> getMaterialType();
 }

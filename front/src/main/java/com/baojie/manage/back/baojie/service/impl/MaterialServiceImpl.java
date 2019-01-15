@@ -4,14 +4,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.baojie.manage.back.baojie.dao.ConfigDetailDao;
 import com.baojie.manage.back.baojie.dao.MaterialDao;
 import com.baojie.manage.back.baojie.dao.TowerDao;
+import com.baojie.manage.back.baojie.dao.entity.ConfigDetailEntity;
 import com.baojie.manage.back.baojie.dao.entity.MaterialEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.MaterialForm;
@@ -35,7 +41,12 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 
 	@Autowired
 	private TowerDao towerDao;
+	
+	@Resource(name = "redisTemplate")
+	protected ValueOperations<String, Map<String,String>> valueOperations;
 
+	@Autowired
+	private ConfigDetailDao configDetailDao;
 	@Override
 	public PageResults<MaterialForm> getAllMaterial(Integer pageNumber, Integer pageSize, Long towerId,
 			String beginTime, String endTime) throws BizException {
@@ -48,8 +59,10 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 			PageInfo<MaterialEntity> pageInfo = new PageInfo<MaterialEntity>(materialList);
 			if (!CollectionUtils.isEmpty(materialList)) {
 				List<MaterialForm> list2 = BeanUtils.copyByList(materialList, MaterialForm.class);
+				//获取配置项信息
+				Map<String, String> materialType = getMaterialType();
 				for (MaterialForm materialForm : list2) {
-					materialForm.setTypeName(MaterialTypeEnum.getName(materialForm.getType()));
+					materialForm.setTypeName(materialType.get(materialForm.getType().toString()));
 				}
 				page = new PageResults<MaterialForm>(list2, pageNumber, pageSize, pageInfo.getTotal());
 			} else {
@@ -64,6 +77,20 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 			}
 		}
 		return page;
+	}
+	/**
+	 * 获取缓存物料类型
+	 * @return
+	 */
+	public Map<String, String> getMaterialType() {
+		Map<String, String> materialType = valueOperations.get("materialType");
+		if(materialType == null){
+			List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("materialType");
+			materialType = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
+			//放入缓存 同类型放入缓存 查询所有类型放入缓存
+			valueOperations.set("materialType", materialType);
+		}
+		return materialType;
 	}
 
 	@Override
@@ -171,8 +198,8 @@ public class MaterialServiceImpl extends BaseService implements MaterialService 
 			map.put("towerList", list);
 			map.put(Const.retCode, true);
 			map.put("material", materialEntity);
-			MaterialTypeEnum[] materialTypeEnum = MaterialTypeEnum.values();
-			map.put("materialTypes", materialTypeEnum);
+			Map<String, String> materialType = getMaterialType();
+			map.put("materialTypes", materialType);
 		} catch (Exception e) {
 			map.put(Const.retCode, false);
 			map.put(Const.retMsg, "物料不存在");

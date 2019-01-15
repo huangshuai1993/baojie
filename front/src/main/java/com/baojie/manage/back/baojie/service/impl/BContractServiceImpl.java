@@ -4,19 +4,22 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.baojie.manage.back.baojie.dao.ConfigDetailDao;
 import com.baojie.manage.back.baojie.dao.ContractDao;
+import com.baojie.manage.back.baojie.dao.entity.ConfigDetailEntity;
 import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
 import com.baojie.manage.back.baojie.form.ContractForm;
 import com.baojie.manage.back.baojie.service.BContractService;
-import com.baojie.manage.back.common.enums.ContractStatusEnums;
-import com.baojie.manage.back.common.enums.ContractTypeDetailEnums;
-import com.baojie.manage.back.common.enums.ContractTypeEnums;
 import com.baojie.manage.back.common.enums.ExampleExCode;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.BeanUtils;
@@ -32,7 +35,11 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 
 	@Autowired
 	private ContractDao contractDao;
-
+	@Resource(name = "redisTemplate")
+	protected ValueOperations<String, Map<String,String>> valueOperations;
+	
+	@Autowired
+	private ConfigDetailDao configDetailDao;
 	@Override
 	public PageResults<ContractForm> getAllContract(Integer pageNumber, Integer pageSize, String contractName,
 			String towerName, Integer status) throws BizException {
@@ -47,10 +54,32 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 				List<ContractEntity> list = contractPageList.getList();
 				if (!CollectionUtils.isEmpty(list)) {
 					List<ContractForm> list2 = BeanUtils.copyByList(list, ContractForm.class);
+					//获取配置项信息
+					Map<String, String> contractType = valueOperations.get("contractType");
+					if(contractType == null){
+						List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("contractType");
+						contractType = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
+						//放入缓存 同类型放入缓存 查询所有类型放入缓存
+						valueOperations.set("contractType", contractType);
+					}
+					Map<String, String> contractDetailType = valueOperations.get("contractDetailType");
+					if(contractDetailType == null){
+						List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("contractDetailType");
+						contractDetailType = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
+						//放入缓存 同类型放入缓存 查询所有类型放入缓存
+						valueOperations.set("contractDetailType", contractDetailType);
+					}
+					Map<String, String> contractStatus = valueOperations.get("contractStatus");
+					if(contractStatus == null){
+						List<ConfigDetailEntity> config = configDetailDao.queryConfigDetailByConfig("contractStatus");
+						contractStatus = config.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
+						//放入缓存 同类型放入缓存 查询所有类型放入缓存
+						valueOperations.set("contractStatus", contractStatus);
+					}
 					for (ContractForm contractForm : list2) {
-						contractForm.setTypeName(ContractTypeEnums.getName(contractForm.getType()));
-						contractForm.setDetailTypeName(ContractTypeDetailEnums.getName(contractForm.getDetailType()));
-						contractForm.setStatusName(ContractStatusEnums.getName(contractForm.getStatus()));
+						contractForm.setTypeName(contractType.get(contractForm.getType()).toString());
+						contractForm.setDetailTypeName(contractDetailType.get(contractForm.getDetailType()).toString());
+						contractForm.setStatusName(contractStatus.get(contractForm.getStatus()).toString());
 					}
 					page = new PageResults<ContractForm>(list2, pageNumber, pageSize, contractPageList.getTotal());
 				}

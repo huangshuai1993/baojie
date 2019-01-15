@@ -31,6 +31,7 @@ import com.baojie.manage.base.common.util.PageUtil;
 import com.baojie.manage.base.controller.BaseController;
 import com.baojie.manage.base.exception.BizException;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.google.common.collect.Maps;
 
 @Controller
 @RequestMapping("/material")
@@ -120,8 +121,8 @@ public class MaterialController extends BaseController {
 		model.addAttribute("searchTowerId", towerId);
 		List<TowerForm> queryAll = towerService.queryAll();
 		model.addAttribute("towerList", queryAll);
-		MaterialTypeEnum[] materialTypeEnum = MaterialTypeEnum.values();
-		model.addAttribute("materialTypes", materialTypeEnum);
+		Map<String, String> materialType = materialService.getMaterialType();
+		model.addAttribute("materialTypes", materialType);
 		return "baojie/getAllMaterial";
 	}
 

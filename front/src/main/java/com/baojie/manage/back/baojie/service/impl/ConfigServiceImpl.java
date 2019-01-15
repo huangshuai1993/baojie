@@ -4,9 +4,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +22,7 @@ import com.baojie.manage.back.baojie.form.ConfigDetailForm;
 import com.baojie.manage.back.baojie.form.ConfigForm;
 import com.baojie.manage.back.baojie.service.ConfigService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
+import com.baojie.manage.back.sys.form.Region;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.BeanUtils;
 import com.baojie.manage.base.common.util.PageResults;
@@ -35,6 +40,10 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 	
 	@Autowired
 	private ConfigDetailDao configDetailDao;
+	
+	@Resource(name = "redisTemplate")
+	protected ValueOperations<String, Map<String,String>> valueOperations;
+	
 	@Override
 	public PageResults<ConfigForm> getAllConfig(Integer pageNumber, Integer pageSize, String configDesc) throws BizException {
 		if (logger.isDebugEnabled()) {
@@ -158,7 +167,14 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 			}
 			map.put(Const.retCode, Boolean.TRUE);
 			map.put(Const.retMsg, "操作成功!");
-			
+			try {
+				List<ConfigDetailEntity> list = configDetailDao.queryConfigDetailByConfig(entity.getConfiguration());
+				Map<String, String> map2 = list.stream().collect(Collectors.toMap(o->o.getConfigValue().toString(), o->o.getConfigDetailDesc()));
+				//放入缓存 同类型放入缓存 查询所有类型放入缓存
+				valueOperations.set(entity.getConfiguration(), map2);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		} catch (Exception e) {
 			logger.error("ConfigServiceImpl.addOrUpdateConfigDetail发生异常", e);
 			throw new BizException(ExampleExCode.EXAMPLE_NOT_FOUND);
@@ -287,6 +303,8 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 			configDetailDao.deleteById(id);
 			map.put(Const.retCode, true);
             map.put(Const.retMsg, "删除成功!");
+            //删除redis
+            valueOperations.getOperations().delete(config.getConfiguration());
 		} catch (Exception e) {
 			logger.error("ConfigServiceImpl.deleteConfigDetail发生异常", e);
 			throw new BizException(ExampleExCode.EXAMPLE_NOT_FOUND);
