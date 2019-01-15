@@ -148,6 +148,8 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 			}else{
 				entity = new ConfigDetailEntity();
 				BeanUtils.copyProperties(configDetailForm, entity);
+				int configValue = configDetailDao.queryConfigDetailByConfiguration(entity.getConfiguration());
+				entity.setConfigValue(configValue);
 				i = configDetailDao.saveSelective(entity);
 			}
 			if(i != 1){
@@ -212,7 +214,7 @@ public class ConfigServiceImpl extends BaseService implements ConfigService {
 			ConfigDetailEntity queryById = configDetailDao.queryById(id);
 			if(queryById == null){
 				map.put(Const.retCode, false);
-				map.put(Const.retMsg, "楼盘不存在");
+				map.put(Const.retMsg, "配置不存在");
 	            return map;
 			}
 			map.put(Const.retCode, true);

@@ -23,7 +23,7 @@ $(function(){
 	//提交方法,(参数数值，当前页数)
 	function searcher(searchName,pageNumber,searchConfig ){
 		$("#pageNumber").val(pageNumber);
-		$("#configDetailDesc").val(searchName);
+		$("#SeachconfigDetailDesc").val(searchName);
 		$("#SeachConfiguration").val(searchConfig);
 		$("#myForm").submit();
 	}
@@ -57,7 +57,7 @@ $(function(){
 		$.post(root+"/service/config/getInfoConfigDetail",{"id":id},function(data){
 			if(data.retCode){
 				$("#updateConfig").show();
-				var e = data.config;
+				var e = data.configDetail;
 				var id = $("#id").val(e.id);
 				var configuration = $("#configuration").val(e.configuration);
 				var configDetailDesc = $("#configDetailDesc").val(e.configDetailDesc);

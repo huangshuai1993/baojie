@@ -71,13 +71,13 @@
 		                                            <td>${config.configDetailDesc}</td>
 		                                            <td>${config.configValue}</td>
 		                                            <td>${config.memo}</td>
-	                                              	<#if tower.created ??>
-	                                            	<td>${tower.created?string("yyyy-MM-dd HH:mm:ss")}</td>
+	                                              	<#if config.created ??>
+	                                            	<td>${config.created?string("yyyy-MM-dd HH:mm:ss")}</td>
 		                                            <#else>
 		                                            	<td></td>
 		                                            </#if>
-													<#if tower.updated ??>
-		                                            	<td>${tower.updated?string("yyyy-MM-dd HH:mm:ss")}</td>
+													<#if config.updated ??>
+		                                            	<td>${config.updated?string("yyyy-MM-dd HH:mm:ss")}</td>
 		                                            <#else>
 		                                            	<td></td>
 		                                            </#if>
@@ -157,7 +157,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">配置项明细值</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" placeholder="" name="configValue" id="configValue" readonly="readonly" maxlength="2"  value="">
+                                                        <input type="text" class="form-control" placeholder="默认生成状态码" name="configValue" id="configValue" readonly="readonly" maxlength="2"  value="">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
@@ -200,7 +200,7 @@
     <script>seajs.use("baojie/getAllConfigDetail.js");</script>
     <form action="${contextPath}/service/config/getAllConfigDetail" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
-    	<input type="hidden" name="configDetailDesc" value="${configDetailDesc}" id="configDetailDesc"/>
+    	<input type="hidden" name="configDetailDesc" value="${configDetailDesc}" id="SeachconfigDetailDesc"/>
     	<input type="hidden" name="configuration" value="${configuration}" id="SeachConfiguration"/>
     </form>
 </body>

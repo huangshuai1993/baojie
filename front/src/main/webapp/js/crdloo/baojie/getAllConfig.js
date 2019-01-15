@@ -19,7 +19,7 @@ $(function(){
 	//提交方法,(参数数值，当前页数)
 	function searcher(searchName,pageNumber ){
 		$("#pageNumber").val(pageNumber);
-		$("#configDesc").val(searchName);
+		$("#SeachconfigDesc").val(searchName);
 		$("#myForm").submit();
 	}
 	

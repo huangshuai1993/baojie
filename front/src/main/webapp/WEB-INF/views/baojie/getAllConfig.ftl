@@ -61,13 +61,13 @@
 		                                            <td>${config.configuration}</td>
 		                                            <td>${config.configDesc}</td>
 		                                            <td>${config.memo}</td>
-	                                              	<#if tower.created ??>
-	                                            	<td>${tower.created?string("yyyy-MM-dd HH:mm:ss")}</td>
+	                                              	<#if config.created ??>
+	                                            	<td>${config.created?string("yyyy-MM-dd HH:mm:ss")}</td>
 		                                            <#else>
 		                                            	<td></td>
 		                                            </#if>
-													<#if tower.updated ??>
-		                                            	<td>${tower.updated?string("yyyy-MM-dd HH:mm:ss")}</td>
+													<#if config.updated ??>
+		                                            	<td>${config.updated?string("yyyy-MM-dd HH:mm:ss")}</td>
 		                                            <#else>
 		                                            	<td></td>
 		                                            </#if>
@@ -137,13 +137,13 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">配置项描述</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" placeholder="配置项描述" name="configDesc" id="configDesc" maxlength="30"  value="">
+                                                        <input type="text" class="form-control" placeholder="配置项描述" name="configDesc" id="configDesc" maxlength="300"  value="">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">备注</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" placeholder="" name="memo" id="memo" maxlength="30"  value="">
+                                                        <input type="text" class="form-control" placeholder="" name="memo" id="memo" maxlength="300"  value="">
                                                     </div>
                                                 </div>
                                                 <!-- Buttons -->
@@ -180,7 +180,7 @@
     <script>seajs.use("baojie/getAllConfig.js");</script>
     <form action="${contextPath}/service/config/getAllConfig" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
-    	<input type="hidden" name="configDesc" value="${configDesc}" id="configDesc"/>
+    	<input type="hidden" name="configDesc" value="${configDesc}" id="SeachconfigDesc"/>
     </form>
 </body>
 </html>

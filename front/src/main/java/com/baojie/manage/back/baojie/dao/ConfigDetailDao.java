@@ -2,6 +2,7 @@ package com.baojie.manage.back.baojie.dao;
 
 import java.util.List;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -59,4 +60,25 @@ public class ConfigDetailDao extends BaseDao<ConfigDetailEntity> {
 		}
 		return configDetailEntityMapper.selectCountByExample(example);
 	}
+	/**
+	 * 查询配置明细最大状态值+1
+	 * @param configuration
+	 * @return
+	 */
+	public int queryConfigDetailByConfiguration(String configuration){
+		Example example = new Example(ConfigDetailEntity.class);
+		Example.Criteria c = example.createCriteria();
+		if (StringUtils.isNotBlank(configuration)) {
+			c.andEqualTo("configuration",configuration);
+		}
+		example.orderBy("configValue").desc();
+		List<ConfigDetailEntity> list = configDetailEntityMapper.selectByExample(example);
+		if(CollectionUtils.isEmpty(list)){
+			return 0;
+		}else{
+			return list.get(0).getConfigValue()+1;
+		}
+		
+	}
+	
 }
