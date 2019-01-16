@@ -258,5 +258,9 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 		}
 		return map;
 	}
+	
+	public Integer getAverAge(Long towerId){
+		return staffDao.getAverAge(towerId);
+	}
 
 }

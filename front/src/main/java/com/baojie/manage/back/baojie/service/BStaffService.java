@@ -18,4 +18,6 @@ public interface BStaffService {
 	
 	public Map<String, Object> getPositionListByTowerId(Long id) throws BizException;
 	public Map<String, String> getStaffStatusType();
+	
+	public Integer getAverAge(Long towerId);
 }

@@ -55,4 +55,12 @@ public class StaffDao extends BaseDao<StaffEntity>{
 		c.andEqualTo("towerId", id);
 		return staffEntityMapper.selectByExample(example);
 	}
+	/**
+	 * 查询平均年龄
+	 * @param towerId
+	 * @return
+	 */
+	public Integer getAverAge(Long towerId){
+		return staffEntityMapper.getAverAge(towerId);
+	}
 }

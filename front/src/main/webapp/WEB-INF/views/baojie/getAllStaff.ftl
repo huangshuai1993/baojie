@@ -22,9 +22,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="widget">
-
                                 <div class="widget-head clearfix">
-                                    <div class="pull-left mtop5">职员列表</div>
+                                    <div class="pull-left mtop5">职员列表 </div>
+                                     <div class="pull-left mtop5" style="margin-left:10px;">所有(楼盘)人员平均年龄： <#if averAge ??>${averAge}</#if></div>
                                     <div class="widget-icons pull-right mlt10 mtop5">
                                         <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                         <a href="#" class="wclose"><i class="icon-remove"></i></a>

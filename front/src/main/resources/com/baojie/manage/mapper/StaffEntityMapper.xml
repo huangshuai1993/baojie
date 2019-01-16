@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.baojie.manage.back.baojie.mapper.StaffEntityMapper">
+    <select id="getAverAge" resultType="java.lang.Integer">
+		select avg(t1.age)
+		from opt_staff t1
+		where 1=1
+		 <if test="towerId != null">
+            and t1.towerId = #{towerId}
+        </if> 
+	</select>
+	
+</mapper>

@@ -124,6 +124,9 @@ public class BStaffController extends BaseController {
 		model.addAttribute("gender", gender);
 		Map<String, String> staffStatusType = staffService.getStaffStatusType();
 		model.addAttribute("staffStatusType", staffStatusType);
+		//查询平均年龄
+		Integer averAge = staffService.getAverAge(towerId);
+		model.addAttribute("averAge", averAge);
 		return "baojie/getAllStaff";
 	}
 
