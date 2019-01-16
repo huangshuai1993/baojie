@@ -192,6 +192,7 @@
                                                     <label class="control-label col-lg-3">所属楼盘</label>
                                                     <div class="col-lg-9">
                                                         <select class="form-control" id="towerIds" onchange="btnChange(this[selectedIndex].value)">
+	                                                        <option value="">请选择</option>
 	                                                        <#list towerList as tower>
 	                                                        	<option value="${tower.towerId}">${tower.towerName}</option>
 	                                                        </#list>
@@ -202,7 +203,7 @@
                                                     <label class="control-label col-lg-3">所属职称</label>
                                                     <div class="col-lg-9">
                                                         <select class="form-control" id="positionIds">
-	                                                       <option value="0">请选择</option>
+	                                                       <option value="">请选择</option>
                                                         </select>
                                                     </div>
                                                 </div>
@@ -254,7 +255,7 @@
       <script type="text/javascript">
       function btnChange(values) {
 	 	$.post(root+"/service/bstaff/getPositionListByTowerId",{"id":values},function(data){
-			var workList = '<option value="-1">请选择</option>';
+			var workList = '<option value="">请选择</option>';
 			if(data.retCode){
 				var dataList=data.positionList;
 				if(dataList.length>0){

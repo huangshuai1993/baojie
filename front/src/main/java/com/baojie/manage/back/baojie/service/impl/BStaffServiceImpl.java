@@ -63,7 +63,7 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 				List<StaffForm> list2 = BeanUtils.copyByList(staffList, StaffForm.class);
 				Map<String, String> staffStatusType = getStaffStatusType();
 				for (StaffForm staffForm : list2) {
-					staffForm.setStatusName(staffStatusType.get(staffForm.getStatus()).toString());
+					staffForm.setStatusName(staffStatusType.get(staffForm.getStatus()+""));
 					staffForm.setGenderName(GenderEnum.getName(staffForm.getGender()));
 				}
 				response = new PageResults<StaffForm>(list2, pageNumber, pageSize, pageInfo.getTotal());

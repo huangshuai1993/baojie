@@ -17,9 +17,9 @@ public class StaffForm implements Serializable {
 
 	private String idCard;
 
-	private int age;
+	private Integer age;
 
-	private int gender;// 1男，0女
+	private Integer gender;// 1男，0女
 	private String birthday;
 	private String genderName;// 1男，0女
 	private String phone;
@@ -107,19 +107,19 @@ public class StaffForm implements Serializable {
 		this.idCard = idCard;
 	}
 
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 
-	public int getGender() {
+	public Integer getGender() {
 		return gender;
 	}
 
-	public void setGender(int gender) {
+	public void setGender(Integer gender) {
 		this.gender = gender;
 	}
 

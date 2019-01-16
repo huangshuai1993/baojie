@@ -78,8 +78,8 @@ $(function(){
 				var gender=$("input[name='gender'][value='"+e.gender+"']").prop("checked","checked");
 				var birthday = $("#birthday").val(e.birthday);
 				var phone = $("#phone").val(e.phone);
-				var towerId = $("#towerIds").val(e.towerId);
-				var positionId = $("#positionIds").val(e.positionId);
+				//var towerId = $("#towerIds").val(e.towerId);
+				//var positionId = $("#positionIds").val(e.positionId);
 				var status = $("#status").val(e.status);
 				
 			}
