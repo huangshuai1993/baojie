@@ -245,10 +245,10 @@
     	<input type="hidden" name="endTime" value="${endTime}" id="searchEndTime"/>
     </form>
     <form action="${contextPath}/service/material/csvDownLoadAllMaterial" method="post" id="csvDownLoadAllMaterial">
-    	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
-    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
-    	<input type="hidden" name="beginTime" value="${beginTime}" id="searchBeginTime"/>
-    	<input type="hidden" name="endTime" value="${endTime}" id="searchEndTime"/>
+    	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber1"/>
+    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower1"/>
+    	<input type="hidden" name="beginTime" value="${beginTime}" id="searchBeginTime1"/>
+    	<input type="hidden" name="endTime" value="${endTime}" id="searchEndTime1"/>
     </form>
 </body>
 </html>

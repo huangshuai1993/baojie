@@ -61,10 +61,10 @@ $(function(){
 		var searchEndTime = $("#endTime").val();
 		var flag = confirm("确认导出？");
 		if(flag){
-			$("#pageNumber").val(pageNumber);
-			$("#searchTower").val(searchName);
-			$("#searchBeginTime").val(searchBeginTime);
-			$("#searchEndTime").val(searchEndTime);
+			$("#pageNumber1").val(pageNumber);
+			$("#searchTower1").val(searchName);
+			$("#searchBeginTime1").val(searchBeginTime);
+			$("#searchEndTime1").val(searchEndTime);
 			$("#csvDownLoadAllMaterial").submit();
 		}
 	});

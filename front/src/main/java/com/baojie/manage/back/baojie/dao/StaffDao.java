@@ -24,7 +24,7 @@ public class StaffDao extends BaseDao<StaffEntity>{
 	@Autowired
 	private StaffEntityMapper staffEntityMapper;
 
-	public List<StaffEntity> getStaffList(Integer pageNo, Integer pageSize, Long towerId, String staffName) {
+	public List<StaffEntity> getStaffList(Integer pageNo, Integer pageSize, Long towerId, String staffName,Integer status,Integer startAge,Integer endAge,Integer gender) {
 		PageHelper.startPage(pageNo, pageSize);
 		Example example = new Example(StaffEntity.class);
 		Example.Criteria c = example.createCriteria();
@@ -33,6 +33,18 @@ public class StaffDao extends BaseDao<StaffEntity>{
 		}
 		if (towerId != null) {
 			c.andEqualTo("towerId", towerId);
+		}
+		if(status != null){
+			c.andEqualTo("status", status);
+		}
+		if(startAge != null){
+			c.andGreaterThanOrEqualTo("age", startAge);
+		}
+		if(endAge != null){
+			c.andLessThanOrEqualTo("age", endAge);
+		}
+		if(gender != null){
+			c.andEqualTo("gender", gender);
 		}
 		example.orderBy("updated").desc();
 		return staffEntityMapper.selectByExample(example);

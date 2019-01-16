@@ -2,6 +2,10 @@ $(function(){
 	
 	var towerId=$("#searchTower").val();
 	var searchTowerId = $("#searchTowerIds option[value='"+towerId+"']").attr("selected","selected");
+	var searchGenders = $("#searchGender").val();
+	var searchStatuss = $("#searchStatus").val();
+	var searchStatuss = $("#searchStatuss option[value='"+searchStatuss+"']").attr("selected","selected");
+	var searchGenders = $("#searchGenders option[value='"+searchGenders+"']").attr("selected","selected");
 	function isPositiveNum(s){//是否为正整数  
 	    var re = /^[0-9]*[1-9][0-9]*$/ ;  
 	    return re.test(s)  
@@ -16,15 +20,23 @@ $(function(){
 		var pageNumber = $(this).attr("data-pagenum");
 		var searchName = $("#searchName").val();
 		var searchTowerIds = $("#searchTowerIds").val();
-		searcher(searchName,searchTowerIds,pageNumber);
+		var searchBeginAge = $("#searchBeginAge").val();
+		var searchFinAge = $("#searchFinAge").val();
+		var searchStatuss = $("#searchStatuss").val();
+		var searchGenders = $("#searchGenders").val();
+		searcher(searchName,searchTowerIds,pageNumber,searchBeginAge,searchFinAge,searchStatuss,searchGenders);
 		$("#myForm").submit();
 	});
 	
 	//提交方法,(参数数值，当前页数)
-	function searcher(searchName,searchTowerIds,pageNumber ){
+	function searcher(searchName,searchTowerIds,pageNumber,searchBeginAge,searchFinAge,searchStatuss,searchGenders){
 		$("#pageNumber").val(pageNumber);
 		$("#searchStaffName").val(searchName);
 		$("#searchTower").val(searchTowerIds);
+		$("#searchGender").val(searchGenders);
+		$("#searchStatus").val(searchStatuss);
+		$("#searchStartAge").val(searchBeginAge);
+		$("#searchEndAge").val(searchFinAge);
 		$("#myForm").submit();
 	}
 	
@@ -33,11 +45,19 @@ $(function(){
 		var pageNumber = $(this).attr("data-pagenum");
 		var searchName = $("#searchName").val();
 		var searchTowerIds = $("#searchTowerIds").val();
+		var searchBeginAge = $("#searchBeginAge").val();
+		var searchFinAge = $("#searchFinAge").val();
+		var searchStatuss = $("#searchStatuss").val();
+		var searchGenders = $("#searchGenders").val();
 		var flag = confirm("确认导出？");
 		if(flag){
-			$("#pageNumber").val(pageNumber);
-			$("#searchStaffName").val(searchName);
-			$("#searchTower").val(searchTowerIds);
+			$("#pageNumber1").val(pageNumber);
+			$("#searchStaffName1").val(searchName);
+			$("#searchTower1").val(searchTowerIds);
+			$("#searchGender1").val(searchGenders);
+			$("#searchStatus1").val(searchStatuss);
+			$("#searchStartAge1").val(searchBeginAge);
+			$("#searchEndAge1").val(searchFinAge);
 			$("#csvDownLoadAllStaff").submit();
 		}
 	});
@@ -45,7 +65,11 @@ $(function(){
 	$("#mySubmit").on("click",function(){
 		var searchName = $("#searchName").val();
 		var searchTowerIds = $("#searchTowerIds").val();
-		searcher(searchName,searchTowerIds,1);
+		var searchBeginAge = $("#searchBeginAge").val();
+		var searchFinAge = $("#searchFinAge").val();
+		var searchStatuss = $("#searchStatuss").val();
+		var searchGenders = $("#searchGenders").val();
+		searcher(searchName,searchTowerIds,1,searchBeginAge,searchFinAge,searchStatuss,searchGenders);
 	});
 	
 	//删除方法

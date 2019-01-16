@@ -51,7 +51,7 @@ public class BStaffController extends BaseController {
 	 * @throws Exception 
 	 */
 	@RequestMapping("/csvDownLoadAllStaff")
-	public void csvDownLoadAllMaterial(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, Long towerId,String staffName) throws Exception {
+	public void csvDownLoadAllMaterial(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, Long towerId,String staffName,Integer status,Integer startAge,Integer endAge,Integer gender) throws Exception {
 		logger.info(
 				"csvDownLoadAllMaterial [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId=" + towerId);
 		if (pageNumber == null) {
@@ -62,7 +62,7 @@ public class BStaffController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<StaffForm> allStaff = staffService.getAllStaff(pageNumber, pageSize, towerId, staffName);
+		PageResults<StaffForm> allStaff = staffService.getAllStaff(pageNumber, pageSize, towerId, staffName, status, startAge, endAge, gender);
 		List<StaffDownLoad> list = BeanUtils.copyByList(allStaff.getList(), StaffDownLoad.class);
 		List<Map<String, Object>> csvData = list.stream().map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
 		})).collect(Collectors.toList());
@@ -77,7 +77,7 @@ public class BStaffController extends BaseController {
          if (totalPageNum > 1) {
              for (int i = 2; i <= totalPageNum; i++) {
             	 pageNumber = i;
-            	 PageResults<StaffForm> staff = staffService.getAllStaff(pageNumber, pageSize, towerId, staffName);
+            	 PageResults<StaffForm> staff = staffService.getAllStaff(pageNumber, pageSize, towerId, staffName, status, startAge, endAge, gender);
             	 list = BeanUtils.copyByList(staff.getList(), StaffDownLoad.class);    
             	 csvData =list.stream()
                          .map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
@@ -98,7 +98,7 @@ public class BStaffController extends BaseController {
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllStaff")
-	public String getAllStaff(Model model, Integer pageNumber, Integer pageSize, Long towerId,String staffName)
+	public String getAllStaff(Model model, Integer pageNumber, Integer pageSize, Long towerId,String staffName,Integer status,Integer startAge,Integer endAge,Integer gender)
 			throws BizException {
 		logger.info("getAllPosition [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerId=" + towerId
 				+ ", staffName=" + staffName);
@@ -110,7 +110,7 @@ public class BStaffController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<StaffForm> allStaff = staffService.getAllStaff(pageNumber, pageSize, towerId, staffName);
+		PageResults<StaffForm> allStaff = staffService.getAllStaff(pageNumber, pageSize, towerId, staffName, status, startAge, endAge, gender);
 		model.addAttribute("allStaff", allStaff.getList());
 		pageUtil.setTotalCount((int) allStaff.getTotalCount());
 		model.addAttribute("page", pageUtil);
@@ -118,6 +118,10 @@ public class BStaffController extends BaseController {
 		model.addAttribute("towerList", queryAll);
 		model.addAttribute("searchTowerId", towerId);
 		model.addAttribute("searchName", staffName);
+		model.addAttribute("status", status);
+		model.addAttribute("startAge", startAge);
+		model.addAttribute("endAge", endAge);
+		model.addAttribute("gender", gender);
 		Map<String, String> staffStatusType = staffService.getStaffStatusType();
 		model.addAttribute("staffStatusType", staffStatusType);
 		return "baojie/getAllStaff";

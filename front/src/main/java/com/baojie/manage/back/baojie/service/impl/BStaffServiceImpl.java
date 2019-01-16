@@ -50,14 +50,14 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 	@Autowired
 	private ConfigDetailDao configDetailDao;
 	@Override
-	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, Long towerId, String staffName)
+	public PageResults<StaffForm> getAllStaff(Integer pageNumber, Integer pageSize, Long towerId, String staffName,Integer status,Integer startAge,Integer endAge,Integer gender)
 			throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------BStaffServiceImpl.getAllStaff------------begin-->");
 		}
 		PageResults<StaffForm> response = new PageResults<StaffForm>();
 		try {
-			List<StaffEntity> staffList = staffDao.getStaffList(pageNumber, pageSize, towerId, staffName);
+			List<StaffEntity> staffList = staffDao.getStaffList(pageNumber, pageSize, towerId, staffName, status, startAge, endAge, gender);
 			PageInfo<StaffEntity> pageInfo = new PageInfo<StaffEntity>(staffList);
 			if (!CollectionUtils.isEmpty(staffList)) {
 				List<StaffForm> list2 = BeanUtils.copyByList(staffList, StaffForm.class);

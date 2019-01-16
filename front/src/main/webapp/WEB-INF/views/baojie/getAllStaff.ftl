@@ -29,17 +29,38 @@
                                         <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                     </div>
-                                    <div class="pull-right col-md-6">
-	                                    <div class="col-lg-4">
+                                    <div class="pull-right col-md-12">
+                                  		 <div class="form-group table-search"  style="width:90px;">
+	                                        <input  id="searchBeginAge" class="form-control searchTxt" style="width:85px;" type="text" placeholder="最小年龄" value="${startAge}" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="2">
+	                                     </div>
+	                                     <div class="form-group table-search"  style="width:90px;">
+	                                        <input  id="searchFinAge" class="form-control searchTxt" style="width:85px;" type="text" placeholder="最大年龄" value="${endAge}" onkeyup="value=value.replace(/[^\d]/g,'')" maxlength="2">
+	                                     </div>		 
+	                                     <div class="col-md-2">
+	                                        <select class="form-control" id="searchStatuss">
+	                                        	<option value="">工作状态</option>
+	                                           	 <#list staffStatusType?keys as key >
+                                            		<option value="${key}">${staffStatusType["${key}"]}</option>
+                                               	 </#list>
+	                                        </select>
+	                                      </div>		
+                                   		 <div class="col-md-2">
+	                                        <select class="form-control" id="searchGenders">
+	                                        	<option value="">性别</option>
+	                                           	<option value="1">男</option>
+	                                           	<option value="0">女</option>
+	                                        </select>
+	                                   	</div>
+	                                    <div class="col-md-3">
 	                                        <select class="form-control" id="searchTowerIds">
-	                                        	<option value="">选择所属楼盘</option>
+	                                        	<option value="">所属楼盘</option>
 	                                            <#list towerList as tower>
 	                                            	<option value="${tower.towerId}">${tower.towerName}</option>
 	                                            </#list>
 	                                        </select>
 	                                   	</div>
-                                   	 	<div class="form-group table-search">
-	                                        <input  id="searchName" class="form-control searchTxt" type="text" placeholder="员工名称" value="${searchName}">
+                                   	 	<div class="form-group table-search" style="width:90px;">
+	                                        <input  id="searchName" class="form-control searchTxt" style="width:85px;"style="width:90px;" type="text" placeholder="员工名称" value="${searchName}">
 	                                     </div>
                                       	<button id="mySubmit" class="btn btn-primary fl">查 询</button>
                                        <button class="btn btn-success pull-right btn-csvDownload" type="button">
@@ -276,11 +297,19 @@
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
     	<input type="hidden" name="staffName" value="${searchName}" id="searchStaffName"/>
+    	<input type="hidden" name="status" value="${status}" id="searchStatus"/>
+    	<input type="hidden" name="startAge" value="${startAge}" id="searchStartAge"/>
+    	<input type="hidden" name="endAge" value="${endAge}" id="searchEndAge"/>
+    	<input type="hidden" name="gender" value="${gender}" id="searchGender"/>
     </form>
     <form action="${contextPath}/service/bstaff/csvDownLoadAllStaff" method="post" id="csvDownLoadAllStaff">
-    	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
-    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
-    	<input type="hidden" name="staffName" value="${searchName}" id="searchStaffName"/>
+    	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber1"/>
+    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower1"/>
+    	<input type="hidden" name="staffName" value="${searchName}" id="searchStaffName1"/>
+    	<input type="hidden" name="status" value="${status}" id="searchStatus1"/>
+    	<input type="hidden" name="startAge" value="${startAge}" id="searchStartAge1"/>
+    	<input type="hidden" name="endAge" value="${endAge}" id="searchEndAge1"/>
+    	<input type="hidden" name="gender" value="${gender}" id="searchGender1"/>
     </form>
 </body>
 </html>
