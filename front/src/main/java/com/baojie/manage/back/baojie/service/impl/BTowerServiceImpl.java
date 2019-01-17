@@ -31,14 +31,14 @@ public class BTowerServiceImpl extends BaseService implements BTowerService {
 	private TowerDao towerDao;
 
 	@Override
-	public PageResults<TowerForm> getAllTower(Integer pageNumber, Integer pageSize, String towerName, String functionaryName)
+	public PageResults<TowerForm> getAllTower(Integer pageNumber, Integer pageSize, String towerName, String functionaryName,String beginTime,String endTime)
 			throws BizException {
 		if (logger.isDebugEnabled()) {
 			logger.debug("--------------BTowerServiceImpl.getAllTower------------begin-->");
 		}
 		PageResults<TowerForm> page = new PageResults<>();
 		try {
-			List<TowerEntity> towerList = towerDao.getTowerList(pageNumber, pageSize, towerName, functionaryName);
+			List<TowerEntity> towerList = towerDao.getTowerList(pageNumber, pageSize, towerName, functionaryName, beginTime, endTime);
 			PageInfo<TowerEntity> pageInfo = new PageInfo<TowerEntity>(towerList);
 			if(!CollectionUtils.isEmpty(towerList)){
 				List<TowerForm> list2 = BeanUtils.copyByList(towerList, TowerForm.class);

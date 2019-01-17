@@ -24,7 +24,8 @@ public class TowerDao extends BaseDao<TowerEntity> {
 	@Autowired
 	private TowerEntityMapper towerEntityMapper;
 
-	public List<TowerEntity> getTowerList(Integer pageNo, Integer pageSize, String towerName, String functionaryName) {
+	public List<TowerEntity> getTowerList(Integer pageNo, Integer pageSize, String towerName, String functionaryName,
+			String beginTime, String endTime) {
 		PageHelper.startPage(pageNo, pageSize);
 		Example example = new Example(TowerEntity.class);
 		Example.Criteria c = example.createCriteria();
@@ -34,9 +35,15 @@ public class TowerDao extends BaseDao<TowerEntity> {
 		if (StringUtils.isNotBlank(towerName)) {
 			c.andLike("towerName", towerName);
 		}
+		if (StringUtils.isNotBlank(beginTime)) {
+			c.andGreaterThanOrEqualTo("approachTime", beginTime);
+		}
+		if (StringUtils.isNotBlank(endTime)) {
+			c.andLessThanOrEqualTo("approachTime", endTime);
+		}
+
 		example.orderBy("updated").desc();
 		return towerEntityMapper.selectByExample(example);
 	}
-	
 
 }

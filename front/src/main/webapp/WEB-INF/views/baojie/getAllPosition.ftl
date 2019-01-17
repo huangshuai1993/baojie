@@ -214,7 +214,7 @@
     </form>
       <form action="${contextPath}/service/position/csvDownLoadAllPosition" method="post" id="csvDownLoadAllPosition">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
-    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
+    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower1"/>
     </form>
 </body>
 </html>

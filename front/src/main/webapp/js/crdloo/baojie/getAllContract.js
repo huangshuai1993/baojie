@@ -51,7 +51,7 @@ $(function(){
 		var flag = confirm("确认导出？");
 		if(flag){
 			$("#pageNumber").val(pageNumber);
-			$("#searchContractName").val(searchName);
+			$("#searchContractName1").val(searchName);
 			$("#csvDownLoadAllContract").submit();
 		}
 	});

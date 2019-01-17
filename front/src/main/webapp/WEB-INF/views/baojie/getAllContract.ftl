@@ -330,7 +330,7 @@
     </form>
     <form action="${contextPath}/service/bcontract/csvDownLoadAllContract" method="post" id="csvDownLoadAllContract">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
-    	<input type="hidden" name="contractName" value="${searchName}" id="searchContractName"/>
+    	<input type="hidden" name="contractName" value="${searchName}" id="searchContractName1"/>
     </form>
 </body>
 </html>

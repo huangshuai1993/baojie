@@ -12,14 +12,18 @@ $(function(){
 	$ur_a.on("click",function(){
 		var pageNumber = $(this).attr("data-pagenum");
 		var searchName = $("#searchName").val();
-		searcher(searchName,pageNumber);
+		var searchBeginTime = $("#beginTime").val();
+		var searchEndTime = $("#endTime").val();
+		searcher(searchName,pageNumber,searchBeginTime,searchEndTime);
 		$("#myForm").submit();
 	});
 	
 	//提交方法,(参数数值，当前页数)
-	function searcher(searchName,pageNumber ){
+	function searcher(searchName,pageNumber,searchBeginTime,searchEndTime){
 		$("#pageNumber").val(pageNumber);
 		$("#searchTowerName").val(searchName);
+		$("#searchBeginTime").val(searchBeginTime);
+		$("#searchEndTime").val(searchEndTime);
 		$("#myForm").submit();
 	}
 	
@@ -27,17 +31,23 @@ $(function(){
 	$(".btn-csvDownload").on("click",function(){
 		var pageNumber = $(this).attr("data-pagenum");
 		var searchName = $("#searchName").val();
+		var searchBeginTime = $("#beginTime").val();
+		var searchEndTime = $("#endTime").val();
 		var flag = confirm("确认导出？");
 		if(flag){
 			$("#pageNumber").val(pageNumber);
-			$("#searchTowerName").val(searchName);
+			$("#searchTowerName1").val(searchName);
+			$("#searchBeginTime1").val(searchBeginTime);
+			$("#searchEndTime1").val(searchEndTime);
 			$("#csvDownLoadAllTower").submit();
 		}
 	});
 	//查询列表
 	$("#mySubmit").on("click",function(){
 		var searchName = $("#searchName").val();
-		searcher(searchName,1);
+		var searchBeginTime = $("#beginTime").val();
+		var searchEndTime = $("#endTime").val();
+		searcher(searchName,1,searchBeginTime,searchEndTime);
 	});
 	//删除方法
 	$(".btn-delete").on("click",function(){

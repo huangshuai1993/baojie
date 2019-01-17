@@ -9,7 +9,7 @@ import com.baojie.manage.base.exception.BizException;
 
 public interface BTowerService {
 
-	public PageResults<TowerForm> getAllTower(Integer pageNumber, Integer pageSize, String towerName, String functionaryName)
+	public PageResults<TowerForm> getAllTower(Integer pageNumber, Integer pageSize, String towerName, String functionaryName,String beginTime,String endTime)
 			throws BizException;
 
 	public Integer addTower(TowerForm towerForm) throws BizException;

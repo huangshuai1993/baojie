@@ -311,8 +311,8 @@
     </form>
      <form action="${contextPath}/service/salary/csvDownLoadAllSalary" method="post" id="csvDownLoadAllSalary">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
-    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower"/>
-    	<input type="hidden" name="time" value="${searchTime}" id="time"/>
+    	<input type="hidden" name="towerId" value="${searchTowerId}" id="searchTower1"/>
+    	<input type="hidden" name="time" value="${searchTime}" id="time1"/>
     </form>
 </body>
 </html>

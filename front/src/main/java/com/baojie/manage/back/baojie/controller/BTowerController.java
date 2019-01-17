@@ -49,7 +49,7 @@ public class BTowerController extends BaseController {
 	 * @throws Exception 
 	 */
 	@RequestMapping("/csvDownLoadAllTower")
-	public void csvDownLoadAllTower(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, String towerName, String functionaryName) throws Exception {
+	public void csvDownLoadAllTower(HttpServletRequest request,HttpServletResponse response, Integer pageNumber, Integer pageSize, String towerName, String functionaryName,String beginTime,String endTime) throws Exception {
 		logger.info(
 				"csvDownLoadAllTower [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize + ", towerName=" + towerName);
 		if (pageNumber == null) {
@@ -60,7 +60,7 @@ public class BTowerController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<TowerForm> allTower = towerService.getAllTower(pageNumber, pageSize, towerName, functionaryName);
+		PageResults<TowerForm> allTower = towerService.getAllTower(pageNumber, pageSize, towerName, functionaryName, beginTime, endTime);
 		List<TowerDownLoad> list = BeanUtils.copyByList(allTower.getList(), TowerDownLoad.class);
 		List<Map<String, Object>> csvData = list.stream().map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
 		})).collect(Collectors.toList());
@@ -75,7 +75,7 @@ public class BTowerController extends BaseController {
          if (totalPageNum > 1) {
              for (int i = 2; i <= totalPageNum; i++) {
             	 pageNumber = i;
-            	 PageResults<TowerForm> tower = towerService.getAllTower(pageNumber, pageSize, towerName, functionaryName);
+            	 PageResults<TowerForm> tower = towerService.getAllTower(pageNumber, pageSize, towerName, functionaryName, beginTime, endTime);
             	 list = BeanUtils.copyByList(tower.getList(), TowerDownLoad.class);
             	 csvData = tower.getList().stream()
                          .map(d -> JsonUtils.parseObjectAsJackson(d, new TypeReference<Map<String, Object>>() {
@@ -97,7 +97,7 @@ public class BTowerController extends BaseController {
 	 * @throws BizException
 	 */
 	@RequestMapping("/getAllTower")
-	public String getAllTower(Model model, Integer pageNumber, Integer pageSize, String towerName, String functionaryName) throws BizException {
+	public String getAllTower(Model model, Integer pageNumber, Integer pageSize, String towerName, String functionaryName,String beginTime,String endTime) throws BizException {
 		logger.info("getAllContract [get]: pageNumber=" + pageNumber + ", pageSize=" + pageSize+ ", towerName=" + towerName+", functionaryName=" + functionaryName);
 		if (pageNumber == null) {
 			pageNumber = 1;
@@ -107,7 +107,7 @@ public class BTowerController extends BaseController {
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
-		PageResults<TowerForm> allTower = towerService.getAllTower(pageNumber, pageSize, towerName, functionaryName);
+		PageResults<TowerForm> allTower = towerService.getAllTower(pageNumber, pageSize, towerName, functionaryName, beginTime, endTime);
 		model.addAttribute("searchName", towerName);
 		model.addAttribute("allTowerList", allTower.getList());
 		pageUtil.setTotalCount((int) allTower.getTotalCount());
