@@ -30,7 +30,7 @@
                                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                     </div>
                                     <div class="pull-right col-md-9">
-                                    <p class='col-lg-2 inputTitle'>进场时间：</p>
+                                    <p class='col-lg-2 inputTitle'>请选择进场时间：</p>
 			                    	<div class="form-group mrt10 fl" style='position: relative;'>	
 									<div class="input-append " id="datetimepicker1">
 										<input class="Wdate form-control dtpicker validate[required] " type="text"  id="beginTime" value="${beginTime}" placeholder="开始时间" name="beginTime"  onclick="WdatePicker({autoPickDate:'true',dateFmt:'yyyy-MM-dd',minDate: '${minDate}', maxDate: '${maxDate}'})" style="width: 150px;height:32px;" />

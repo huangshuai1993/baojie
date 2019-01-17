@@ -119,6 +119,8 @@ public class MaterialController extends BaseController {
 		model.addAttribute("searchTowerId", towerId);
 		List<TowerForm> queryAll = towerService.queryAll();
 		model.addAttribute("towerList", queryAll);
+		model.addAttribute("beginTime", beginTime);
+		model.addAttribute("endTime", endTime);
 		Map<String, String> materialType = materialService.getMaterialType();
 		model.addAttribute("materialTypes", materialType);
 		return "baojie/getAllMaterial";

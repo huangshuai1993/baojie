@@ -112,6 +112,8 @@ public class BTowerController extends BaseController {
 		model.addAttribute("allTowerList", allTower.getList());
 		pageUtil.setTotalCount((int) allTower.getTotalCount());
 		model.addAttribute("page", pageUtil);
+		model.addAttribute("beginTime", beginTime);
+		model.addAttribute("endTime", endTime);
 		return "baojie/getAllTower";
 	}
 

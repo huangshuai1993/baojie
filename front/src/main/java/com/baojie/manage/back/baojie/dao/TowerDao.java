@@ -30,10 +30,10 @@ public class TowerDao extends BaseDao<TowerEntity> {
 		Example example = new Example(TowerEntity.class);
 		Example.Criteria c = example.createCriteria();
 		if (StringUtils.isNotBlank(functionaryName)) {
-			c.andEqualTo("functionaryName", functionaryName);
+			c.andLike("functionaryName", "%"+functionaryName+"%");
 		}
 		if (StringUtils.isNotBlank(towerName)) {
-			c.andLike("towerName", towerName);
+			c.andLike("towerName", "%"+towerName+"%");
 		}
 		if (StringUtils.isNotBlank(beginTime)) {
 			c.andGreaterThanOrEqualTo("approachTime", beginTime);
