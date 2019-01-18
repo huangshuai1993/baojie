@@ -1,5 +1,6 @@
 package com.baojie.manage.back.baojie.service;
 
+import java.util.List;
 import java.util.Map;
 
 import com.baojie.manage.back.baojie.form.ContractForm;
@@ -21,4 +22,7 @@ public interface BContractService {
 	
 	public Map<String, String> getContractDetailType() ;
 	public Map<String, String> getContractStatus();
+	
+	public List<ContractForm> getListContract() throws BizException;
+	public Map<String,String> getAllContractMap();
 }

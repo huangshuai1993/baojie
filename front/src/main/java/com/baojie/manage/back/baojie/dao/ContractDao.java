@@ -42,4 +42,11 @@ public class ContractDao extends BaseDao<ContractEntity>{
 	    example.orderBy("updated").desc();
 	    return contractEntityMapper.selectByExample(example);
 	}
+	
+	public List<ContractEntity> getContractList(){
+		Example example = new Example(ContractEntity.class);
+	    Example.Criteria c = example.createCriteria();
+	    example.orderBy("updated").desc();
+	    return contractEntityMapper.selectByExample(example);
+	}
 }

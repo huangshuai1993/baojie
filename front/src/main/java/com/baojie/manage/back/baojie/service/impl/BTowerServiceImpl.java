@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.baojie.manage.back.baojie.dao.ContractDao;
 import com.baojie.manage.back.baojie.dao.TowerDao;
+import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
 import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.TowerForm;
 import com.baojie.manage.back.baojie.service.BTowerService;
@@ -30,6 +32,8 @@ public class BTowerServiceImpl extends BaseService implements BTowerService {
 	@Autowired
 	private TowerDao towerDao;
 
+	@Autowired
+	private ContractDao contractDao;
 	@Override
 	public PageResults<TowerForm> getAllTower(Integer pageNumber, Integer pageSize, String towerName, String functionaryName,String beginTime,String endTime)
 			throws BizException {
@@ -73,10 +77,24 @@ public class BTowerServiceImpl extends BaseService implements BTowerService {
 				entity = towerDao.queryById(towerForm.getTowerId());
 				BeanUtils.copyPropertiesNotNUll(towerForm, entity);
 				entity.setUpdated(new Date());
+				if(towerForm.getContractId() != null){
+					ContractEntity contractEntity = contractDao.queryById(towerForm.getContractId());
+					entity.setPeopleCount(contractEntity.getPeopleCount());
+					contractEntity.setTowerId(entity.getTowerId());
+					contractEntity.setTowerName(entity.getTowerName());
+					contractDao.updateSelective(contractEntity);
+				}
 				i = towerDao.updateSelective(entity);
 			}else{
 				entity = new TowerEntity();
 				BeanUtils.copyProperties(towerForm, entity);
+				if(towerForm.getContractId() != null){
+					ContractEntity contractEntity = contractDao.queryById(towerForm.getContractId());
+					entity.setPeopleCount(contractEntity.getPeopleCount());
+					contractEntity.setTowerId(entity.getTowerId());
+					contractEntity.setTowerName(entity.getTowerName());
+					contractDao.updateSelective(contractEntity);
+				}
 				i = towerDao.saveSelective(entity);
 			}
 			if(i > 0){

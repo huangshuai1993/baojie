@@ -18,9 +18,9 @@ public class ContractForm implements Serializable {
 	private Integer type;
 
 	private Integer detailType;
-	
+
 	private String typeName;
-	
+
 	private String detailTypeName;
 
 	private Long towerId;// id
@@ -64,6 +64,12 @@ public class ContractForm implements Serializable {
 	 */
 	private Integer dataFlag;
 
+	@Override
+	public String toString() {
+		String[] others = new String[] {};
+		return ReflectionToStringBuilder.toStringExclude(this, others);
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -96,16 +102,20 @@ public class ContractForm implements Serializable {
 		this.detailType = detailType;
 	}
 
-	public void setPeopleCount(Integer peopleCount) {
-		this.peopleCount = peopleCount;
+	public String getTypeName() {
+		return typeName;
 	}
 
-	public void setCopies(Integer copies) {
-		this.copies = copies;
+	public void setTypeName(String typeName) {
+		this.typeName = typeName;
 	}
 
-	public void setStatus(Integer status) {
-		this.status = status;
+	public String getDetailTypeName() {
+		return detailTypeName;
+	}
+
+	public void setDetailTypeName(String detailTypeName) {
+		this.detailTypeName = detailTypeName;
 	}
 
 	public Long getTowerId() {
@@ -188,7 +198,22 @@ public class ContractForm implements Serializable {
 		this.balance = balance;
 	}
 
-	
+	public Integer getPeopleCount() {
+		return peopleCount;
+	}
+
+	public void setPeopleCount(Integer peopleCount) {
+		this.peopleCount = peopleCount;
+	}
+
+	public Integer getCopies() {
+		return copies;
+	}
+
+	public void setCopies(Integer copies) {
+		this.copies = copies;
+	}
+
 	public String getDepartment() {
 		return department;
 	}
@@ -212,6 +237,23 @@ public class ContractForm implements Serializable {
 	public void setContact(String contact) {
 		this.contact = contact;
 	}
+
+	public Integer getStatus() {
+		return status;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
+	}
+
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
+
 	public String getMemo() {
 		return memo;
 	}
@@ -242,35 +284,5 @@ public class ContractForm implements Serializable {
 
 	public void setDataFlag(Integer dataFlag) {
 		this.dataFlag = dataFlag;
-	}
-
-	@Override
-	public String toString() {
-		String[] others = new String[] {};
-		return ReflectionToStringBuilder.toStringExclude(this, others);
-	}
-
-	public String getTypeName() {
-		return typeName;
-	}
-
-	public void setTypeName(String typeName) {
-		this.typeName = typeName;
-	}
-
-	public String getStatusName() {
-		return statusName;
-	}
-
-	public void setStatusName(String statusName) {
-		this.statusName = statusName;
-	}
-
-	public String getDetailTypeName() {
-		return detailTypeName;
-	}
-
-	public void setDetailTypeName(String detailTypeName) {
-		this.detailTypeName = detailTypeName;
 	}
 }

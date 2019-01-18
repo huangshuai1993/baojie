@@ -1,5 +1,6 @@
 package com.baojie.manage.back.baojie.service.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -244,4 +245,46 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 		}
 		return map;
 	}
+	@Override
+	public List<ContractForm> getListContract() throws BizException{
+		if (logger.isDebugEnabled()) {
+			logger.debug("--------------BContractServiceImpl.getListContract------------begin-->");
+		}
+		List<ContractForm> list = new ArrayList<ContractForm>();
+		try {
+			List<ContractEntity> list2 = contractDao.getContractList();
+			if(CollectionUtils.isNotEmpty(list2)){
+				list = BeanUtils.copyByList(list2, ContractForm.class);
+			}
+		} catch (Exception e) {
+			logger.error("BContractServiceImpl.getListContract发生异常", e);
+		} finally {
+			if (logger.isDebugEnabled()) {
+				logger.debug("--------------BContractServiceImpl.getListContract------------end-->");
+			}
+		}
+		return list;
+	}
+	
+	public Map<String,String> getAllContractMap(){
+		if (logger.isDebugEnabled()) {
+			logger.debug("--------------BContractServiceImpl.getAllContractMap------------begin-->");
+		}
+		Map<String, String> response = new HashMap<String, String>();
+		try {
+			List<ContractForm> listContract = getListContract();
+			if(CollectionUtils.isNotEmpty(listContract)){
+				response = listContract.stream().collect(Collectors.toMap(o->o.getId()+"", o->o.getContractName()));
+			}
+			
+		} catch (Exception e) {
+			logger.error("BContractServiceImpl.getAllContractMap发生异常", e);
+		} finally {
+			if (logger.isDebugEnabled()) {
+				logger.debug("--------------BContractServiceImpl.getAllContractMap------------end-->");
+			}
+		}
+		return response;
+	}
+
 }

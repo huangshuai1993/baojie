@@ -125,6 +125,7 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 				BeanUtils.copyPropertiesNotNUll(staffForm, entity);
 				entity.setUpdated(new Date());
 				i = staffDao.updateSelective(entity);
+				//更新楼盘实际人数
 			} else {
 				entity = new StaffEntity();
 				TowerEntity selectByPK = towerDao.queryById(staffForm.getTowerId());
@@ -139,6 +140,14 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 			}
 			if (i > 0) {
 				result = 1;
+				//更新楼盘实际员工数
+				StaffEntity record = new StaffEntity();
+				record.setTowerId(entity.getTowerId());
+				Integer queryCount = staffDao.queryCount(record);
+				TowerEntity towerRecord = new TowerEntity();
+				towerRecord.setTowerId(entity.getTowerId());
+				towerRecord.setVirtualCount(queryCount);
+				towerDao.updateSelective(towerRecord);
 			}
 		} catch (Exception e) {
 			logger.error("BStaffServiceImpl.addStaff发生异常", e);
@@ -171,6 +180,14 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 			}
 			Integer i = staffDao.deleteById(id);
 			if (i > 0) {
+				//更新楼盘实际员工数
+				StaffEntity record = new StaffEntity();
+				record.setTowerId(selectByPK.getTowerId());
+				Integer queryCount = staffDao.queryCount(record);
+				TowerEntity towerRecord = new TowerEntity();
+				towerRecord.setTowerId(selectByPK.getTowerId());
+				towerRecord.setVirtualCount(queryCount);
+				towerDao.updateSelective(towerRecord);
 				map.put(Const.retCode, true);
 				map.put(Const.retMsg, "删除成功!");
 			} else {

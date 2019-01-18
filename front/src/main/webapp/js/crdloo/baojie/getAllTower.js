@@ -80,6 +80,7 @@ $(function(){
 				var peopleCount = $("#peopleCount").val(e.peopleCount);
 				var virtualCount = $("#virtualCount").val(e.virtualCount);
 				var approachTime = $("#approachTime").val(e.approachTime);
+				var contractId = $("#contractId").val(e.contractId);
 			}
 		});
 	});
@@ -94,6 +95,8 @@ $(function(){
 		var peopleCount = $("#peopleCount").val("");
 		var virtualCount = $("#virtualCount").val("");
 		var approachTime = $("#approachTime").val("");
+		var contractId = $("#contractId").val("");
+		
 	});
 	//添加合同
 	$("#saveTower").on("click",function(){
@@ -104,6 +107,7 @@ $(function(){
 		var peopleCount = $("#peopleCount").val();
 		var virtualCount = $("#virtualCount").val();
 		var approachTime = $("#approachTime").val();
+		var contractId = $("#contractId").val();
 		if(towerName == ''){
 			alert("楼盘名称不能为空!");
 			return;
@@ -119,7 +123,8 @@ $(function(){
 				"address":address,
 				"peopleCount":peopleCount,
 				"virtualCount":virtualCount,
-				"approachTime":approachTime
+				"approachTime":approachTime,
+				"contractId":contractId
 		};
 		//进行跟新操作
 		$.ajax({

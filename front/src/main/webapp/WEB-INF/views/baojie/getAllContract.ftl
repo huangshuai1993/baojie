@@ -197,7 +197,7 @@
                                                  <div class="form-group">
                                                     <label class="control-label col-lg-3">标的/项目</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" maxlength="30"  name="towerName" id="towerName" value="">
+                                                        <input type="text" class="form-control" placeholder="绑定楼盘后更改为楼盘名称" maxlength="30"  name="towerName" id="towerName" value="">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">

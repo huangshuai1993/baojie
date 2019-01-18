@@ -21,8 +21,8 @@ public class TowerForm implements Serializable {
 	private String functionaryName;
 	private String address;
 	private Long contractId;
-	private int peopleCount;
-	private int virtualCount;
+	private Integer peopleCount;
+	private Integer virtualCount;
 
 	private String approachTime;
 
@@ -36,116 +36,142 @@ public class TowerForm implements Serializable {
 	 * 状态 默认1可用
 	 */
 	@Column
-	private int dataFlag;
+	private Integer dataFlag;
+
 
 	public Long getTowerId() {
 		return towerId;
 	}
 
+
 	public void setTowerId(Long towerId) {
 		this.towerId = towerId;
 	}
+
 
 	public String getTowerName() {
 		return towerName;
 	}
 
+
 	public void setTowerName(String towerName) {
 		this.towerName = towerName;
 	}
+
+
+	public Long getFunctionaryId() {
+		return functionaryId;
+	}
+
+
+	public void setFunctionaryId(Long functionaryId) {
+		this.functionaryId = functionaryId;
+	}
+
+
+	public String getFunctionaryName() {
+		return functionaryName;
+	}
+
+
+	public void setFunctionaryName(String functionaryName) {
+		this.functionaryName = functionaryName;
+	}
+
+
+	public String getAddress() {
+		return address;
+	}
+
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
+
+
+	public Long getContractId() {
+		return contractId;
+	}
+
+
+	public void setContractId(Long contractId) {
+		this.contractId = contractId;
+	}
+
+
+	public Integer getPeopleCount() {
+		return peopleCount;
+	}
+
+
+	public void setPeopleCount(Integer peopleCount) {
+		this.peopleCount = peopleCount;
+	}
+
+
+	public Integer getVirtualCount() {
+		return virtualCount;
+	}
+
+
+	public void setVirtualCount(Integer virtualCount) {
+		this.virtualCount = virtualCount;
+	}
+
+
+	public String getApproachTime() {
+		return approachTime;
+	}
+
+
+	public void setApproachTime(String approachTime) {
+		this.approachTime = approachTime;
+	}
+
 
 	public String getMemo() {
 		return memo;
 	}
 
+
 	public void setMemo(String memo) {
 		this.memo = memo;
 	}
+
 
 	public Date getCreated() {
 		return created;
 	}
 
+
 	public void setCreated(Date created) {
 		this.created = created;
 	}
+
 
 	public Date getUpdated() {
 		return updated;
 	}
 
+
 	public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
 
-	public int getDataFlag() {
+
+	public Integer getDataFlag() {
 		return dataFlag;
 	}
 
-	public void setDataFlag(int dataFlag) {
+
+	public void setDataFlag(Integer dataFlag) {
 		this.dataFlag = dataFlag;
 	}
+
 
 	@Override
 	public String toString() {
 		String[] others = new String[] {};
 		return ReflectionToStringBuilder.toStringExclude(this, others);
 	}
-
-	public Long getFunctionaryId() {
-		return functionaryId;
-	}
-
-	public void setFunctionaryId(Long functionaryId) {
-		this.functionaryId = functionaryId;
-	}
-
-	public String getFunctionaryName() {
-		return functionaryName;
-	}
-
-	public void setFunctionaryName(String functionaryName) {
-		this.functionaryName = functionaryName;
-	}
-
-	public String getAddress() {
-		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
-	}
-
-	public Long getContractId() {
-		return contractId;
-	}
-
-	public void setContractId(Long contractId) {
-		this.contractId = contractId;
-	}
-
-	public int getPeopleCount() {
-		return peopleCount;
-	}
-
-	public void setPeopleCount(int peopleCount) {
-		this.peopleCount = peopleCount;
-	}
-
-	public int getVirtualCount() {
-		return virtualCount;
-	}
-
-	public void setVirtualCount(int virtualCount) {
-		this.virtualCount = virtualCount;
-	}
-
-	public String getApproachTime() {
-		return approachTime;
-	}
-
-	public void setApproachTime(String approachTime) {
-		this.approachTime = approachTime;
-	}
-
 }

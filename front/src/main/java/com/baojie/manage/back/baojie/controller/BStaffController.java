@@ -157,7 +157,7 @@ public class BStaffController extends BaseController {
 	}
 
 	/**
-	 * 删除职位
+	 * 删除
 	 * 
 	 * @param id
 	 * @return

@@ -169,19 +169,29 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">合同人数</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" placeholder="请输入合同人数" name="peopleCount" id="peopleCount" maxlength="50"  value="">
+                                                        <input type="text" class="form-control" placeholder="合同人数(合同记录人数)" name="peopleCount" id="peopleCount" maxlength="50"  value="" readonly="readonly">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">实际到岗人数</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" placeholder="请输入实际到岗人数" name="virtualCount" id="virtualCount" maxlength="50"  value="">
+                                                        <input type="text" class="form-control" placeholder="实际到岗人数(楼盘员工)" name="virtualCount" id="virtualCount" maxlength="50"  value="" readonly="readonly">
                                                     </div>
                                                 </div>
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">进场时间</label>
                                                     <div class="col-lg-9">
                                                         <input type="text" class="form-control" placeholder="进场时间(2018-01-01)" name="approachTime" id="approachTime" maxlength="50"  value="">
+                                                    </div>
+                                                </div>
+                                                 <div class="form-group storeIdDiv" >
+                                                    <label class="control-label col-lg-3">所属合同</label>
+                                                    <div class="col-lg-9">
+                                                        <select class="form-control" id="contractId">
+	                                                       <#list contractMap?keys as key >
+	                                                        	<option value="${key}">${contractMap["${key}"]}</option>
+	                                                        </#list>
+                                                        </select>
                                                     </div>
                                                 </div>
                                                 <!-- Buttons -->

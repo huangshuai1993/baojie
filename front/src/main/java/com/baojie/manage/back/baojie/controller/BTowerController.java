@@ -15,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.baojie.manage.back.baojie.form.ContractForm;
 import com.baojie.manage.back.baojie.form.TowerDownLoad;
 import com.baojie.manage.back.baojie.form.TowerForm;
+import com.baojie.manage.back.baojie.service.BContractService;
 import com.baojie.manage.back.baojie.service.BTowerService;
 import com.baojie.manage.base.common.consts.Const;
 import com.baojie.manage.base.common.util.BeanUtils;
@@ -34,6 +36,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 public class BTowerController extends BaseController {
 	@Autowired
 	private BTowerService towerService;
+	
+	@Autowired
+	private BContractService contractService;
 	
 	/**
 	 * 导出csv表格
@@ -111,6 +116,8 @@ public class BTowerController extends BaseController {
 		model.addAttribute("page", pageUtil);
 		model.addAttribute("beginTime", beginTime);
 		model.addAttribute("endTime", endTime);
+		Map<String, String> contractMap = contractService.getAllContractMap();
+		model.addAttribute("contractMap", contractMap);
 		return "baojie/getAllTower";
 	}
 
