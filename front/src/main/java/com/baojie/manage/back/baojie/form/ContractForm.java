@@ -15,9 +15,9 @@ public class ContractForm implements Serializable {
 
 	private String contractName;
 
-	private int type;
+	private Integer type;
 
-	private int detailType;
+	private Integer detailType;
 	
 	private String typeName;
 	
@@ -42,16 +42,16 @@ public class ContractForm implements Serializable {
 
 	private String balance;
 
-	private int peopleCount;
+	private Integer peopleCount;
 
-	private int copies;
+	private Integer copies;
 
 	private String department;
 
 	private String transactor;
 
 	private String contact;
-	private int status;// 合同履行情况：1:正常履行、2:到期终止、3:变更、4：解除
+	private Integer status;// 合同履行情况：1:正常履行、2:到期终止、3:变更、4：解除
 	private String statusName;
 	private String memo;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -80,20 +80,32 @@ public class ContractForm implements Serializable {
 		this.contractName = contractName;
 	}
 
-	public int getType() {
+	public Integer getType() {
 		return type;
 	}
 
-	public void setType(int type) {
+	public void setType(Integer type) {
 		this.type = type;
 	}
 
-	public int getDetailType() {
+	public Integer getDetailType() {
 		return detailType;
 	}
 
-	public void setDetailType(int detailType) {
+	public void setDetailType(Integer detailType) {
 		this.detailType = detailType;
+	}
+
+	public void setPeopleCount(Integer peopleCount) {
+		this.peopleCount = peopleCount;
+	}
+
+	public void setCopies(Integer copies) {
+		this.copies = copies;
+	}
+
+	public void setStatus(Integer status) {
+		this.status = status;
 	}
 
 	public Long getTowerId() {
@@ -176,22 +188,7 @@ public class ContractForm implements Serializable {
 		this.balance = balance;
 	}
 
-	public int getPeopleCount() {
-		return peopleCount;
-	}
-
-	public void setPeopleCount(int peopleCount) {
-		this.peopleCount = peopleCount;
-	}
-
-	public int getCopies() {
-		return copies;
-	}
-
-	public void setCopies(int copies) {
-		this.copies = copies;
-	}
-
+	
 	public String getDepartment() {
 		return department;
 	}
@@ -215,15 +212,6 @@ public class ContractForm implements Serializable {
 	public void setContact(String contact) {
 		this.contact = contact;
 	}
-
-	public int getStatus() {
-		return status;
-	}
-
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
 	public String getMemo() {
 		return memo;
 	}
