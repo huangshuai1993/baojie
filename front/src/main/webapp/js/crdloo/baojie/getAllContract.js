@@ -1,4 +1,6 @@
 $(function(){
+	var searchStatuss = $("#searchStatus").val();
+	var searchStatuss = $("#searchStatuss option[value='"+searchStatuss+"']").attr("selected","selected");
 	function isPositiveNum(s){//是否为正整数  
 	    var re = /^[0-9]*[1-9][0-9]*$/ ;  
 	    return re.test(s)  

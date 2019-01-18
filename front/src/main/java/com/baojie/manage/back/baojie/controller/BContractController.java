@@ -104,6 +104,7 @@ public class BContractController extends BaseController {
 		model.addAttribute("allContractList", allContract.getList());
 		pageUtil.setTotalCount((int) allContract.getTotalCount());
 		model.addAttribute("page", pageUtil);
+		model.addAttribute("status", status);
 		Map<String, String> contractType = contractService.getContractType();
 		Map<String, String> contractDetailType = contractService.getContractDetailType();
 		Map<String, String> contractStatus = contractService.getContractStatus();
