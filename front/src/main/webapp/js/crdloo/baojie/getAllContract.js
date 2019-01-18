@@ -12,20 +12,23 @@ $(function(){
 	$ur_a.on("click",function(){
 		var pageNumber = $(this).attr("data-pagenum");
 		var searchName = $("#searchName").val();
-		searcher(searchName,pageNumber);
+		var searchStatuss = $("#searchStatuss").val();
+		searcher(searchName,pageNumber,searchStatuss);
 		$("#myForm").submit();
 	});
 	
 	//提交方法,(参数数值，当前页数)
-	function searcher(searchName,pageNumber ){
+	function searcher(searchName,pageNumber,searchStatuss ){
 		$("#pageNumber").val(pageNumber);
 		$("#searchContractName").val(searchName);
+		$("#searchStatus").val(searchStatuss);
 		$("#myForm").submit();
 	}
 	//查询列表
 	$("#mySubmit").on("click",function(){
 		var searchName = $("#searchName").val();
-		searcher(searchName,1);
+		var searchStatuss = $("#searchStatuss").val();
+		searcher(searchName,1,searchStatuss);
 	});
 	//删除方法
 	$(".btn-delete").on("click",function(){
@@ -48,10 +51,12 @@ $(function(){
 	$(".btn-csvDownload").on("click",function(){
 		var pageNumber = $(this).attr("data-pagenum");
 		var searchName = $("#searchName").val();
+		var searchStatuss = $("#searchStatuss").val();
 		var flag = confirm("确认导出？");
 		if(flag){
 			$("#pageNumber").val(pageNumber);
 			$("#searchContractName1").val(searchName);
+			$("#searchStatus1").val(searchStatuss);
 			$("#csvDownLoadAllContract").submit();
 		}
 	});

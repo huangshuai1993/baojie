@@ -29,7 +29,16 @@
                                         <a href="#" class="wminimize"><i class="icon-chevron-up"></i></a>
                                         <a href="#" class="wclose"><i class="icon-remove"></i></a>
                                     </div>
-                                   <div class="pull-right col-md-6">
+                                   <div class="pull-right col-md-8">
+                                   		<div class="col-md-2">
+	                                        <select class="form-control" id="searchStatuss">
+	                                        	<option value="">合同状态</option>
+	                                           	 <#list contractStatus?keys as key >
+                                                	<option value="${key}">${contractStatus["${key}"]}</option>
+                                                </#list>
+	                                        </select>
+	                                      </div>	
+                                   
 	                                    <div class="form-group table-search">
 	                                        <input  id="searchName" class="form-control searchTxt" type="text" placeholder="合同名称" value="${searchName}">
 	                                     </div>
@@ -327,10 +336,12 @@
     <form action="${contextPath}/service/bcontract/getAllContract" method="post" id="myForm">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     	<input type="hidden" name="contractName" value="${searchName}" id="searchContractName"/>
+    	<input type="hidden" name="status" value="${status}" id="searchStatus"/>
     </form>
     <form action="${contextPath}/service/bcontract/csvDownLoadAllContract" method="post" id="csvDownLoadAllContract">
     	<input type="hidden" name="pageNumber" value="${pageNumber}" id="pageNumber"/>
     	<input type="hidden" name="contractName" value="${searchName}" id="searchContractName1"/>
+    	<input type="hidden" name="status" value="${status}" id="searchStatus1"/>
     </form>
 </body>
 </html>

@@ -35,9 +35,6 @@ public class BTowerController extends BaseController {
 	@Autowired
 	private BTowerService towerService;
 	
-	
-	
-
 	/**
 	 * 导出csv表格
 	 * 
@@ -103,7 +100,7 @@ public class BTowerController extends BaseController {
 			pageNumber = 1;
 		}
 		if (pageSize == null) {
-			pageSize = 20;
+			pageSize = 30;
 		}
 		PageUtil pageUtil = new PageUtil(pageSize);
 		pageUtil.setPageIndex(pageNumber);
