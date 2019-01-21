@@ -1,0 +1,376 @@
+/*
+SQLyog Ultimate v12.5.1 (64 bit)
+MySQL - 8.0.13 : Database - baojie
+*********************************************************************
+*/
+
+USE `baojie`;
+
+DROP TABLE `opt_contract`;
+DROP TABLE `opt_material`;
+DROP TABLE `opt_position`;
+DROP TABLE `opt_salary`;
+DROP TABLE `opt_staff`;
+DROP TABLE `opt_tower`;
+DROP TABLE `sys_employee`;
+DROP TABLE `sys_employee_persona`;
+DROP TABLE `sys_persona`;
+DROP TABLE `sys_persona_power`;
+DROP TABLE `sys_power`;
+
+ 
+
+/*Table structure for table `opt_config` */
+
+DROP TABLE IF EXISTS `opt_config`;
+
+CREATE TABLE `opt_config` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `configuration` varchar(30) NOT NULL DEFAULT '' COMMENT '配置项',
+  `configDesc` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '配置项描述',
+  `memo` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据标志，0 无效 1 有效',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UDX_CONFIG` (`configuration`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='数据字典-配置项';
+
+/*Data for the table `opt_config` */
+
+insert  into `opt_config`(`id`,`configuration`,`configDesc`,`memo`,`created`,`updated`,`dataFlag`) values 
+(2,'staffStatus','员工工作状态配置项','0.在职，1离职','2019-01-15 14:04:07','2019-01-15 14:04:07',1),
+(3,'materialType','物料类型配置项','0，消耗，1固定','2019-01-15 15:03:48','2019-01-15 15:07:01',1),
+(4,'contractType','合同类型配置项','0，服务','2019-01-15 15:06:48','2019-01-15 15:07:11',1),
+(5,'contractDetailType','合同类型明细状态配置项','0，自接，1，外包','2019-01-15 15:16:02','2019-01-15 15:16:02',1),
+(6,'contractStatus','合同状态配置项','合同履行情况：0，未开始 1:正常履行、2:到期终止、3:变更、4：解除','2019-01-15 15:20:33','2019-01-15 15:25:03',1);
+
+/*Table structure for table `opt_config_detail` */
+
+DROP TABLE IF EXISTS `opt_config_detail`;
+
+CREATE TABLE `opt_config_detail` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键id',
+  `configuration` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '配置项key',
+  `configValue` int(11) NOT NULL DEFAULT '0' COMMENT '配置明细值',
+  `configDetailDesc` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '配置明细描述',
+  `memo` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据标志，0 无效 1 有效',
+  PRIMARY KEY (`id`),
+  KEY `IDX_CONFIG` (`configuration`)
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+
+/*Data for the table `opt_config_detail` */
+
+insert  into `opt_config_detail`(`id`,`configuration`,`configValue`,`configDetailDesc`,`memo`,`created`,`updated`,`dataFlag`) values 
+(2,'staffStatus',0,'在职','员工在职状态','2019-01-15 15:01:27','2019-01-15 15:01:27',1),
+(3,'staffStatus',1,'离职','员工离职状态','2019-01-15 15:02:19','2019-01-15 15:02:19',1),
+(4,'materialType',0,'消耗资产','物料配置消耗资产状态','2019-01-15 15:04:38','2019-01-15 15:04:38',1),
+(5,'materialType',1,'固定资产','物料配置固定资产状态','2019-01-15 15:05:26','2019-01-15 15:05:40',1),
+(6,'contractType',0,'服务','合同类型：服务类型','2019-01-15 15:14:58','2019-01-15 15:14:58',1),
+(7,'contractDetailType',0,'自接','合同类型明细：自接合同类型','2019-01-15 15:16:49','2019-01-15 15:16:49',1),
+(8,'contractDetailType',1,'外包','合同类型明细状态：外包合同类型','2019-01-15 15:17:19','2019-01-15 15:17:19',1),
+(9,'contractStatus',0,'未开始','合同状态配置：合同未开始','2019-01-15 15:22:15','2019-01-15 15:22:15',1),
+(10,'contractStatus',1,'正常履行','合同状态:正常履行','2019-01-15 15:25:37','2019-01-15 15:25:37',1),
+(11,'contractStatus',2,'到期终止','合同状态：到期终止','2019-01-15 15:27:45','2019-01-15 15:27:45',1),
+(12,'contractStatus',3,'变更','合同状态：变更','2019-01-15 15:29:03','2019-01-15 15:29:03',1),
+(13,'contractStatus',4,'解除','合同状态：解除','2019-01-15 15:29:43','2019-01-15 15:38:33',1);
+
+/*Table structure for table `opt_contract` */
+
+DROP TABLE IF EXISTS `opt_contract`;
+
+CREATE TABLE `opt_contract` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '合同id',
+  `contractName` varchar(50) NOT NULL DEFAULT '' COMMENT '合同名称',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '合同类型(0:服务)',
+  `detailType` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0自接，1外包',
+  `towerId` bigint(20) NOT NULL DEFAULT '0' COMMENT '楼盘id',
+  `towerName` varchar(30) NOT NULL DEFAULT '' COMMENT '楼盘名称（项目）',
+  `company` varchar(30) NOT NULL DEFAULT '' COMMENT '我方单位',
+  `serviceCompany` varchar(30) NOT NULL DEFAULT '' COMMENT '对方单位',
+  `commencementDate` varchar(30) NOT NULL DEFAULT '' COMMENT '合同生效时间',
+  `terminationDate` varchar(30) NOT NULL DEFAULT '' COMMENT '合同终止时间',
+  `totalPrices` varchar(30) DEFAULT '' COMMENT '合同总价',
+  `monthPrices` varchar(30) NOT NULL DEFAULT '' COMMENT '合同月金额',
+  `paidPrices` varchar(30) NOT NULL DEFAULT '' COMMENT '合同已付金额',
+  `balance` varchar(30) NOT NULL DEFAULT '' COMMENT '合同余额',
+  `peopleCount` int(11) NOT NULL DEFAULT '0' COMMENT '合同人数',
+  `copies` tinyint(1) NOT NULL DEFAULT '0' COMMENT '合同份数',
+  `department` varchar(30) NOT NULL DEFAULT '' COMMENT '签约部门',
+  `transactor` varchar(30) NOT NULL DEFAULT '' COMMENT '经办人',
+  `contact` varchar(30) NOT NULL DEFAULT '' COMMENT '联系方式',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '合同履行情况：0,未开始1:正常履行、2:到期终止、3:变更、4：解除',
+  `memo` varchar(300) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据标志，0 无效 1 有效',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='合同表';
+
+/*Data for the table `opt_contract` */
+
+/*Table structure for table `opt_material` */
+
+DROP TABLE IF EXISTS `opt_material`;
+
+CREATE TABLE `opt_material` (
+  `materialId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '物料id',
+  `materialName` varchar(30) NOT NULL DEFAULT '' COMMENT '名称',
+  `type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '类型：0消耗，1固定',
+  `price` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '进价',
+  `count` int(11) NOT NULL DEFAULT '0' COMMENT '数量',
+  `totalPrice` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '总价',
+  `purchaseTime` varchar(30) NOT NULL DEFAULT '' COMMENT '进货日期',
+  `towerId` bigint(20) NOT NULL COMMENT '楼盘id',
+  `towerName` varchar(30) NOT NULL DEFAULT '' COMMENT '楼盘名称',
+  `memo` varchar(50) NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据状态1有效，0无效',
+  PRIMARY KEY (`materialId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='物料管理';
+
+/*Data for the table `opt_material` */
+
+/*Table structure for table `opt_position` */
+
+DROP TABLE IF EXISTS `opt_position`;
+
+CREATE TABLE `opt_position` (
+  `positionId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `positionName` varchar(30) NOT NULL DEFAULT '' COMMENT '职位名称',
+  `towerId` bigint(20) DEFAULT NULL COMMENT '所属楼盘',
+  `towerName` varchar(30) NOT NULL DEFAULT '' COMMENT '楼盘名称',
+  `basePay` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '基本工资',
+  `allowance` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '岗位津贴',
+  `memo` varchar(30) NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据状态',
+  PRIMARY KEY (`positionId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='楼盘职位管理';
+
+/*Data for the table `opt_position` */
+
+/*Table structure for table `opt_salary` */
+
+DROP TABLE IF EXISTS `opt_salary`;
+
+CREATE TABLE `opt_salary` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `staffId` bigint(20) NOT NULL COMMENT '职员id',
+  `staffName` varchar(30) NOT NULL DEFAULT '' COMMENT '职员姓名',
+  `towerId` bigint(20) NOT NULL COMMENT '楼盘id',
+  `towerName` varchar(30) NOT NULL DEFAULT '' COMMENT '楼盘名称',
+  `positionId` bigint(20) NOT NULL COMMENT '职务id',
+  `positionName` varchar(30) NOT NULL DEFAULT '' COMMENT '职务名',
+  `basePay` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '基本工资',
+  `allowance` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '岗位津贴',
+  `workDay` int(4) NOT NULL DEFAULT '30' COMMENT '工作天数(出勤)',
+  `overtimePay` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '加班费',
+  `holiday` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '节假日',
+  `other` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '其他',
+  `sendPay` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '应发工资',
+  `personTax` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '个调税',
+  `socialSecurity` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '社保',
+  `askForLeave` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '病事假',
+  `otherDeductPay` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '其他扣款项',
+  `deductTotalPay` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '扣款合计',
+  `realPay` decimal(15,2) NOT NULL DEFAULT '0.00' COMMENT '实发工资',
+  `salaryMonth` varchar(30) NOT NULL DEFAULT '' COMMENT '工资年月',
+  `memo` varchar(30) NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据标志，0 无效 1 有效',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+/*Data for the table `opt_salary` */
+
+/*Table structure for table `opt_staff` */
+
+DROP TABLE IF EXISTS `opt_staff`;
+
+CREATE TABLE `opt_staff` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(30) NOT NULL DEFAULT '' COMMENT '员工姓名',
+  `idCard` varchar(30) NOT NULL DEFAULT '' COMMENT '身份证号',
+  `age` tinyint(2) NOT NULL DEFAULT '0' COMMENT '年龄',
+  `gender` tinyint(1) NOT NULL DEFAULT '0' COMMENT '1男  0女',
+  `birthday` varchar(20) NOT NULL DEFAULT '' COMMENT '出生日期',
+  `phone` varchar(11) NOT NULL DEFAULT '' COMMENT '手机号',
+  `towerId` bigint(20) NOT NULL COMMENT '楼盘id',
+  `towerName` varchar(30) NOT NULL DEFAULT '' COMMENT '楼盘名称',
+  `positionId` bigint(20) NOT NULL COMMENT '职务id',
+  `positionName` varchar(30) NOT NULL DEFAULT '' COMMENT '职位名称',
+  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0在职，1离职',
+  `memo` varchar(30) NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据类型：1有效，0无效',
+  PRIMARY KEY (`id`,`created`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='员工表';
+
+/*Data for the table `opt_staff` */
+
+/*Table structure for table `opt_tower` */
+
+DROP TABLE IF EXISTS `opt_tower`;
+
+CREATE TABLE `opt_tower` (
+  `towerId` bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+  `towerName` varchar(30) NOT NULL DEFAULT '' COMMENT '楼盘名称',
+  `functionaryId` bigint(20) DEFAULT NULL COMMENT '负责人id',
+  `functionaryName` varchar(30) NOT NULL DEFAULT '' COMMENT '负责人名称',
+  `address` varchar(100) NOT NULL DEFAULT '' COMMENT '地址',
+  `contractId` bigint(20) DEFAULT NULL COMMENT '合同id',
+  `peopleCount` int(11) NOT NULL DEFAULT '0' COMMENT '合同人数',
+  `virtualCount` int(11) NOT NULL DEFAULT '0' COMMENT '实际到岗人数',
+  `approachTime` varchar(30) NOT NULL DEFAULT '' COMMENT '进场时间',
+  `memo` varchar(30) NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据标志，0 无效 1 有效',
+  PRIMARY KEY (`towerId`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='楼盘信息表';
+
+/*Data for the table `opt_tower` */
+
+/*Table structure for table `sys_employee` */
+
+DROP TABLE IF EXISTS `sys_employee`;
+
+CREATE TABLE `sys_employee` (
+  `employeeId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `custNo` varchar(64) NOT NULL,
+  `userName` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `passWord` varchar(50) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `realName` varchar(20) DEFAULT NULL,
+  `qq` varchar(20) DEFAULT NULL,
+  `telePhone` varchar(20) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL,
+  `position` varchar(20) DEFAULT NULL,
+  `sex` varchar(4) DEFAULT NULL,
+  `email` varchar(20) DEFAULT NULL,
+  `phone` varchar(20) DEFAULT NULL,
+  `employIDCardNum` varchar(30) DEFAULT NULL,
+  `empRegTime` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+  `lastLoginTime` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `empStatus` varchar(5) DEFAULT NULL,
+  `employeeType` varchar(5) DEFAULT NULL,
+  `memo` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据状态0无效，1有效',
+  PRIMARY KEY (`employeeId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+/*Data for the table `sys_employee` */
+
+insert  into `sys_employee`(`employeeId`,`custNo`,`userName`,`passWord`,`realName`,`qq`,`telePhone`,`position`,`sex`,`email`,`phone`,`employIDCardNum`,`empRegTime`,`lastLoginTime`,`empStatus`,`employeeType`,`memo`,`created`,`updated`,`dataFlag`) values 
+(1,'20151203095825y8z8jy','admin','96e79a42a7c3ece4c018992098d1edb9','超级管理员',NULL,NULL,NULL,NULL,NULL,NULL,NULL,'2018-09-20 17:58:05','2017-01-01 00:00:00','1','1','','2019-01-07 18:02:33','2019-01-07 18:02:33',1);
+
+/*Table structure for table `sys_employee_persona` */
+
+DROP TABLE IF EXISTS `sys_employee_persona`;
+
+CREATE TABLE `sys_employee_persona` (
+  `empId` bigint(11) NOT NULL AUTO_INCREMENT,
+  `employeeId` bigint(11) DEFAULT NULL,
+  `personaId` bigint(11) DEFAULT NULL,
+  `memo` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据状态0无效，1有效',
+  PRIMARY KEY (`empId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='员工角色对应关系表';
+
+/*Data for the table `sys_employee_persona` */
+
+insert  into `sys_employee_persona`(`empId`,`employeeId`,`personaId`,`memo`,`created`,`updated`,`dataFlag`) values 
+(1,1,1,'','2019-01-07 17:59:30','2019-01-07 17:59:30',1);
+
+/*Table structure for table `sys_persona` */
+
+DROP TABLE IF EXISTS `sys_persona`;
+
+CREATE TABLE `sys_persona` (
+  `personaId` bigint(20) NOT NULL AUTO_INCREMENT,
+  `personaName` varchar(50) DEFAULT NULL,
+  `personaDesc` varchar(50) DEFAULT NULL,
+  `personaEnable` varchar(2) DEFAULT NULL,
+  `memo` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据状态0无效，1有效',
+  PRIMARY KEY (`personaId`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COMMENT='角色表';
+
+/*Data for the table `sys_persona` */
+
+insert  into `sys_persona`(`personaId`,`personaName`,`personaDesc`,`personaEnable`,`memo`,`created`,`updated`,`dataFlag`) values 
+(1,'超级管理员','超级管理员','1','','2019-01-07 17:59:05','2019-01-07 17:59:05',1);
+
+/*Table structure for table `sys_persona_power` */
+
+DROP TABLE IF EXISTS `sys_persona_power`;
+
+CREATE TABLE `sys_persona_power` (
+  `id` bigint(11) NOT NULL AUTO_INCREMENT,
+  `personaId` bigint(11) DEFAULT NULL,
+  `powerId` bigint(11) DEFAULT NULL,
+  `memo` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据状态0无效，1有效',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='角色权限对应关系表';
+
+/*Data for the table `sys_persona_power` */
+
+/*Table structure for table `sys_power` */
+
+DROP TABLE IF EXISTS `sys_power`;
+
+CREATE TABLE `sys_power` (
+  `powerId` bigint(11) NOT NULL AUTO_INCREMENT,
+  `powerUrl` varchar(60) DEFAULT NULL,
+  `menuName` varchar(50) DEFAULT NULL,
+  `parentId` bigint(11) DEFAULT NULL,
+  `powerName` varchar(30) DEFAULT NULL,
+  `memo` varchar(30) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT '' COMMENT '备注',
+  `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+  `updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间',
+  `dataFlag` tinyint(1) NOT NULL DEFAULT '1' COMMENT '数据状态0无效，1有效',
+  PRIMARY KEY (`powerId`)
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COMMENT='权限表';
+
+/*Data for the table `sys_power` */
+
+insert  into `sys_power`(`powerId`,`powerUrl`,`menuName`,`parentId`,`powerName`,`memo`,`created`,`updated`,`dataFlag`) values 
+(1,'','首页',NULL,'icon-home','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(3,NULL,'系统管理',NULL,'icon-home','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(30,'/service/employee/getAllEmployees','员工管理',3,'ROLE_ALLEMP','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(31,'/service/login/index','index',1,'ROLE_INDEX','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(32,'/service/persona/getPersonaDetails','角色权限',3,'ROLE_POWER','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(34,'/service/persona/addPower','添加菜单',3,'ROLE_ADDPOWER','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(46,NULL,'合同管理',NULL,'icon-home','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(47,'/service/bcontract/getAllContract','合同列表',46,'ROLE_CONTRACT','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(48,NULL,'楼盘管理',NULL,'icon-home','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(49,'/service/btower/getAllTower','楼盘列表',48,'ROLE_TOWER','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(50,NULL,'职员管理',NULL,'icon-home','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(51,'/service/bstaff/getAllStaff','职员列表',50,'ROLE_STAFF','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(52,'/service/position/getAllPosition','职称列表',50,'ROLE_STAFF','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(53,'/service/salary/getAllSalary','工资列表',50,'ROLE_STAFF','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(54,NULL,'物料管理',NULL,'icon-home','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(55,'/service/material/getAllMaterial','物料列表',54,'ROLE_MATERIAL','','2019-01-07 17:57:57','2019-01-07 17:57:57',1),
+(56,NULL,'配置项管理',NULL,'icon-home','','2019-01-11 17:18:36','2019-01-11 17:18:36',1),
+(57,'/service/config/getAllConfig','配置项列表',56,'ROLE_CONFIG','','2019-01-11 17:19:23','2019-01-11 17:19:23',1),
+(58,'/service/config/getAllConfigDetail','配置项明细列表',56,'ROLE_CONFIG','','2019-01-11 17:20:04','2019-01-11 17:20:04',1);
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
