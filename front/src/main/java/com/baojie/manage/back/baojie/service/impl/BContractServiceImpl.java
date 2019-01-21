@@ -17,8 +17,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.baojie.manage.back.baojie.dao.ConfigDetailDao;
 import com.baojie.manage.back.baojie.dao.ContractDao;
+import com.baojie.manage.back.baojie.dao.TowerDao;
 import com.baojie.manage.back.baojie.dao.entity.ConfigDetailEntity;
 import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
+import com.baojie.manage.back.baojie.dao.entity.TowerEntity;
 import com.baojie.manage.back.baojie.form.ContractForm;
 import com.baojie.manage.back.baojie.service.BContractService;
 import com.baojie.manage.back.common.enums.ExampleExCode;
@@ -41,6 +43,8 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 	
 	@Autowired
 	private ConfigDetailDao configDetailDao;
+	@Autowired
+	private TowerDao towerDao;
 	@Override
 	public PageResults<ContractForm> getAllContract(Integer pageNumber, Integer pageSize, String contractName,
 			String towerName, Integer status) throws BizException {
@@ -150,8 +154,12 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 			}
 			ContractEntity entity = null;
 			Integer i = null;
+			boolean flag = false;
 			if(contract.getId() != null){
 				entity = contractDao.queryById(contract.getId());
+				if(!entity.getPeopleCount().equals(contract.getPeopleCount())){
+					flag = true;
+				}
 				BeanUtils.copyPropertiesNotNUll(contract, entity);
 				entity.setUpdated(new Date());
 				i = contractDao.updateSelective(entity);
@@ -162,6 +170,19 @@ public class BContractServiceImpl extends BaseService implements BContractServic
 			}
 			if(i >0){
 				result = 1;
+				//判断合同人数是否更改
+				if(flag){
+					//更新楼盘
+					TowerEntity tower = new TowerEntity();
+					tower.setContractId(contract.getId());
+					List<TowerEntity> list = towerDao.queryListByWhere(tower);
+					if(CollectionUtils.isNotEmpty(list)){
+						for (TowerEntity towerEntity : list) {
+							towerEntity.setPeopleCount(contract.getPeopleCount());
+							towerDao.updateSelective(towerEntity);
+						}
+					}
+				}
 			}
 		} catch (Exception e) {
 			logger.error("BContractServiceImpl.addContract发生异常", e);

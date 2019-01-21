@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class SalaryForm implements Serializable {
 
-	private static final long serialVersionUID = -3285961980200466377L;
+	private static final long serialVersionUID = -1929072513865151501L;
 	private Long id;
 	private Long staffId;// 职员id
 	private String staffName;// 职员姓名

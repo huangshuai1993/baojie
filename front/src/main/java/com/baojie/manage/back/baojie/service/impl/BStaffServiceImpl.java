@@ -143,6 +143,7 @@ public class BStaffServiceImpl extends BaseService implements BStaffService {
 				//更新楼盘实际员工数
 				StaffEntity record = new StaffEntity();
 				record.setTowerId(entity.getTowerId());
+				record.setStatus(0);
 				Integer queryCount = staffDao.queryCount(record);
 				TowerEntity towerRecord = new TowerEntity();
 				towerRecord.setTowerId(entity.getTowerId());

@@ -192,17 +192,17 @@ public class SalaryServiceImpl extends BaseService implements SalaryService {
 			SalaryEntity entity = salaryDao.queryById(salary.getId());
 			BeanUtils.copyPropertiesNotNUll(salary, entity);
 			//累计  加项
-			BigDecimal basePay = BigDecimalUtils.add(entity.getBasePay(), entity.getAllowance());
-			double div = BigDecimalUtils.div(basePay.doubleValue(), new Double("30"));//每日工资基数
+			BigDecimal basePay1 = BigDecimalUtils.add(entity.getBasePay(), entity.getAllowance());
+			double div = BigDecimalUtils.div(basePay1.doubleValue(), new Double("30"));//每日工资基数
 			double mul = BigDecimalUtils.mul(div,new Double(entity.getWorkDay().toString()));//基本工资数
 			//小数点2位
 			double round = BigDecimalUtils.round(mul, 2);
-			basePay = new BigDecimal(Double.toString(round));
+			BigDecimal basePay = new BigDecimal(Double.toString(round));
+			// 病事假
+			BigDecimal askForLeave = BigDecimalUtils.sub(basePay1, basePay);
 			// 应发工资
 			BigDecimal sendPay = BigDecimalUtils.add(BigDecimalUtils.add(entity.getOvertimePay(), entity.getHoliday()),BigDecimalUtils.add(entity.getOther(), basePay));
 			//累计 减项
-			// 病事假
-			BigDecimal askForLeave = BigDecimalUtils.sub(basePay, sendPay);
 			// 扣款合计
 			BigDecimal deductTotalPay = BigDecimalUtils.add(BigDecimalUtils.add(askForLeave, entity.getOtherDeductPay()), BigDecimalUtils.add(entity.getPersonTax(), entity.getSocialSecurity()));
 			//实发工资

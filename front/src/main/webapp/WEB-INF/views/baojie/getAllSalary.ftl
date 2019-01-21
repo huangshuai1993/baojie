@@ -251,7 +251,7 @@
                                                 <div class="form-group">
                                                     <label class="control-label col-lg-3">病事假</label>
                                                     <div class="col-lg-9">
-                                                        <input type="text" class="form-control" placeholder="病事假" name="askForLeave" id="askForLeave" maxlength="50"  value="" readonly="readonly">
+                                                        <input type="text" class="form-control" placeholder="病事假" name="askForLeave" id="askForLeave" maxlength="50"  value="" >
                                                     </div>
                                                 </div>
                                                 <div class="form-group">

@@ -74,6 +74,7 @@ $(function(){
 				var id = $("#salaryId").val(e.id);
 				var salaryMonth = $("#salaryMonth").val(e.salaryMonth);
 				var staffName = $("#staffName").val(e.staffName);
+				var towerName = $("#towerName").val(e.towerName);
 				var positionName = $("#positionName").val(e.positionName);
 				var basePay = $("#basePay").val(e.basePay);
 				var allowance = $("#allowance").val(e.allowance);
@@ -137,23 +138,23 @@ $(function(){
 			return;
 		}
 		var postdata = {
-				id:"salaryId",
-				salaryMonth:"salaryMonth",
-				staffName:"staffName",
-				positionName:"positionName",
-				basePay:"basePay",
-				allowance:"allowance",
-				workDay:"workDay",
-				overtimePay:"overtimePay",
-				holiday:"holiday",
-				other:"other",
-				sendPay:"sendPay",
-				personTax:"personTax",
-				socialSecurity:"socialSecurity",
-				askForLeave:"askForLeave",
-				otherDeductPay:"otherDeductPay",
-				deductTotalPay:"deductTotalPay",
-				realPay:"realPay"
+				"id":id,
+				"salaryMonth":salaryMonth,
+				"staffName":staffName,
+				"positionName":positionName,
+				"basePay":basePay,
+				"allowance":allowance,
+				"workDay":workDay,
+				"overtimePay":overtimePay,
+				"holiday":holiday,
+				"other":other,
+				"sendPay":sendPay,
+				"personTax":personTax,
+				"socialSecurity":socialSecurity,
+				"askForLeave":askForLeave,
+				"otherDeductPay":otherDeductPay,
+				"deductTotalPay":deductTotalPay,
+				"realPay":realPay
 		};
 		//进行跟新操作
 		$.ajax({

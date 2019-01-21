@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.baojie.manage.back.baojie.dao.ContractDao;
 import com.baojie.manage.back.baojie.dao.entity.ContractEntity;
 import com.baojie.manage.back.baojie.mapper.ContractEntityMapper;
 import com.baojie.manage.base.common.service.BaseDao;
